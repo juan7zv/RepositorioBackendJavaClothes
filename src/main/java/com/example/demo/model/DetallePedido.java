@@ -1,27 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.example.demo.model;
 
 import java.util.UUID;
+
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Rossi
  */
+
 public class DetallePedido {
-    private int detalleId;
+    private int detalleId; //es necesario?
     private int cantidad;
     private Pedido pedido;
     private Producto producto; 
 
     public DetallePedido() {
-        this.detalleId = UUID.randomUUID();
+       // this.detalleId = UUID.randomUUID();
     }
 
     public DetallePedido(int ventaId, int cantidad, Pedido pedido, Producto producto) {
-        this.detalleId = UUID.randomUUID();
+      //  this.detalleId = UUID.randomUUID();
         this.cantidad = cantidad;
         this.pedido = pedido;
         this.producto = producto;
