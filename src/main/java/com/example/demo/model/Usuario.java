@@ -1,31 +1,77 @@
 package com.example.demo.model;
 
+import com.example.demo.model.enums.RolUsuario;
+
 import java.util.UUID;
 
 public class Usuario {
-    private String id;
+
+    private String idUsuario;
+
     private String nombre;
     private String email;
-    private int edad;
+    private String numeroDeTelefono;
 
-    public Usuario() {
-        this.id = UUID.randomUUID().toString();
-    }
+    private RolUsuario idRol;
+    private String clave;
 
-    public Usuario(String nombre, String email, int edad) {
-        this.id = UUID.randomUUID().toString();
+    // Constructor
+    public Usuario(String nombre, String email, String numeroDeTelefono, RolUsuario idRol, String clave) {
         this.nombre = nombre;
         this.email = email;
-        this.edad = edad;
+        this.numeroDeTelefono = numeroDeTelefono;
+        this.idRol = idRol;
+        this.clave = clave;
     }
 
-    // Getters y Setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public int getEdad() { return edad; }
-    public void setEdad(int edad) { this.edad = edad; }
+    // getters y setters
+
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNumeroDeTelefono() {
+        return numeroDeTelefono;
+    }
+
+    public void setNumeroDeTelefono(String numeroDeTelefono) {
+        this.numeroDeTelefono = numeroDeTelefono;
+    }
+
+    public RolUsuario getIdRol() {
+        return idRol;
+    }
+
+    public void setIdRol(RolUsuario idRol) {
+        this.idRol = idRol;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
 }

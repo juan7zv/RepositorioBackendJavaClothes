@@ -82,7 +82,7 @@ public class UsuarioController {
                                                  @RequestBody @Parameter(description = "Datos actualizados del usuario") Usuario usuario) {
         Usuario existingUsuario = usuarioService.findById(id);
         if (existingUsuario != null) {
-            usuario.setId(id);
+            usuario.setIdUsuario(id);
             Usuario updatedUsuario = usuarioService.update(usuario);
             return new ResponseEntity<>(updatedUsuario, HttpStatus.OK);
         } else {
@@ -99,7 +99,7 @@ public class UsuarioController {
     public ResponseEntity<Void> deleteUsuario(@PathVariable @Parameter(description = "ID del usuario") String id) {
         Usuario existingUsuario = usuarioService.findById(id);
         if (existingUsuario != null) {
-            usuarioService.deleteById(id);
+           // usuarioService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

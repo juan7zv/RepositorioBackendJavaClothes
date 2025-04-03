@@ -13,13 +13,13 @@ public class UsuarioRepository {
 
     public Usuario save(Usuario usuario) {
         baseDeDatos.add(usuario);
-        authTokens.add(usuario.getId());
+        authTokens.add(usuario.getIdUsuario());
         return usuario;
     }
 
     public Usuario findById(String id) {
         for (Usuario usuario : baseDeDatos) {
-            if (usuario.getId().equals(id)) {
+            if (usuario.getIdUsuario().equals(id)) {
                 return usuario;
             }
         }
@@ -32,7 +32,7 @@ public class UsuarioRepository {
 
     public void deleteById(String id) {
         for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getId().equals(id)) {
+            if (baseDeDatos.get(i).getIdUsuario().equals(id)) {
                 baseDeDatos.remove(i);
                 return;
             }
@@ -41,7 +41,7 @@ public class UsuarioRepository {
 
     public Usuario update(Usuario usuario) {
         for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getId().equals(usuario.getId())) {
+            if (baseDeDatos.get(i).getIdUsuario().equals(usuario.getIdUsuario())) {
                 baseDeDatos.set(i, usuario);
                 return usuario;
             }
@@ -65,7 +65,7 @@ public class UsuarioRepository {
         for (String token : authTokens) {
             if (token.equals(authToken)) {
             	for (Usuario usuario : baseDeDatos) {
-                    if (usuario.getId().equals(token)) {
+                    if (usuario.getIdUsuario().equals(token)) {
                         return usuario;
                     }
                 }
