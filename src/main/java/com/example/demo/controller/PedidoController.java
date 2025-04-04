@@ -37,8 +37,8 @@ public class PedidoController {
     @PostMapping
     @Operation(summary = "Guardar un pedido", description = "Crea un nuevo pedido con los datos proporcionados.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Lista de productos obtenida con éxito"),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+        @ApiResponse(responseCode = "201", description = "Pedido creado con éxito"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
     public ResponseEntity<Pedido> createPedido(@RequestBody @Parameter(description = "Datos del pedido a crear") Pedido pedido) {
         Pedido newPedido = pedidoService.save(pedido);
@@ -51,9 +51,9 @@ public class PedidoController {
         @ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida con éxito"),
         @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    public ResponseEntity<List<Pedido>> getAllUsuarios() {
-        List<Pedido> usuarios = pedidoService.findAll();
-        return new ResponseEntity<>(usuarios, HttpStatus.OK);
+    public ResponseEntity<List<Pedido>> getAllPedidos() {
+        List<Pedido> pedidos = pedidoService.findAll();
+        return new ResponseEntity<>(pedidos, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

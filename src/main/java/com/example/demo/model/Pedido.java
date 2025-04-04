@@ -2,7 +2,7 @@ package com.example.demo.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.UUID;
+import com.example.demo.model.enums.EstadosPedido;
 
 /**
  *
@@ -11,27 +11,28 @@ import java.util.UUID;
 public class Pedido {
 
     private String pedidoId;
-//    private Factura factura; 
+    private Factura factura;
     private Usuario cliente;
-//    private EstadosPedido estado;
+    private EstadosPedido estado;
     private LocalDate fecha;
     private String codigoCompra;
     private ArrayList<DetallePedido> detallesVenta;
 
     public Pedido() {
-        this.pedidoId = UUID.randomUUID().toString(); //tocó como String
-        this.codigoCompra = UUID.randomUUID().toString();
+
     }
 
-//    public Pedido(Factura factura, Usuario cliente, EstadosPedido estado, LocalDate fecha, ArrayList<DetallePedido> detallesVenta) {
-////        this.pedidoId = UUID.randomUUID();
-//        this.factura = factura;
-//        this.cliente = cliente;
-//        this.estado = estado;
-//        this.fecha = fecha;
-//        this.codigoCompra = UUID.randomUUID().toString();
-//        this.detallesVenta = detallesVenta;
-//    }
+    public Pedido(String pedidoId, Factura factura, Usuario cliente, EstadosPedido estado, LocalDate fecha,
+        String codigoCompra, ArrayList<DetallePedido> detallesVenta) {
+        this.pedidoId = pedidoId;
+        this.factura = factura;
+        this.cliente = cliente;
+        this.estado = estado;
+        this.fecha = fecha;
+        this.codigoCompra = codigoCompra;
+        this.detallesVenta = detallesVenta;
+    }
+
     public void agregarDetalle(DetallePedido detalle) {
         detallesVenta.add(detalle);
     }
@@ -40,11 +41,12 @@ public class Pedido {
         detallesVenta.remove(detalle);
     }
 
-    //   public int getPedidoId() {
-//        return pedidoId;
-//    }
+    public String getPedidoId() {
+        return pedidoId;
+    }
+
     public void setPedidoId(String pedidoId) {
-//        this.pedidoId = pedidoId;
+        this.pedidoId = pedidoId;
     }
 
     public Usuario getCliente() {
@@ -55,12 +57,14 @@ public class Pedido {
         this.cliente = cliente;
     }
 
-//    public EstadosPedido getEstado() {
-//        return estado;
-//    }
-//    public void setEstado(EstadosPedido estado) {
-//        this.estado = estado;
-//    }
+    public EstadosPedido getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadosPedido estado) {
+        this.estado = estado;
+    }
+
     public LocalDate getFecha() {
         return fecha;
     }
@@ -76,22 +80,22 @@ public class Pedido {
     public void setDetallesVenta(ArrayList<DetallePedido> detallesVenta) {
         this.detallesVenta = detallesVenta;
     }
-//
-//    public Factura getFactura() {
-//        return factura;
-//    }
-//
-////    public void setFactura(Factura factura) {
-//        this.factura = factura;
-//    }
-//
-//    public String getCodigoCompra() {
-//        return codigoCompra;
-//    }
-//
-//    public void setCodigoCompra(String codigoCompra) {
-//        this.codigoCompra = codigoCompra;
-//    }
+
+    public Factura getFactura() {
+        return factura;
+    }
+
+    public void setFactura(Factura factura) {
+        this.factura = factura;
+    }
+
+    public String getCodigoCompra() {
+        return codigoCompra;
+    }
+
+    public void setCodigoCompra(String codigoCompra) {
+        this.codigoCompra = codigoCompra;
+    }
 
     @Override
     public String toString() {
