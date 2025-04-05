@@ -18,9 +18,9 @@ public class CarritoComprasService {
     }
 
     private void initSampleData() {
-         CarritoCompras carroCliente1 = new CarritoCompras(111, usuarioService.findById(1));
-         CarritoCompras carroCliente2 = new CarritoCompras(222, usuarioService.findById(2));
-         CarritoCompras carroCliente3 = new CarritoCompras(333, usuarioService.findById(3));
+         CarritoCompras carroCliente1 = new CarritoCompras(111, usuarioService.findById("1"));
+         CarritoCompras carroCliente2 = new CarritoCompras(222, usuarioService.findById("2"));
+         CarritoCompras carroCliente3 = new CarritoCompras(333, usuarioService.findById("3"));
         save(carroCliente1);
         save(carroCliente2);
         save(carroCliente3);

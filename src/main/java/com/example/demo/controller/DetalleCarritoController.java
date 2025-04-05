@@ -2,8 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
-import com.example.demo.model.Producto;
-import com.example.demo.service.ProductoService;
+import com.example.demo.model.DetalleCarrito;
+import com.example.demo.service.DetalleCarritoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,78 +28,78 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "DetalleCarrito", description = "API para la gestión del detalle Carrito")
 
 public class DetalleCarritoController {
-     private final ProductoService productoService;
+     private final DetalleCarritoService detalleCarritoService;
 
     @Autowired
-    public ProductoController(ProductoService productoService) {
-        this.productoService = productoService;
+    public DetalleCarritoController(DetalleCarritoService detalleCarritoService) {
+        this.detalleCarritoService = detalleCarritoService;
     }
 
     @GetMapping
-    @Operation(summary = "Obtener todos los productos", description = "Devuelve una lista de todos los productos registrados.")
+    @Operation(summary = "Obtener todos los detalles del carrito", description = "Devuelve una lista de todos los detalles del carrito registrados.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de productos obtenida con éxito"),
+            @ApiResponse(responseCode = "200", description = "Lista de detalles del carrito obtenida con éxito"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
-    public ResponseEntity<List<Producto>> getAllProductos() {
-        List<Producto> productos = productoService.findAll();
-        return new ResponseEntity<>(productos, HttpStatus.OK);
-    }
+    public ResponseEntity<List<DetalleCarrito>> getAllDetalleCarrito() {
+        List<DetalleCarrito> detalleCarrito = detalleCarritoService.findAll();
+        return new ResponseEntity<>(detalleCarrito, HttpStatus.OK);
+    } 
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener producto por ID", description = "Devuelve un producto específico basado en su ID.")
+    @Operation(summary = "Obtener Detalle Carrito por ID", description = "Devuelve un Detalle Carrito específico basado en su ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Producto encontrado"),
-            @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+            @ApiResponse(responseCode = "200", description = "Detalle Carrito encontrado"),
+            @ApiResponse(responseCode = "404", description = "Detalle Carrito no encontrado")
     })
-    public ResponseEntity<Producto> getProductoById(@PathVariable @Parameter(description = "ID del producto") String id) {
-        Producto producto = productoService.findById(id);
-        if (producto != null) {
-            return new ResponseEntity<>(producto, HttpStatus.OK);
+    public ResponseEntity<DetalleCarrito> getDetalleCarritoById(@PathVariable @Parameter(description = "ID del Detalle Carrito") int id) {
+    	DetalleCarrito detalleCarrito = detalleCarritoService.findById(id);
+        if (detalleCarrito != null) {
+            return new ResponseEntity<>(detalleCarrito, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping
-    @Operation(summary = "Crear un nuevo producto", description = "Crea un nuevo producto con los datos proporcionados.")
+    @Operation(summary = "Crear un nuevo Detalle Carrito", description = "Crea un nuevo Detalle Carrito con los datos proporcionados.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Producto creado con éxito"),
+            @ApiResponse(responseCode = "201", description = "Detalle Carrito creado con éxito"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
-    public ResponseEntity<Producto> createProducto(@RequestBody @Parameter(description = "Datos del producto a crear") Producto producto) {
-        Producto newProducto = productoService.save(producto);
-        return new ResponseEntity<>(newProducto, HttpStatus.CREATED);
+    public ResponseEntity<DetalleCarrito> createDetalleCarrito(@RequestBody @Parameter(description = "Datos del Detalle Carrito a crear") DetalleCarrito detalleCarrito) {
+        DetalleCarrito newDetalleCarrito = detalleCarritoService.save(detalleCarrito);
+        return new ResponseEntity<>(newDetalleCarrito, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Actualizar un producto", description = "Actualiza los datos de un producto existente.")
+    @Operation(summary = "Actualizar un Detalle Carrito", description = "Actualiza los datos de un Detalle Carrito existente.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Producto actualizado con éxito"),
-            @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+            @ApiResponse(responseCode = "200", description = "Detalle Carrito actualizado con éxito"),
+            @ApiResponse(responseCode = "404", description = "Detalle Carrito no encontrado")
     })
-    public ResponseEntity<Producto> updateProducto(@PathVariable @Parameter(description = "ID del producto") String id,
-                                                   @RequestBody @Parameter(description = "Datos actualizados del producto") Producto producto) {
-        Producto existingProducto = productoService.findById(id);
-        if (existingProducto != null) {
-            producto.setId(id);
-            Producto updatedProducto = productoService.update(producto);
-            return new ResponseEntity<>(updatedProducto, HttpStatus.OK);
+    public ResponseEntity<DetalleCarrito> updateDetalleCarrito(@PathVariable @Parameter(description = "ID del Detalle Carrito") int id,
+                                                   @RequestBody @Parameter(description = "Datos actualizados del Detalle Carrito") DetalleCarrito detalleCarrito) {
+    	DetalleCarrito existingDetalleCarrito = detalleCarritoService.findById(id);
+        if (existingDetalleCarrito != null) {
+        	detalleCarrito.setDetalleCarritoId(id);
+        	DetalleCarrito updatedDetalleCarrito = detalleCarritoService.update(detalleCarrito);
+            return new ResponseEntity<>(updatedDetalleCarrito, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Eliminar un producto", description = "Elimina un producto basado en su ID.")
+    @Operation(summary = "Eliminar un Detalle Carrito", description = "Elimina un Detalle Carrito basado en su ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Producto eliminado con éxito"),
-            @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+            @ApiResponse(responseCode = "204", description = "Detalle Carrito eliminado con éxito"),
+            @ApiResponse(responseCode = "404", description = "Detalle Carrito no encontrado")
     })
-    public ResponseEntity<Void> deleteProducto(@PathVariable @Parameter(description = "ID del producto") String id) {
-        Producto existingProducto = productoService.findById(id);
-        if (existingProducto != null) {
-            productoService.deleteById(id);
+    public ResponseEntity<Void> deleteDetalleCarrito(@PathVariable @Parameter(description = "ID del Detalle Carrito") int id) {
+    	DetalleCarrito existingDetalleCarrito = detalleCarritoService.findById(id);
+        if (existingDetalleCarrito != null) {
+        	detalleCarritoService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -107,16 +107,15 @@ public class DetalleCarritoController {
     }
 
     @GetMapping("/buscar")
-    @Operation(summary = "Buscar productos por filtros", description = "Busca productos por nombre, precio mínimo y máximo.")
+    @Operation(summary = "Buscar productos por filtros", description = "Busca Detalle Carrito por id o por cantidad.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Productos encontrados"),
-            @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
+            @ApiResponse(responseCode = "200", description = "Detalle Carrito encontrados"),
+            @ApiResponse(responseCode = "400", description = "Detalle Carrito inválidos")
     })
-    public ResponseEntity<List<Producto>> buscarProductos(
-            @RequestParam(required = false) @Parameter(description = "Nombre del producto (parcial o completo)") String nombre,
-            @RequestParam(required = false) @Parameter(description = "Precio mínimo (opcional)") Double precioMin,
-            @RequestParam(required = false) @Parameter(description = "Precio máximo (opcional)") Double precioMax) {
-        List<Producto> productos = productoService.buscarPorFiltros(nombre, precioMin, precioMax);
-        return new ResponseEntity<>(productos, HttpStatus.OK);
+    public ResponseEntity<List<DetalleCarrito>> buscarDetalleCarrito(
+        	@RequestParam(required = false) @Parameter(description = "ID del Detalle Carrito") Integer id,
+			@RequestParam(required = false) @Parameter(description = "Cantidad del Detalle Carrito") Integer cantidad) {
+        List<DetalleCarrito> detalleCarrito = detalleCarritoService.buscarPorFiltros(id, cantidad);
+        return new ResponseEntity<>(detalleCarrito, HttpStatus.OK);
     }
 }

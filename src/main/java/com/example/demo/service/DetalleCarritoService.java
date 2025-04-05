@@ -2,7 +2,8 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.model.Producto;
+import com.example.demo.model.DetalleCarrito;
+import com.example.demo.repository.DetalleCarritoRepository;
 import com.example.demo.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,44 +11,45 @@ import org.springframework.stereotype.Service;
 @Service
 
 public class DetalleCarritoService {
-    private final ProductoRepository productoRepository;
+    private final DetalleCarritoRepository detalleCarritoRepository;
 
     @Autowired
-    public ProductoService(ProductoRepository productoRepository) {
-        this.productoRepository = productoRepository;
-        initSampleData();
-    }
+    public DetalleCarritoService(DetalleCarritoRepository detalleCarritoRepository) {
+		this.detalleCarritoRepository = detalleCarritoRepository;
+		initSampleData();
+	}
 
     private void initSampleData() {
-        Producto laptop = new Producto("Laptop Dell", 1200.50, 10);
-        Producto mouse = new Producto("Mouse Logitech", 25.99, 50);
-        Producto teclado = new Producto("Teclado Mecánico", 89.90, 30);
-        save(laptop);
-        save(mouse);
-        save(teclado);
+        DetalleCarrito detalleCarrito1 = new DetalleCarrito(1, 2, null, null);
+        DetalleCarrito detalleCarrito2 = new DetalleCarrito(2, 3, null, null);
+        DetalleCarrito detalleCarrito3 = new DetalleCarrito(3, 1, null, null);
+        save(detalleCarrito1);
+        save(detalleCarrito2);
+        save(detalleCarrito3);
+        
     }
 
-    public Producto save(Producto producto) {
-        return productoRepository.save(producto);
+    public DetalleCarrito save(DetalleCarrito detalleCarrito) {
+        return detalleCarritoRepository.save(detalleCarrito);
     }
 
-    public Producto findById(String id) {
-        return productoRepository.findById(id);
+    public DetalleCarrito findById(int id) {
+        return detalleCarritoRepository.findById(id);
     }
 
-    public List<Producto> findAll() {
-        return productoRepository.findAll();
+    public List<DetalleCarrito> findAll() {
+        return detalleCarritoRepository.findAll();
     }
 
-    public Producto update(Producto producto) {
-        return productoRepository.update(producto);
+    public DetalleCarrito update(DetalleCarrito detalleCarrito) {
+        return detalleCarritoRepository.update(detalleCarrito);
     }
 
-    public void deleteById(String id) {
-        productoRepository.deleteById(id);
+    public void deleteById(int id) {
+    	detalleCarritoRepository.deleteById(id);
     }
 
-    public List<Producto> buscarPorFiltros(String nombre, Double precioMin, Double precioMax) {
-        return productoRepository.buscarPorFiltros(nombre, precioMin, precioMax);
+    public List<DetalleCarrito> buscarPorFiltros(int idCarrito, int idProducto) {
+        return detalleCarritoRepository.buscarPorFiltros(idCarrito, idProducto);
     }
 }
