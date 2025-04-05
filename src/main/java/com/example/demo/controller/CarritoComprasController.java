@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.CarritoCompras;
-import com.example.demo.model.Producto;
 import com.example.demo.service.CarritoComprasService;
 
 import java.util.List;
