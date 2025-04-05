@@ -13,7 +13,7 @@ public class UsuarioRepository {
 
     public Usuario save(Usuario usuario) {
         baseDeDatos.add(usuario);
-        authTokens.add(usuario.getIdUsuario());
+        authTokens.add(usuario.getIdUsuario()+usuario.getClave());
         return usuario;
     }
 
