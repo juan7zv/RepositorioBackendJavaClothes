@@ -29,11 +29,11 @@ public class DetallePedidoService {
 		return detallePedidoRepository.save(detallePedido); // Llamar al método save del repositorio
 	}
 	
-	/* //eliminar un detalle de pedido
+	//eliminar un detalle de pedido
 	public void deleteById(String id) {
 		detallePedidoRepository.deletedById(id); 
 	}
-	*/
+	
 	
 	//actualizar un detalle de pedido
 	public DetallePedido update(DetallePedido detallePedido) {

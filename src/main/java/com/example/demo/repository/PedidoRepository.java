@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.Pedido;
+import com.example.demo.model.enums.EstadosPedido;
 
 @Repository
 public class PedidoRepository {
@@ -56,10 +57,10 @@ public class PedidoRepository {
     }
 
     //filtrar por criterios
-    public List<Pedido> buscarPedidos(String clienteId, EstadoPedido estado, LocalDate fecha) {
+    public List<Pedido> buscarPedidos(String clienteId, EstadosPedido estado, LocalDate fecha) {
         List<Pedido> resultado = new ArrayList<>(); // Lista para almacenar los pedidos filtrados
         for (Pedido pedido : pedidos) {
-            boolean coincideCliente = (clienteId == null || pedido.getCliente().getId().equals(clienteId));
+            boolean coincideCliente = (clienteId == null || pedido.getCliente().getIdUsuario().equals(clienteId));
             boolean coincideEstado = (estado == null || pedido.getEstado().equals(estado));
             boolean coincideFecha = (fecha == null || pedido.getFecha().toString().equals(fecha));
             if (coincideCliente && coincideEstado && coincideFecha) {

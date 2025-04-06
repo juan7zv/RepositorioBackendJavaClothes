@@ -11,24 +11,24 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RestController // Indica que esta clase es un controlador REST
+@RequestMapping("/api/notificaciones")
+@Tag(name = "Notificaciones", description = "API para la gestión de notificaciones enviadas al cliente")
 public class NotificacionController {
-
-    @RestController // Indica que esta clase es un controlador REST
-    @RequestMapping("/api/notificaciones")
-    @Tag(name = "Pedidos", description = "API para la gestión de notificaciones enviadas al cliente")
-    public class PedidoController {
 
         private final NotificacionService notificacionService;
 
         @Autowired
-        public PedidoController(NotificacionService notificacionService) {
+        public NotificacionController(NotificacionService notificacionService) {
             this.notificacionService = notificacionService;
         }
 
@@ -69,7 +69,7 @@ public class NotificacionController {
             }
         }
 
-      //  @DeleteMapping("/{id}")
+        @DeleteMapping("/{id}")
         @Operation(summary = "Eliminar una notificación", description = "Elimina un pedido basado en su ID.")
         @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Notificación eliminado con éxito"),
@@ -85,7 +85,7 @@ public class NotificacionController {
             }
         }
 
-    //    @PutMapping("/{id}")
+        @PutMapping("/{id}")
         @Operation(summary = "Actualizar una notificacion", description = "Actualiza los datos de un notificacion existente.")
         @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Notificación actualizado con éxito"),
@@ -117,5 +117,5 @@ public class NotificacionController {
                return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
             }
         }
-    }
+    
 }

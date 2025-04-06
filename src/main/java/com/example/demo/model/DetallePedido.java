@@ -10,27 +10,27 @@ import org.springframework.stereotype.Repository;
  */
 
 public class DetallePedido {
-    private int detalleId; //es necesario?
+    private String detalleId; //es necesario?
     private int cantidad;
     private Pedido pedido;
     private Producto producto; 
 
     public DetallePedido() {
-       // this.detalleId = UUID.randomUUID();
+       
     }
 
-    public DetallePedido(int ventaId, int cantidad, Pedido pedido, Producto producto) {
-      //  this.detalleId = UUID.randomUUID();
+    public DetallePedido(String detalleId, int cantidad, Pedido pedido, Producto producto) {
+        this.detalleId = detalleId;
         this.cantidad = cantidad;
         this.pedido = pedido;
         this.producto = producto;
     }
 
-    public int getDetalleId() {
+    public String getDetalleId() {
         return detalleId;
     }
 
-    public void setDetalleId(int detalleId) {
+    public void setDetalleId(String detalleId) {
         this.detalleId = detalleId;
     }
 

@@ -20,24 +20,22 @@ public class NotificacionService {
     private PedidoRepository pedidoRepository; //traer pedidos de ejemplo para usar en initSampleData
 
     @Autowired
-    public NotificacionService(NotificacionRepository notificacionRepository) {
+    public NotificacionService(NotificacionRepository notificacionRepository, UsuarioRepository usuariorepository,
+                                PedidoRepository pedidoRepository) {
         this.notificacionRepository = notificacionRepository; // Inicializar el repositorio
+        this.pedidoRepository = pedidoRepository;
+        this.usuariorepository = usuariorepository;
         initSampleData(); // Inicializar datos de ejemplo
     }
 
     // Método para inicializar datos de ejemplo
     public void initSampleData() {
-    	Usuario user1 = usuariorepository.findById("1");
-    	Usuario user2 = usuariorepository.findById("2");
-    	Usuario user3 = usuariorepository.findById("3");
-    	Pedido pedido1 = pedidoRepository.findById("1");
-    	Notificacion notificacion1 = new Notificacion("1", "Su pedido está listo para ser reclamado.", "4/04/2025", user1, pedido1);
-		Notificacion notificacion2 = new Notificacion("1", "Su pedido está listo para ser reclamado.", "5/04/2025", user2, pedido1);
-		Notificacion notificacion3 = new Notificacion("1", "Su pedido está listo para ser reclamado.", "6/04/2025", user3, pedido1);
-
+    	Usuario user1 = usuariorepository.findById("123456");
+    	Usuario user2 = usuariorepository.findById("234567");
+    	Usuario user3 = usuariorepository.findById("345678");
+    	Notificacion notificacion1 = new Notificacion("1", "Su pedido está listo para ser reclamado.", "4/04/2025",user1 , null);
+    	
 		notificacionRepository.save(notificacion1);
-		notificacionRepository.save(notificacion2);
-		notificacionRepository.save(notificacion3);
     }
 
     //guardar una notificacion

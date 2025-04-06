@@ -31,12 +31,17 @@ public class DetallePedidoRepository {
 	//actualizar detalles de pedido
 	public DetallePedido update(DetallePedido detalle) {
 		for (int i = 0; i < detalles.size(); i++) {
-			if (detalles.get(i).getId().equals(detalle.getId())) {
+			if (detalles.get(i).getDetalleId().equals(detalle.getDetalleId())) {
 				detalles.set(i, detalle); // Reemplaza el detalle existente con el nuevo
 				return detalle;
 			}
 		}
 		return null;
+	}
+
+	//eliminar detalles de pedido
+	public void deletedById(String id) {
+		detalles.removeIf(detalle -> detalle.getDetalleId().equals(id)); // Elimina el detalle con el ID especificado
 	}
 	
 }

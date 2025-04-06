@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.model.Pedido;
+import com.example.demo.model.enums.EstadosPedido;
 import com.example.demo.repository.PedidoRepository;
 
 @Service
@@ -20,10 +21,9 @@ public class PedidoService {
 
     // Método para inicializar datos de ejemplo
     private void initSampleData() {
-        /*
-		Pedido pedido1 = new Pedido(factura, Usuario cliente, "Disponible", LocalDate fecha, ArrayList<DetallePedido> detallesVenta);
+		//Pedido pedido1 = new Pedido("hhh", "hcshcsh", "Disponible", LocalDate fecha, ArrayList<DetallePedido> detallesVenta);
 		
-		save(pedido1); */
+		//save(pedido1);
     }
 
     //guardar un pedido
@@ -52,7 +52,7 @@ public class PedidoService {
     }
 
     //buscar pedidos por filtros
-    public List<Pedido> buscarPedidos(String clienteId, EstadoPedido estado, LocalDate fecha) {
+    public List<Pedido> buscarPedidos(String clienteId, EstadosPedido estado, LocalDate fecha) {
         return pedidoRepository.buscarPedidos(clienteId, estado, fecha);
     }
 }

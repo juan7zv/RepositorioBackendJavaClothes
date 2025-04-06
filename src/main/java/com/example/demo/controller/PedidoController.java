@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Pedido;
+import com.example.demo.model.enums.EstadosPedido;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -113,9 +114,9 @@ public class PedidoController {
     })
     public ResponseEntity<List<Pedido>> buscarPedido(
             @RequestParam(required = false) @Parameter(description = "Id de cliente (a quien pertenece el pedido)") String idCliente,
-            @RequestParam(required = false) @Parameter(description = "Estado (Relizado, disponible, No_Reclamado, Facturado)") EstadoPedido estado,
+            @RequestParam(required = false) @Parameter(description = "Estado (Relizado, disponible, No_Reclamado, Facturado)") EstadosPedido estado,
             @RequestParam(required = false) @Parameter(description = "Fecha") LocalDate fecha) {
-        List<Pedido> pedidosFiltrados = pedidoService.buscarPorFiltros(idCliente, estado, fecha);
+        List<Pedido> pedidosFiltrados = pedidoService.buscarPedidos(idCliente, estado, fecha);
         return new ResponseEntity<>(pedidosFiltrados, HttpStatus.OK);
     }
 }
