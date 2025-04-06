@@ -103,19 +103,5 @@ public class NotificacionController {
             }
         }
 
-        @GetMapping("/cliente/{id}")
-        @Operation(summary = "Obtener notificación por cliente", description = "Devuelve una lista con las notificaciones de un cliente.")
-        @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Notificaciones del cliente encontradas"),
-            @ApiResponse(responseCode = "404", description = "Notificaciones no encontradas")
-        })
-        public ResponseEntity<List<Notificacion>> getNotificacionByCliente(@PathVariable @Parameter(description = "ID del cliente") String idCliente) {
-            List<Notificacion> notificacionsDeCliente = notificacionService.findByCliente(idCliente);
-            if (!notificacionsDeCliente.isEmpty()) {
-                return new ResponseEntity<>(notificacionsDeCliente, HttpStatus.OK);
-            } else {
-               return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
-            }
-        }
-    
+
 }

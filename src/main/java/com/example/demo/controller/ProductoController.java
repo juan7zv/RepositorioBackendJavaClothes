@@ -81,8 +81,14 @@ public class ProductoController {
                                                    @RequestBody @Parameter(description = "Datos actualizados del producto") Producto producto) {
         Producto existingProducto = productoService.findById(id);
         if (existingProducto != null) {
-            producto.setProductoId(id);
-            Producto updatedProducto = productoService.update(producto);
+            existingProducto.setNombre(producto.getNombre());
+            existingProducto.setPrecio(producto.getPrecio());
+            existingProducto.setDescripcion(producto.getDescripcion());
+            existingProducto.setStock(producto.getStock());
+            existingProducto.setTalla(producto.getTalla());
+            existingProducto.setColor(producto.getColor());
+            existingProducto.setMaterial(producto.getMaterial());
+            Producto updatedProducto = productoService.update(existingProducto);
             return new ResponseEntity<>(updatedProducto, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
