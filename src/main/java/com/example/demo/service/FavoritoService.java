@@ -25,20 +25,17 @@ public class FavoritoService {
 
 	    private void initSampleData() {
 			Usuario usuario1 = usuarioService.findById("123456");
-			usuario1.setClave(null);
 			Favorito urbanPoloFemenino = new Favorito(1, usuario1, productoService.findById(100));
 			save(urbanPoloFemenino);
 
 			Usuario usuario2 = usuarioService.findById("234567");
-			usuario2.setClave(null);
 			Favorito palazzoJean = new Favorito(2, usuario2, productoService.findById(100));
 			save(palazzoJean);
 
 			Usuario usuario3 = usuarioService.findById("345678");
-			usuario3.setClave(null);
 	    	Favorito sportVibeRetro = new Favorito(3, usuario3, productoService.findById(100));
 			save(sportVibeRetro);
-			
+
 	    }
 
 	    public Favorito save(Favorito favorito) {
