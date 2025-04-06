@@ -27,14 +27,14 @@ public class UsuarioService {
 
 
         // Creamos 8 instancias de Usuario
-        Usuario usuario1 = new Usuario("Ana Pérez", "ana@example.com", "3012345678", rolAdmin, "clave123");
-        Usuario usuario2 = new Usuario("Carlos Gómez", "carlos@example.com", "3023456789", rolCliente, "pass456");
-        Usuario usuario3 = new Usuario("Laura Torres", "laura@example.com", "3034567890", rolVendedor, "segura789");
-        Usuario usuario4 = new Usuario("Diego Ramírez", "diego@example.com", "3045678901", rolAdmin, "adminPass");
-        Usuario usuario5 = new Usuario("Sofía Herrera", "sofia@example.com", "3056789012", rolCliente, "sofia2024");
-        Usuario usuario6 = new Usuario("Fernando Díaz", "fernando@example.com", "3067890123", rolVendedor, "fernandoKey");
-        Usuario usuario7 = new Usuario("Isabel Rojas", "isabel@example.com", "3078901234", rolAdmin, "rojasPass");
-        Usuario usuario8 = new Usuario("Ricardo Mendoza", "ricardo@example.com", "3089012345", rolCliente, "ricardoSeg");
+        Usuario usuario1 = new Usuario("123456","Ana Pérez", "ana@example.com", "3012345678", rolAdmin, "clave123");
+        Usuario usuario2 = new Usuario("234567","Carlos Gómez", "carlos@example.com", "3023456789", rolCliente, "pass456");
+        Usuario usuario3 = new Usuario("345678","Laura Torres", "laura@example.com", "3034567890", rolVendedor, "segura789");
+        Usuario usuario4 = new Usuario("456789","Diego Ramírez", "diego@example.com", "3045678901", rolAdmin, "adminPass");
+        Usuario usuario5 = new Usuario("000000","Sofía Herrera", "sofia@example.com", "3056789012", rolCliente, "sofia2024");
+        Usuario usuario6 = new Usuario("999999","Fernando Díaz", "fernando@example.com", "3067890123", rolVendedor, "fernandoKey");
+        Usuario usuario7 = new Usuario("888888","Isabel Rojas", "isabel@example.com", "3078901234", rolAdmin, "rojasPass");
+        Usuario usuario8 = new Usuario("777777","Ricardo Mendoza", "ricardo@example.com", "3089012345", rolCliente, "ricardoSeg");
 
         save(usuario1);
         save(usuario2);
@@ -73,5 +73,19 @@ public class UsuarioService {
 
     public Usuario findByAuthToken(String authToken) {
         return usuarioRepository.findByAuthToken(authToken);
+    }
+
+    public Usuario login(String id, String clave)  {
+        Usuario usuario = usuarioRepository.findById(id);
+
+        if (usuario != null && usuario.getClave().equals(clave)) {
+            // Lógica de inicio de sesión exitosa
+            System.out.println("Inicio de sesión exitoso para el usuario: " + usuario.getNombre());
+            return usuario;
+        } else {
+            // Lógica de inicio de sesión fallido
+            System.out.println("Inicio de sesión fallido. Usuario o contraseña incorrectos.");
+            return null;
+        }
     }
 }
