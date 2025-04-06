@@ -1,8 +1,7 @@
 package com.example.demo.model;
 
 import com.example.demo.model.enums.RolUsuario;
-
-import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Usuario {
 
@@ -13,10 +12,11 @@ public class Usuario {
     private String numeroDeTelefono;
 
     private RolUsuario idRol;
+    // Clave de acceso del usuario no se entrega en la respuesta al front
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String clave;
 
     // Constructor
-
     public Usuario(String idUsuario, String nombre, String email, String numeroDeTelefono, RolUsuario idRol, String clave) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
@@ -28,8 +28,6 @@ public class Usuario {
 
 
     // getters y setters
-
-
     public String getIdUsuario() {
         return idUsuario;
     }

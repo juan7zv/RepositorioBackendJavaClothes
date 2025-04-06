@@ -83,8 +83,10 @@ public class UsuarioController {
                                                  @RequestBody @Parameter(description = "Datos actualizados del usuario") Usuario usuario) {
         Usuario existingUsuario = usuarioService.findById(id);
         if (existingUsuario != null) {
-            usuario.setIdUsuario(id);
-            Usuario updatedUsuario = usuarioService.update(usuario);
+            existingUsuario.setEmail(usuario.getEmail());
+            existingUsuario.setNombre(usuario.getNombre());
+            existingUsuario.setNumeroDeTelefono(usuario.getNumeroDeTelefono());
+            Usuario updatedUsuario = usuarioService.update(existingUsuario);
             return new ResponseEntity<>(updatedUsuario, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -54,7 +54,7 @@ public class NotificacionController {
             return new ResponseEntity<>(notificaciones, HttpStatus.OK);
         }
 
-        @GetMapping("/{id}")
+        @GetMapping("/cliente/{id}")
         @Operation(summary = "Obtener notificación por ID", description = "Devuelve una notificación específica basada en su ID.")
         @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Notificación encontrado"),
