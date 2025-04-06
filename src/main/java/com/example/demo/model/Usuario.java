@@ -16,13 +16,16 @@ public class Usuario {
     private String clave;
 
     // Constructor
-    public Usuario(String nombre, String email, String numeroDeTelefono, RolUsuario idRol, String clave) {
+
+    public Usuario(String idUsuario, String nombre, String email, String numeroDeTelefono, RolUsuario idRol, String clave) {
+        this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.email = email;
         this.numeroDeTelefono = numeroDeTelefono;
         this.idRol = idRol;
         this.clave = clave;
     }
+
 
     // getters y setters
 

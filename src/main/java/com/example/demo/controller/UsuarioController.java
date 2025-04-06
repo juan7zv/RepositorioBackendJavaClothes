@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import com.example.demo.dto.UsuarioLogin;
 import com.example.demo.model.Usuario;
 import com.example.demo.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/api/usuarios")
+@RequestMapping("/javaClothes/usuarios")
 @Tag(name = "Usuarios", description = "API para la gestión de usuarios")
 public class UsuarioController {
     private final UsuarioService usuarioService;
@@ -103,6 +104,22 @@ public class UsuarioController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/login")
+    @Operation(summary = "Loguear Usuario", description = "Valida las credenciales del usuario para el inicio de sesión.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario logueado con éxito"),
+            @ApiResponse(responseCode = "401", description = "Usuario o contraseña incorrectos")
+    })
+    public ResponseEntity<Usuario> loginUsuario(@RequestBody @Parameter(description = "ID del usuario") UsuarioLogin usuarioLogin) {
+
+        Usuario userLogged = usuarioService.login(usuarioLogin.getIdUsuario(), usuarioLogin.getClave());
+        if (userLogged != null) {
+            return new ResponseEntity<>(userLogged,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 

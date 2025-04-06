@@ -35,7 +35,7 @@ public class ProductoController {
     }
 
     @GetMapping
-    @Operation(summary = "Obtener todos los productos", description = "Devuelve una lista de todos los productos registrados.")
+    @Operation(summary = "Obtener todos los productos", description = "Devuelve una lista de todos los productos en la base de datos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de productos obtenida con éxito"),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
@@ -51,7 +51,7 @@ public class ProductoController {
             @ApiResponse(responseCode = "200", description = "Producto encontrado"),
             @ApiResponse(responseCode = "404", description = "Producto no encontrado")
     })
-    public ResponseEntity<Producto> getProductoById(@PathVariable @Parameter(description = "ID del producto") String id) {
+    public ResponseEntity<Producto> getProductoById(@PathVariable @Parameter(description = "ID del producto") Integer id) {
         Producto producto = productoService.findById(id);
         if (producto != null) {
             return new ResponseEntity<>(producto, HttpStatus.OK);
@@ -77,11 +77,11 @@ public class ProductoController {
             @ApiResponse(responseCode = "200", description = "Producto actualizado con éxito"),
             @ApiResponse(responseCode = "404", description = "Producto no encontrado")
     })
-    public ResponseEntity<Producto> updateProducto(@PathVariable @Parameter(description = "ID del producto") String id,
+    public ResponseEntity<Producto> updateProducto(@PathVariable @Parameter(description = "ID del producto") Integer id,
                                                    @RequestBody @Parameter(description = "Datos actualizados del producto") Producto producto) {
         Producto existingProducto = productoService.findById(id);
         if (existingProducto != null) {
-            producto.setId(id);
+            producto.setProductoId(id);
             Producto updatedProducto = productoService.update(producto);
             return new ResponseEntity<>(updatedProducto, HttpStatus.OK);
         } else {
@@ -95,7 +95,7 @@ public class ProductoController {
             @ApiResponse(responseCode = "204", description = "Producto eliminado con éxito"),
             @ApiResponse(responseCode = "404", description = "Producto no encontrado")
     })
-    public ResponseEntity<Void> deleteProducto(@PathVariable @Parameter(description = "ID del producto") String id) {
+    public ResponseEntity<Void> deleteProducto(@PathVariable @Parameter(description = "ID del producto") Integer id) {
         Producto existingProducto = productoService.findById(id);
         if (existingProducto != null) {
             productoService.deleteById(id);
