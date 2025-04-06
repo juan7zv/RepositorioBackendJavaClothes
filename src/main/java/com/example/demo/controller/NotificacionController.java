@@ -103,7 +103,7 @@ public class NotificacionController {
             }
         }
 
-        @GetMapping("/{id}")
+        @GetMapping("/cliente/{id}")
         @Operation(summary = "Obtener notificación por cliente", description = "Devuelve una lista con las notificaciones de un cliente.")
         @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Notificaciones del cliente encontradas"),
