@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import com.example.demo.model.CarritoCompras;
 import com.example.demo.model.DetalleCarrito;
 import com.example.demo.repository.DetalleCarritoRepository;
 import com.example.demo.repository.ProductoRepository;
@@ -12,12 +13,14 @@ import org.springframework.stereotype.Service;
 
 public class DetalleCarritoService {
     private final DetalleCarritoRepository detalleCarritoRepository;
+    private final ProductoService productoService;
 
     @Autowired
-    public DetalleCarritoService(DetalleCarritoRepository detalleCarritoRepository) {
+    public DetalleCarritoService(DetalleCarritoRepository detalleCarritoRepository, ProductoService productoService) {
 		this.detalleCarritoRepository = detalleCarritoRepository;
 		initSampleData();
-	}
+        this.productoService = productoService;
+    }
 
     private void initSampleData() {
         DetalleCarrito detalleCarrito1 = new DetalleCarrito(1, 2, null, null);
@@ -27,6 +30,17 @@ public class DetalleCarritoService {
         save(detalleCarrito2);
         save(detalleCarrito3);
         
+    }
+
+    public DetalleCarrito saveProductoCompra(Integer idProducto, CarritoCompras carritoCompras) {
+        DetalleCarrito detalleCarrito = detalleCarritoRepository.findByCarritoIdAndIdProducto(carritoCompras.getCarritoId(), idProducto);
+        if(detalleCarrito != null) {
+            detalleCarrito.setCantidad(detalleCarrito.getCantidad());
+            return detalleCarritoRepository.update(detalleCarrito);
+        } else {
+            detalleCarrito = new DetalleCarrito(1, 1, carritoCompras, productoService.findById(idProducto));
+            return detalleCarritoRepository.save(detalleCarrito);
+        }
     }
 
     public DetalleCarrito save(DetalleCarrito detalleCarrito) {

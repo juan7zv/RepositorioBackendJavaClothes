@@ -21,9 +21,19 @@ public class ProductoService {
         Producto producto1 = new Producto(100, 10, 70000.00, "Tee Graphic Horizon", "BLANCO",
                 "S", "Algodón",
                 "Camiseta con diseño gráfico en la espalda. Ideal para un estilo relajado y moderno. Comodidad y frescura en una sola prenda.",
-                "Mujer", "Camiseta");
-
+                "Hombre", "Camiseta");
         save(producto1);
+
+        Producto producto2 = new Producto(101, 10, 70000.00, "Tee Graphic Horizon", "BLANCO",
+                "M", "Algodón",
+                "Camiseta con diseño gráfico en la espalda. Ideal para un estilo relajado y moderno. Comodidad y frescura en una sola prenda.",
+                "Hombre", "Camiseta");
+        save(producto2);
+
+        Producto producto3 = new Producto(102, 10, 70000.00, "Tee Graphic Horizon", "BLANCO",
+                "L", "Algodón",
+                "Camiseta con diseño gráfico en la espalda. Ideal para un estilo relajado y moderno. Comodidad y frescura en una sola prenda.",
+                "Hombre", "Camiseta");
 
     }
 

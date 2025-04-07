@@ -25,7 +25,7 @@ public class UsuarioService {
         RolUsuario rolCliente = RolUsuario.Cliente;
         RolUsuario rolVendedor = RolUsuario.Vendedor;
 
-        // Creamos 8 instancias de Usuario
+        // Creamos 9 instancias de Usuario
         Usuario usuario1 = new Usuario("123456","Ana Sofia Henao Pérez", "ana@example.com", "3012345678", rolAdmin, "clave123");
         Usuario usuario2 = new Usuario("234567","Carlos Gómez", "carlos@example.com", "3023456789", rolCliente, "pass456");
         Usuario usuario3 = new Usuario("345678","Laura Torres", "laura@example.com", "3034567890", rolVendedor, "segura789");
@@ -34,7 +34,9 @@ public class UsuarioService {
         Usuario usuario6 = new Usuario("999999","Fernando Díaz Hurtado", "fernando@example.com", "3067890123", rolVendedor, "fernandoKey");
         Usuario usuario7 = new Usuario("888888","Isabel Rojas", "isabel@example.com", "3078901234", rolAdmin, "rojasPass");
         Usuario usuario8 = new Usuario("777777","Ricardo de Jesus Mendoza Smith", "ricardo@example.com", "3089012345", rolCliente, "ricardoSeg");
+        Usuario usuario9 = new Usuario("123","Cliente de Prueba", "prueba@example.com", "3089012377", rolCliente, "123");
 
+        // Guardamos los usuarios en la base de datos
         save(usuario1);
         save(usuario2);
         save(usuario3);
@@ -43,6 +45,7 @@ public class UsuarioService {
         save(usuario6);
         save(usuario7);
         save(usuario8);
+        save(usuario9);
 
     }
 

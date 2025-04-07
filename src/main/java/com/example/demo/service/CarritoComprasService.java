@@ -18,9 +18,9 @@ public class CarritoComprasService {
     }
 
     private void initSampleData() {
-         CarritoCompras carroCliente1 = new CarritoCompras(111, usuarioService.findById("1"));
-         CarritoCompras carroCliente2 = new CarritoCompras(222, usuarioService.findById("2"));
-         CarritoCompras carroCliente3 = new CarritoCompras(333, usuarioService.findById("3"));
+         CarritoCompras carroCliente1 = new CarritoCompras(111, usuarioService.findById("777777"));
+         CarritoCompras carroCliente2 = new CarritoCompras(222, usuarioService.findById("999999"));
+         CarritoCompras carroCliente3 = new CarritoCompras(333, usuarioService.findById("123456"));
         save(carroCliente1);
         save(carroCliente2);
         save(carroCliente3);
@@ -32,6 +32,10 @@ public class CarritoComprasService {
 
     public CarritoCompras findById(Integer id) {
         return carritoComprasRepository.findById(id);
+    }
+
+    public CarritoCompras findByIdAndUsuario(Integer id, String usuarioId) {
+        return carritoComprasRepository.findByIdAndUsuario(id, usuarioId);
     }
 
     public List<CarritoCompras> findAll() {
