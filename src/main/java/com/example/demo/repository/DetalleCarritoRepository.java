@@ -1,10 +1,10 @@
 package com.example.demo.repository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.example.demo.model.DetalleCarrito;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class DetalleCarritoRepository {
@@ -26,7 +26,7 @@ public class DetalleCarritoRepository {
 
     public DetalleCarrito findByCarritoIdAndIdProducto(int idCarrito, Integer idProducto) {
         for (DetalleCarrito detalleCarrito : baseDeDatos) {
-            if (detalleCarrito.getCarritoCompras() !=  null
+            if (detalleCarrito.getCarritoCompras() != null
                     && detalleCarrito.getCarritoCompras().getCarritoId() == idCarrito
                     && detalleCarrito.getProducto().getProductoId().equals(idProducto)) {
                 return detalleCarrito;
@@ -34,6 +34,20 @@ public class DetalleCarritoRepository {
         }
         return null;
     }
+
+    public List<DetalleCarrito> findByIdCarritoAndIdUsuario(int idCarrito, String idUsuario) {
+        List<DetalleCarrito> detallesCarrito = new ArrayList<>();
+        for (DetalleCarrito detalleCarrito : baseDeDatos) {
+            if (detalleCarrito.getCarritoCompras() != null
+                    && detalleCarrito.getCarritoCompras().getCarritoId() == idCarrito
+                    && detalleCarrito.getCarritoCompras().getUsuario().getIdUsuario().equals(idUsuario)) {
+                detallesCarrito.add(detalleCarrito);
+
+            }
+        }
+        return detallesCarrito;
+    }
+
 
     public List<DetalleCarrito> findAll() {
         return new ArrayList<>(baseDeDatos);

@@ -55,6 +55,10 @@ public class DetalleCarritoService {
         return detalleCarritoRepository.findAll();
     }
 
+    public List<DetalleCarrito> findByIdCarritoAndIdUsuario(int idCarrito, String idUsuario) {
+        return detalleCarritoRepository.findByIdCarritoAndIdUsuario(idCarrito, idUsuario);
+    }
+
     public DetalleCarrito update(DetalleCarrito detalleCarrito) {
         return detalleCarritoRepository.update(detalleCarrito);
     }
