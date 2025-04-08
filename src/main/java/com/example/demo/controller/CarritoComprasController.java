@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.DetalleCompraCliente;
 import com.example.demo.model.CarritoCompras;
-import com.example.demo.model.DetalleCarrito;
 import com.example.demo.service.CarritoComprasService;
 
 import java.util.List;
@@ -51,18 +50,16 @@ public class CarritoComprasController {
 	}
 
 	@GetMapping("/{idCarrito}/{idUsuario}")
-	@Operation(summary = "Obtener carrito de compra por ID CARRITO Y USUARIO ", description = "Devuelve un carrito de compra específico basado en el id del carrito y el usuario logueado.")
+	@Operation(summary = "Obtener carrito de compra por ID", description = "Devuelve un carrito de compra específico basado en el id del carrito y el usuario logueado.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Carrito de compra encontrado"),
 			@ApiResponse(responseCode = "404", description = "Carrito de compra no encontrado") })
-	public ResponseEntity<List<DetalleCarrito>> getCarritoComprasById(
+	public ResponseEntity<CarritoCompras> getCarritoComprasById(
 			@PathVariable @Parameter(description = "ID del carrito de compras") Integer idCarrito,
 			@PathVariable @Parameter(description = "ID del usuario logueado") String idUsuario) {
 
 		CarritoCompras carritoCompras = carritoComprasService.findByIdAndUsuario(idCarrito, idUsuario);
 		if (carritoCompras != null) {
-			List<DetalleCarrito> detalleCarrito = detalleCarritoService.findByIdCarritoAndIdUsuario(idCarrito, idUsuario);
-
-			return new ResponseEntity<>(detalleCarrito, HttpStatus.OK);
+			return new ResponseEntity<>(carritoCompras, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -82,7 +79,6 @@ public class CarritoComprasController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-
 
 	@PostMapping
 	@Operation(summary = "Crear un nuevo Carrito Compras", description = "Crea un nuevo Carrito Compras con los datos proporcionados.")

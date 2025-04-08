@@ -5,7 +5,6 @@ import java.util.List;
 import com.example.demo.model.CarritoCompras;
 import com.example.demo.model.DetalleCarrito;
 import com.example.demo.repository.DetalleCarritoRepository;
-import com.example.demo.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,8 +54,8 @@ public class DetalleCarritoService {
         return detalleCarritoRepository.findAll();
     }
 
-    public List<DetalleCarrito> findByIdCarritoAndIdUsuario(int idCarrito, String idUsuario) {
-        return detalleCarritoRepository.findByIdCarritoAndIdUsuario(idCarrito, idUsuario);
+    public List<DetalleCarrito> findByIdUsuario(String idUsuario) {
+        return detalleCarritoRepository.findByIdUsuario(idUsuario);
     }
 
     public DetalleCarrito update(DetalleCarrito detalleCarrito) {

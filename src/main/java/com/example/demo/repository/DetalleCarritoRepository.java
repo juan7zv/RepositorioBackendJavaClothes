@@ -35,11 +35,10 @@ public class DetalleCarritoRepository {
         return null;
     }
 
-    public List<DetalleCarrito> findByIdCarritoAndIdUsuario(int idCarrito, String idUsuario) {
+    public List<DetalleCarrito> findByIdUsuario(String idUsuario) {
         List<DetalleCarrito> detallesCarrito = new ArrayList<>();
         for (DetalleCarrito detalleCarrito : baseDeDatos) {
             if (detalleCarrito.getCarritoCompras() != null
-                    && detalleCarrito.getCarritoCompras().getCarritoId() == idCarrito
                     && detalleCarrito.getCarritoCompras().getUsuario().getIdUsuario().equals(idUsuario)) {
                 detallesCarrito.add(detalleCarrito);
 
