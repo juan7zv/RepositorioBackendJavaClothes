@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 public class Notificacion {
-
     private String idNotificacion;
     private String mensaje;
     private String fecha;
