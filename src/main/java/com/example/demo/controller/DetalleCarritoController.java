@@ -47,20 +47,6 @@ public class DetalleCarritoController {
         return new ResponseEntity<>(detalleCarrito, HttpStatus.OK);
     } 
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Obtener Detalle Carrito por ID", description = "Devuelve un Detalle Carrito específico basado en su ID.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Detalle Carrito encontrado"),
-            @ApiResponse(responseCode = "404", description = "Detalle Carrito no encontrado")
-    })
-    public ResponseEntity<DetalleCarrito> getDetalleCarritoById(@PathVariable @Parameter(description = "ID del Detalle Carrito") int id) {
-    	DetalleCarrito detalleCarrito = detalleCarritoService.findById(id);
-        if (detalleCarrito != null) {
-            return new ResponseEntity<>(detalleCarrito, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
 
     @PostMapping
     @Operation(summary = "Crear un nuevo Detalle Carrito", description = "Crea un nuevo Detalle Carrito con los datos proporcionados.")
@@ -120,7 +106,7 @@ public class DetalleCarritoController {
         return new ResponseEntity<>(detalleCarrito, HttpStatus.OK);
     }
 
-    @GetMapping("/{idUsuario}")
+    @GetMapping("/usuario/{idUsuario}")
     @Operation(summary = "Obtener detalle de carrito de compra por USUARIO ", description = "Devuelve un carrito de compra específico basado en el id del carrito y el usuario logueado.")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Carrito de compra encontrado"),
             @ApiResponse(responseCode = "404", description = "Carrito de compra no encontrado") })
@@ -133,5 +119,17 @@ public class DetalleCarritoController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @DeleteMapping("/producto/{productoId}/usuario/{idUsuario}")
+    @Operation(summary = "Eliminar un Detalle Carrito", description = "Elimina un Detalle Carrito basado en Producto Id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Detalle Carrito eliminado con éxito"),
+            @ApiResponse(responseCode = "404", description = "Detalle Carrito no encontrado")
+    })
+    public ResponseEntity<Void> deleteDetalleCarritoPorProducto(@PathVariable @Parameter(description = "ID del Producto") int productoId,
+                                                                @PathVariable @Parameter(description = "ID del usuario logueado") String idUsuario) {
+        detalleCarritoService.deleteByProductoIdAndUsuarioId(productoId, idUsuario);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
