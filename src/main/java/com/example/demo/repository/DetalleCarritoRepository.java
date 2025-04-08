@@ -24,6 +24,18 @@ public class DetalleCarritoRepository {
         return null;
     }
 
+    public void deleteByProductoIdAndUsuarioId(int productoId, String idUsuario) {
+        for (int i = 0; i < baseDeDatos.size(); i++) {
+            if (baseDeDatos.get(i).getProducto() != null
+                    && baseDeDatos.get(i).getProducto().getProductoId() == productoId
+                    && baseDeDatos.get(i).getCarritoCompras() != null
+                    && baseDeDatos.get(i).getCarritoCompras().getUsuario().getIdUsuario().equals(idUsuario)) {
+                baseDeDatos.remove(i);
+                break;
+            }
+        }
+    }
+
     public DetalleCarrito findByCarritoIdAndIdProducto(int idCarrito, Integer idProducto) {
         for (DetalleCarrito detalleCarrito : baseDeDatos) {
             if (detalleCarrito.getCarritoCompras() != null
