@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import com.example.demo.model.CarritoCompras;
 import com.example.demo.model.DetalleCarrito;
 import com.example.demo.service.DetalleCarritoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,5 +118,20 @@ public class DetalleCarritoController {
 			@RequestParam(required = false) @Parameter(description = "Cantidad del Detalle Carrito") Integer cantidad) {
         List<DetalleCarrito> detalleCarrito = detalleCarritoService.buscarPorFiltros(id, cantidad);
         return new ResponseEntity<>(detalleCarrito, HttpStatus.OK);
+    }
+
+    @GetMapping("/{idUsuario}")
+    @Operation(summary = "Obtener detalle de carrito de compra por USUARIO ", description = "Devuelve un carrito de compra específico basado en el id del carrito y el usuario logueado.")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Carrito de compra encontrado"),
+            @ApiResponse(responseCode = "404", description = "Carrito de compra no encontrado") })
+    public ResponseEntity<List<DetalleCarrito>> getCarritoComprasById(
+            @PathVariable @Parameter(description = "ID del usuario logueado") String idUsuario) {
+
+        List<DetalleCarrito> detalleCarrito = detalleCarritoService.findByIdUsuario(idUsuario);
+        if (detalleCarrito != null) {
+            return new ResponseEntity<>(detalleCarrito, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

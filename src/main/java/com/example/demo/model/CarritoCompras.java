@@ -1,10 +1,16 @@
 package com.example.demo.model;
 
-public class CarritoCompras {
-    
-    private Integer carritoId;
-    private Usuario usuario; 
+import java.util.List;
 
+public class CarritoCompras {
+
+    // ATRIBUTOS
+    private Integer carritoId;
+    private Usuario usuario;
+
+
+    // CONSTRUCTOR
+    // No se usa pasa por parametro la lista de detalle, porque solo se usa cuando consulte el carrito, para guardar y actualizar el carrito no se usan estas listas
     public CarritoCompras(Integer carritoId, Usuario usuario) {
         this.carritoId = carritoId;
         this.usuario = usuario;

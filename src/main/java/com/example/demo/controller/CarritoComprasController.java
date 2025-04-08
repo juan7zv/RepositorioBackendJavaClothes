@@ -1,10 +1,12 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.DetalleCompraCliente;
 import com.example.demo.model.CarritoCompras;
 import com.example.demo.service.CarritoComprasService;
 
 import java.util.List;
 
+import com.example.demo.service.DetalleCarritoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +31,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "CarritoCompras", description = "API para la gestión de Carrito de compras")
 public class CarritoComprasController {
 	private final CarritoComprasService carritoComprasService;
+	private final DetalleCarritoService detalleCarritoService;
 
 	@Autowired
-	public CarritoComprasController(CarritoComprasService carritoComprasService) {
+	public CarritoComprasController(CarritoComprasService carritoComprasService, DetalleCarritoService detalleCarritoService) {
 		this.carritoComprasService = carritoComprasService;
+		this.detalleCarritoService = detalleCarritoService;
 	}
 
 	@GetMapping
@@ -43,6 +47,22 @@ public class CarritoComprasController {
 	public ResponseEntity<List<CarritoCompras>> getAllCarritosCompras() {
 		List<CarritoCompras> carritos = carritoComprasService.findAll();
 		return new ResponseEntity<>(carritos, HttpStatus.OK);
+	}
+
+	@GetMapping("/{idCarrito}/{idUsuario}")
+	@Operation(summary = "Obtener carrito de compra por ID", description = "Devuelve un carrito de compra específico basado en el id del carrito y el usuario logueado.")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Carrito de compra encontrado"),
+			@ApiResponse(responseCode = "404", description = "Carrito de compra no encontrado") })
+	public ResponseEntity<CarritoCompras> getCarritoComprasById(
+			@PathVariable @Parameter(description = "ID del carrito de compras") Integer idCarrito,
+			@PathVariable @Parameter(description = "ID del usuario logueado") String idUsuario) {
+
+		CarritoCompras carritoCompras = carritoComprasService.findByIdAndUsuario(idCarrito, idUsuario);
+		if (carritoCompras != null) {
+			return new ResponseEntity<>(carritoCompras, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@GetMapping("/{id}")
@@ -65,8 +85,9 @@ public class CarritoComprasController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Carrito Compras creado con éxito"),
 			@ApiResponse(responseCode = "400", description = "Datos inválidos") })
 	public ResponseEntity<CarritoCompras> createCarritoCompras(
-			@RequestBody @Parameter(description = "Datos del Carrito Compras a crear") CarritoCompras carritoCompras) {
-		CarritoCompras createdCarrito = carritoComprasService.save(carritoCompras);
+			@RequestBody @Parameter(description = "Datos del Carrito Compras a crear") DetalleCompraCliente carritoCompras) {
+		CarritoCompras createdCarrito = carritoComprasService.save(carritoCompras.getCarritoCompras());
+		detalleCarritoService.saveProductoCompra(carritoCompras.getIdProducto(), createdCarrito);
 		return new ResponseEntity<>(createdCarrito, HttpStatus.CREATED);
 	}
 
@@ -76,12 +97,11 @@ public class CarritoComprasController {
 			@ApiResponse(responseCode = "404", description = "Carrito Compras no encontrado") })
 	public ResponseEntity<CarritoCompras> updateCarritoCompras(
 			@PathVariable @Parameter(description = "ID del Carrito Compras") Integer id,
-			@RequestBody @Parameter(description = "Datos actualizados del Carrito Compras") CarritoCompras carritoCompras) {
+			@RequestBody @Parameter(description = "Datos actualizados del Carrito Compras") DetalleCompraCliente carritoCompras) {
 		CarritoCompras existingCarritoCompras = carritoComprasService.findById(id);
 		if (existingCarritoCompras != null) {
-			carritoCompras.setCarritoId(id);
-			CarritoCompras updatedCarrito = carritoComprasService.update(carritoCompras);
-			return new ResponseEntity<>(updatedCarrito, HttpStatus.OK);
+			detalleCarritoService.saveProductoCompra(carritoCompras.getIdProducto(), existingCarritoCompras);
+			return new ResponseEntity<>(existingCarritoCompras, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
