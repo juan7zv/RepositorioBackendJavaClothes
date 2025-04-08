@@ -55,14 +55,16 @@ public class ProductoService {
         Producto producto5 = new Producto(104, 8,
                 130900.00, "Polo Relax Cream", "AZUL",
                 "L", "Denim",
-                "Chaqueta trendy.",
+                "Estilo urbano que nunca pasa de moda."+
+                "\nIdeal para un look casual con actitud.",
                 "Hombre", "Camiseta");
         save(producto5);
 
         Producto producto6 = new Producto(105, 10,
                 96000.00, "Polo Relax Cream", "CRUDO",
                 "M", "Poliester",
-                "Chaqueta trendy.",
+                "Comodidad y frescura en cada detalle."+
+                        "\nPerfecto para días relajados con estilo.",
                 "Hombre", "Camiseta");
         save(producto6);
 
