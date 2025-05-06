@@ -17,7 +17,7 @@ public class ProductoRepository {
 
     public Producto findById(Integer id) {
         for (Producto producto : baseDeDatos) {
-            if (producto.getProductoId().equals(id)) {
+            if (producto.getProd_id().equals(id)) {
                 return producto;
             }
         }
@@ -30,7 +30,7 @@ public class ProductoRepository {
 
     public void deleteById(Integer id) {
         for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getProductoId().equals(id)) {
+            if (baseDeDatos.get(i).getProd_id().equals(id)) {
                 baseDeDatos.remove(i);
                 return;
             }
@@ -39,7 +39,7 @@ public class ProductoRepository {
 
     public Producto update(Producto producto) {
         for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getProductoId().equals(producto.getProductoId())) {
+            if (baseDeDatos.get(i).getProd_id().equals(producto.getProd_id())) {
                 baseDeDatos.set(i, producto);
                 return producto;
             }
