@@ -38,7 +38,7 @@ public class ProductoService {
         productoRepository.deleteById(id);
     }
 
-    public List<Producto> buscarPorFiltros(String nombre, Double precioMin, Double precioMax) {
+   /* public List<Producto> buscarPorFiltros(String nombre, Double precioMin, Double precioMax) {
         return productoRepository.buscarPorFiltros(nombre, precioMin, precioMax);
-    }
+    } */
 }

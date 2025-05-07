@@ -34,6 +34,19 @@ public class ProductoController {
         this.productoService = productoService;
     }
 
+    // CREATE
+    @PostMapping
+    @Operation(summary = "Crear un nuevo producto", description = "Crea un nuevo producto con los datos proporcionados.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Producto creado con éxito"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos")
+    })
+    public ResponseEntity<Producto> createProducto(@RequestBody @Parameter(description = "Datos del producto a crear") Producto producto) {
+        Producto newProducto = productoService.save(producto);
+        return new ResponseEntity<>(newProducto, HttpStatus.CREATED);
+    }
+
+    // READ (All)
     @GetMapping
     @Operation(summary = "Obtener todos los productos", description = "Devuelve una lista de todos los productos en la base de datos.")
     @ApiResponses(value = {
@@ -45,6 +58,7 @@ public class ProductoController {
         return new ResponseEntity<>(productos, HttpStatus.OK);
     }
 
+    // READ (By ID)
     @GetMapping("/{id}")
     @Operation(summary = "Obtener producto por ID", description = "Devuelve un producto específico basado en su ID.")
     @ApiResponses(value = {
@@ -60,17 +74,7 @@ public class ProductoController {
         }
     }
 
-    @PostMapping
-    @Operation(summary = "Crear un nuevo producto", description = "Crea un nuevo producto con los datos proporcionados.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Producto creado con éxito"),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos")
-    })
-    public ResponseEntity<Producto> createProducto(@RequestBody @Parameter(description = "Datos del producto a crear") Producto producto) {
-        Producto newProducto = productoService.save(producto);
-        return new ResponseEntity<>(newProducto, HttpStatus.CREATED);
-    }
-
+    // UPDATE
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar un producto", description = "Actualiza los datos de un producto existente.")
     @ApiResponses(value = {
@@ -88,6 +92,7 @@ public class ProductoController {
             existingProducto.setTalla(producto.getTalla());
             existingProducto.setColor(producto.getColor());
             existingProducto.setMaterial(producto.getMaterial());
+            existingProducto.setUrl_imagen(producto.getUrl_imagen());
             Producto updatedProducto = productoService.update(existingProducto);
             return new ResponseEntity<>(updatedProducto, HttpStatus.OK);
         } else {
@@ -95,6 +100,7 @@ public class ProductoController {
         }
     }
 
+    // DELETE
     @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar un producto", description = "Elimina un producto basado en su ID.")
     @ApiResponses(value = {
@@ -111,6 +117,8 @@ public class ProductoController {
         }
     }
 
+    /*
+    // BUSCAR POR FILTROS
     @GetMapping("/buscar")
     @Operation(summary = "Buscar productos por filtros", description = "Busca productos por nombre, precio mínimo y máximo.")
     @ApiResponses(value = {
@@ -123,5 +131,5 @@ public class ProductoController {
             @RequestParam(required = false) @Parameter(description = "Precio máximo (opcional)") Double precioMax) {
         List<Producto> productos = productoService.buscarPorFiltros(nombre, precioMin, precioMax);
         return new ResponseEntity<>(productos, HttpStatus.OK);
-    }
+    } */
 }

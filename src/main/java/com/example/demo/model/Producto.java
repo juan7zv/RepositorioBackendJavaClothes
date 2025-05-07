@@ -1,11 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 
 @Entity
@@ -39,6 +34,7 @@ public class Producto {
     @Column(nullable = false)
     private String categoria;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private String tipo;
 
@@ -49,12 +45,15 @@ public class Producto {
     public Producto() {
     }
 
+    // getters y setters
+
+
     public Integer getProd_id() {
         return prod_id;
     }
 
-    public void setProd_id(Integer productoId) {
-        this.prod_id = productoId;
+    public void setProd_id(Integer prod_id) {
+        this.prod_id = prod_id;
     }
 
     public Integer getStock() {
@@ -129,10 +128,18 @@ public class Producto {
         this.tipo = tipo;
     }
 
+    public String getUrl_imagen() {
+        return url_imagen;
+    }
+
+    public void setUrl_imagen(String url_imagen) {
+        this.url_imagen = url_imagen;
+    }
+
     @Override
     public String toString() {
         return "Producto{" +
-                "productoId=" + prod_id +
+                "prod_id=" + prod_id +
                 ", stock=" + stock +
                 ", precio=" + precio +
                 ", nombre='" + nombre + '\'' +
@@ -142,6 +149,7 @@ public class Producto {
                 ", descripcion='" + descripcion + '\'' +
                 ", categoria='" + categoria + '\'' +
                 ", tipo='" + tipo + '\'' +
+                ", url_imagen='" + url_imagen + '\'' +
                 '}';
     }
 }
