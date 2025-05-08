@@ -63,7 +63,7 @@ public class PedidoController {
         @ApiResponse(responseCode = "204", description = "Pedido eliminado con éxito"),
         @ApiResponse(responseCode = "404", description = "Pedido no encontrado")
     })
-    public ResponseEntity<Void> deletePedido(@PathVariable @Parameter(description = "ID del pedido") String id) {
+    public ResponseEntity<Void> deletePedido(@PathVariable @Parameter(description = "ID del pedido") Integer id) {
         Pedido existingPedido = pedidoService.findById(id);
         if (existingPedido != null) {
             pedidoService.deleteById(id);
@@ -79,7 +79,7 @@ public class PedidoController {
         @ApiResponse(responseCode = "200", description = "Pedido encontrado"),
         @ApiResponse(responseCode = "404", description = "Pedido no encontrado")
     })
-    public ResponseEntity<Pedido> getPedidoById(@PathVariable @Parameter(description = "ID del pedido") String id) {
+    public ResponseEntity<Pedido> getPedidoById(@PathVariable @Parameter(description = "ID del pedido") Integer id) {
         Pedido pedido = pedidoService.findById(id);
         if (pedido != null) {
             return new ResponseEntity<>(pedido, HttpStatus.OK);
@@ -94,7 +94,7 @@ public class PedidoController {
         @ApiResponse(responseCode = "200", description = "Pedido actualizado con éxito"),
         @ApiResponse(responseCode = "404", description = "Pedido no encontrado")
     })
-    public ResponseEntity<Pedido> updatePedido(@PathVariable @Parameter(description = "ID del pedido") String id,
+    public ResponseEntity<Pedido> updatePedido(@PathVariable @Parameter(description = "ID del pedido") Integer id,
             @RequestBody @Parameter(description = "Datos actualizados del pedido") Pedido pedido) {
         Pedido existingPedido = pedidoService.findById(id);
         if (existingPedido != null) {

@@ -1,54 +1,61 @@
 package com.example.demo.repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.model.Usuario;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UsuarioRepository {
-    private final List<Usuario> baseDeDatos = new ArrayList<>();
-    private final List<String> authTokens = new ArrayList<>();
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    // CREATE
+    @Transactional
     public Usuario save(Usuario usuario) {
-        baseDeDatos.add(usuario);
-        authTokens.add(usuario.getIdUsuario()+usuario.getClave());
+        entityManager.persist(usuario);
         return usuario;
     }
 
-    public Usuario findById(String id) {
-        for (Usuario usuario : baseDeDatos) {
-            if (usuario.getIdUsuario().equals(id)) {
-                return usuario;
-            }
-        }
-        return null;
+    // READ BY ID
+    public Usuario findById(Integer id) {
+        Query query = entityManager.createNativeQuery("SELECT * FROM usuario WHERE usua_id = :id", Usuario.class);
+                query.setParameter("id", id);
+                try {
+                    return (Usuario) query.getSingleResult();
+                } catch (Exception e) {
+                    return null;
+                }
     }
 
+    // READ ALL
     public List<Usuario> findAll() {
-        return new ArrayList<>(baseDeDatos);
+        Query query = entityManager.createNativeQuery("SELECT * FROM usuario", Usuario.class);
+        return query.getResultList();
     }
 
-    public void deleteById(String id) {
-        for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getIdUsuario().equals(id)) {
-                baseDeDatos.remove(i);
-                return;
-            }
-        }
-    }
-
+    // UPDATE
+    @Transactional
     public Usuario update(Usuario usuario) {
-        for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getIdUsuario().equals(usuario.getIdUsuario())) {
-                baseDeDatos.set(i, usuario);
-                return usuario;
-            }
-        }
-        return null;
+        entityManager.merge(usuario);
+        return usuario;
     }
 
+    // DELETE
+    @Transactional
+    public void deleteById(Integer id) {
+        Query query = entityManager.createNativeQuery("DELETE FROM usuario WHERE usua_id = :id");
+                query.setParameter("id", id);
+                query.executeUpdate();
+    }
+
+
+    /*
     public List<Usuario> buscarPorFiltros(String nombre, String email) {
         List<Usuario> resultado = new ArrayList<>();
         for (Usuario usuario : baseDeDatos) {
@@ -72,5 +79,5 @@ public class UsuarioRepository {
             }
         }
         return null;
-    }
+    } */
 }

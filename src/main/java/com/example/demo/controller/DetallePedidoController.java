@@ -54,7 +54,7 @@ public class DetallePedidoController {
         @ApiResponse(responseCode = "200", description = "Detalles encontrados"),
         @ApiResponse(responseCode = "404", description = "Pedido no encontrado")
     })
-    public ResponseEntity<List<DetallePedido>> getDetallesByPedidoId(@PathVariable @Parameter(description = "ID del pedido") String id) {
+    public ResponseEntity<List<DetallePedido>> getDetallesByPedidoId(@PathVariable @Parameter(description = "ID del pedido") Integer id) {
         // 1. Buscar el pedido por ID
         Pedido pedido = pedidoService.findById(id);
         if (pedido == null) {
@@ -71,7 +71,7 @@ public class DetallePedidoController {
         @ApiResponse(responseCode = "200", description = "Detalle del pedido actualizado con éxito"),
         @ApiResponse(responseCode = "404", description = "Pedido no encontrado")
     })
-    public ResponseEntity<Pedido> updateDetallePedido(@PathVariable @Parameter(description = "ID del pedido") String id,
+    public ResponseEntity<Pedido> updateDetallePedido(@PathVariable @Parameter(description = "ID del pedido") Integer id,
             @RequestBody @Parameter(description = "Detalles actualizados del pedido") Pedido pedido) {
         // 1. Buscar el pedido por ID
         Pedido pedidoActualizar = pedidoService.findById(id);

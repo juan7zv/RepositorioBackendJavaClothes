@@ -1,39 +1,47 @@
 package com.example.demo.model;
 
 import com.example.demo.model.enums.RolUsuario;
+import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Entity
+@Table(name = "usuario")
 public class Usuario {
 
-    private String idUsuario;
+    @Id
+    @Column(nullable = false)
+    private Integer usua_id;
 
+    @Column(nullable = false)
+    private Integer rol_rol_id;
+
+    @Column(nullable = false)
     private String nombre;
-    private String email;
-    private String numeroDeTelefono;
 
-    private RolUsuario idRol;
-    // Clave de acceso del usuario no se entrega en la respuesta al front
+    @Column(nullable = false)
+    private String correo;
+
+    @Column(nullable = false)
+    // cuando se serializa el objeto, no se incluye la clave por seguridad 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String clave;
 
+    @Column(nullable = false)
+    private String telefono;
+
     // Constructor
-    public Usuario(String idUsuario, String nombre, String email, String numeroDeTelefono, RolUsuario idRol, String clave) {
-        this.idUsuario = idUsuario;
-        this.nombre = nombre;
-        this.email = email;
-        this.numeroDeTelefono = numeroDeTelefono;
-        this.idRol = idRol;
-        this.clave = clave;
+    public Usuario() {
     }
 
+    // getters and setters
 
-    // getters y setters
-    public String getIdUsuario() {
-        return idUsuario;
+
+    public Integer getUsua_id() {
+        return usua_id;
     }
 
-    public void setIdUsuario(String idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsua_id(Integer usua_id) {
+        this.usua_id = usua_id;
     }
 
     public String getNombre() {
@@ -44,28 +52,20 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getEmail() {
-        return email;
+    public Integer getRol_rol_id() {
+        return rol_rol_id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setRol_rol_id(Integer rol_rol_id) {
+        this.rol_rol_id = rol_rol_id;
     }
 
-    public String getNumeroDeTelefono() {
-        return numeroDeTelefono;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setNumeroDeTelefono(String numeroDeTelefono) {
-        this.numeroDeTelefono = numeroDeTelefono;
-    }
-
-    public RolUsuario getIdRol() {
-        return idRol;
-    }
-
-    public void setIdRol(RolUsuario idRol) {
-        this.idRol = idRol;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     public String getClave() {
@@ -75,4 +75,26 @@ public class Usuario {
     public void setClave(String clave) {
         this.clave = clave;
     }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "usua_id=" + usua_id +
+                ", rol_rol_id=" + rol_rol_id +
+                ", nombre='" + nombre + '\'' +
+                ", correo='" + correo + '\'' +
+                ", clave='" + clave + '\'' +
+                ", telefono='" + telefono + '\'' +
+                '}';
+    }
 }
+    
+    

@@ -34,7 +34,6 @@ public class Producto {
     @Column(nullable = false)
     private String categoria;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private String tipo;
 

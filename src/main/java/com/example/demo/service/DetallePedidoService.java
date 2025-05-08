@@ -30,7 +30,7 @@ public class DetallePedidoService {
 	}
 	
 	//eliminar un detalle de pedido
-	public void deleteById(String id) {
+	public void deleteById(Integer id) {
 		detallePedidoRepository.deletedById(id); 
 	}
 	

@@ -60,7 +60,7 @@ public class NotificacionController {
             @ApiResponse(responseCode = "200", description = "Notificación encontrado"),
             @ApiResponse(responseCode = "404", description = "Notificación no encontrado")
         })
-        public ResponseEntity<Notificacion> getNotificacionById(@PathVariable @Parameter(description = "ID de la notificacion") String id) {
+        public ResponseEntity<Notificacion> getNotificacionById(@PathVariable @Parameter(description = "ID de la notificacion") Integer id) {
             Notificacion notificacion = notificacionService.findById(id);
             if (notificacion != null) {
                 return new ResponseEntity<>(notificacion, HttpStatus.OK);
@@ -75,7 +75,7 @@ public class NotificacionController {
             @ApiResponse(responseCode = "204", description = "Notificación eliminado con éxito"),
             @ApiResponse(responseCode = "404", description = "Notificación no encontrado")
         })
-        public ResponseEntity<Void> deleteNotificacion(@PathVariable @Parameter(description = "ID de la notificación") String id) {
+        public ResponseEntity<Void> deleteNotificacion(@PathVariable @Parameter(description = "ID de la notificación") Integer id) {
             Notificacion existingNotificacion = notificacionService.findById(id);
             if (existingNotificacion != null) {
                 notificacionService.deleteById(id);
@@ -91,7 +91,7 @@ public class NotificacionController {
             @ApiResponse(responseCode = "200", description = "Notificación actualizado con éxito"),
             @ApiResponse(responseCode = "404", description = "Notificación no encontrado")
         })
-        public ResponseEntity<Notificacion> updateNotificacion(@PathVariable @Parameter(description = "ID de la Notificación") String id,
+        public ResponseEntity<Notificacion> updateNotificacion(@PathVariable @Parameter(description = "ID de la Notificación") Integer id,
                 @RequestBody @Parameter(description = "Datos actualizados de la notificación") Notificacion noti) {
             Notificacion existingNotificacion = notificacionService.findById(id);
             if (existingNotificacion != null) {

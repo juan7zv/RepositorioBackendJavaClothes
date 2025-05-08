@@ -24,10 +24,10 @@ public class CarritoComprasRepository {
         return null;
     }
 
-    public CarritoCompras findByIdAndUsuario(Integer id, String usuarioId) {
+    public CarritoCompras findByIdAndUsuario(Integer id, Integer usuarioId) {
         for ( CarritoCompras carritoCompras : baseDeDatos) {
             if (carritoCompras.getCarritoId().equals(id)
-                    && carritoCompras.getUsuario().getIdUsuario().equals(usuarioId)) {
+                    && carritoCompras.getUsuario().getUsua_id().equals(usuarioId)) {
                 return carritoCompras;
             }
         }

@@ -16,8 +16,7 @@ public class ProductoService {
         this.productoRepository = productoRepository;
     }
 
-
-
+    // Métodos CRUD
     public Producto save(Producto producto) {
         return productoRepository.save(producto);
     }
