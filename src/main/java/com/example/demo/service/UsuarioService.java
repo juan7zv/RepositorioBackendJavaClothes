@@ -18,6 +18,7 @@ public class UsuarioService {
         initSampleData();
     }
 
+    // Método para inicializar datos de ejemplo
     private void initSampleData() {
 
         // Definimos los roles de usuario
