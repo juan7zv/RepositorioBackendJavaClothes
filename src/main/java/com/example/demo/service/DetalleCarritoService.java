@@ -50,7 +50,7 @@ public class DetalleCarritoService {
         return detalleCarritoRepository.findById(id);
     }
 
-    public void deleteByProductoIdAndUsuarioId(int productoId, String idUsuario) {
+    public void deleteByProductoIdAndUsuarioId(int productoId, Integer idUsuario) {
         detalleCarritoRepository.deleteByProductoIdAndUsuarioId(productoId, idUsuario);
     }
 
@@ -58,7 +58,7 @@ public class DetalleCarritoService {
         return detalleCarritoRepository.findAll();
     }
 
-    public List<DetalleCarrito> findByIdUsuario(String idUsuario) {
+    public List<DetalleCarrito> findByIdUsuario(Integer idUsuario) {
         return detalleCarritoRepository.findByIdUsuario(idUsuario);
     }
 

@@ -55,7 +55,7 @@ public class CarritoComprasController {
 			@ApiResponse(responseCode = "404", description = "Carrito de compra no encontrado") })
 	public ResponseEntity<CarritoCompras> getCarritoComprasById(
 			@PathVariable @Parameter(description = "ID del carrito de compras") Integer idCarrito,
-			@PathVariable @Parameter(description = "ID del usuario logueado") String idUsuario) {
+			@PathVariable @Parameter(description = "ID del usuario logueado") Integer idUsuario) {
 
 		CarritoCompras carritoCompras = carritoComprasService.findByIdAndUsuario(idCarrito, idUsuario);
 		if (carritoCompras != null) {

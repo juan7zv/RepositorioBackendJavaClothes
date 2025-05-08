@@ -25,18 +25,8 @@ public class NotificacionService {
         this.notificacionRepository = notificacionRepository; // Inicializar el repositorio
         this.pedidoRepository = pedidoRepository;
         this.usuariorepository = usuariorepository;
-        initSampleData(); // Inicializar datos de ejemplo
     }
 
-    // Método para inicializar datos de ejemplo
-    public void initSampleData() {
-    	Usuario user1 = usuariorepository.findById("123456");
-    	Usuario user2 = usuariorepository.findById("234567");
-    	Usuario user3 = usuariorepository.findById("345678");
-    	Notificacion notificacion1 = new Notificacion("1", "Su pedido está listo para ser reclamado.", "4/04/2025",user1 , null);
-    	
-		notificacionRepository.save(notificacion1);
-    }
 
     //guardar una notificacion
     public Notificacion save(Notificacion notificacion) {
@@ -49,12 +39,12 @@ public class NotificacionService {
     }
 
     //obtener notificacion por id
-    public Notificacion findById(String id) {
+    public Notificacion findById(Integer id) {
         return notificacionRepository.findById(id);
     }
 
     //eliminar una notificacion
-    public void deleteById(String id) {
+    public void deleteById(Integer id) {
         notificacionRepository.deletedById(id);
     }
 

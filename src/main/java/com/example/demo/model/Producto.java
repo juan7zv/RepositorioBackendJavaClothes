@@ -1,39 +1,58 @@
 package com.example.demo.model;
 
-import java.util.UUID;
+import jakarta.persistence.*;
 
+
+@Entity
+@Table(name = "producto")
 public class Producto {
-    private Integer productoId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer prod_id;
+
+    @Column(nullable = false)
     private Integer stock;
+
+    @Column(nullable = false)
     private Double precio;
 
+    @Column(nullable = false)
     private String nombre;
+
+    @Column(nullable = false)
     private String color;
+
+    @Column(nullable = false)
     private String talla;
+
+    @Column(nullable = false)
     private String material;
+
+    @Column(nullable = false)
     private String descripcion;
+
+    @Column(nullable = false)
     private String categoria;
+
+    @Column(nullable = false)
     private String tipo;
 
-    public Producto(Integer productoId, Integer stock, Double precio, String nombre, String color, String talla, String material, String descripcion, String categoria, String tipo) {
-        this.productoId = productoId;
-        this.stock = stock;
-        this.precio = precio;
-        this.nombre = nombre;
-        this.color = color;
-        this.talla = talla;
-        this.material = material;
-        this.descripcion = descripcion;
-        this.categoria = categoria;
-        this.tipo = tipo;
+    @Column(nullable = false)
+    private String url_imagen;
+
+    // Constructor por defecto (necesario para JPA y Jackson)
+    public Producto() {
     }
 
-    public Integer getProductoId() {
-        return productoId;
+    // getters y setters
+
+
+    public Integer getProd_id() {
+        return prod_id;
     }
 
-    public void setProductoId(Integer productoId) {
-        this.productoId = productoId;
+    public void setProd_id(Integer prod_id) {
+        this.prod_id = prod_id;
     }
 
     public Integer getStock() {
@@ -108,10 +127,18 @@ public class Producto {
         this.tipo = tipo;
     }
 
+    public String getUrl_imagen() {
+        return url_imagen;
+    }
+
+    public void setUrl_imagen(String url_imagen) {
+        this.url_imagen = url_imagen;
+    }
+
     @Override
     public String toString() {
         return "Producto{" +
-                "productoId=" + productoId +
+                "prod_id=" + prod_id +
                 ", stock=" + stock +
                 ", precio=" + precio +
                 ", nombre='" + nombre + '\'' +
@@ -121,6 +148,7 @@ public class Producto {
                 ", descripcion='" + descripcion + '\'' +
                 ", categoria='" + categoria + '\'' +
                 ", tipo='" + tipo + '\'' +
+                ", url_imagen='" + url_imagen + '\'' +
                 '}';
     }
 }

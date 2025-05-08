@@ -17,7 +17,7 @@ public class NotificacionRepository {
     }
 
     //Buscar notificación por ID
-    public Notificacion findById(String idNoti) {
+    public Notificacion findById(Integer idNoti) {
         for (Notificacion notificacion : notificaciones) {
             if (notificacion.getIdNotificacion().equals(idNoti)) {
                 return notificacion;
@@ -30,7 +30,7 @@ public class NotificacionRepository {
     public List<Notificacion> findByCliente(String clienteId) {
         List<Notificacion> resultado = new ArrayList<>();
         for (Notificacion notificacion : notificaciones) {
-            if (notificacion.getCliente().getIdUsuario().equals(clienteId)) {
+            if (notificacion.getCliente().getUsua_id().equals(clienteId)) {
                 resultado.add(notificacion);
             }
         }
@@ -38,7 +38,7 @@ public class NotificacionRepository {
     }
 
     //Eliminar notificación por ID
-    public void deletedById(String idNoti) {
+    public void deletedById(Integer idNoti) {
         for (int i = 0; i < notificaciones.size(); i++) {
             if (notificaciones.get(i).getIdNotificacion().equals(idNoti)) {
                 notificaciones.remove(i);

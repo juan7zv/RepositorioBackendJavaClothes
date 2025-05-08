@@ -40,7 +40,7 @@ public class DetallePedidoRepository {
 	}
 
 	//eliminar detalles de pedido
-	public void deletedById(String id) {
+	public void deletedById(Integer id) {
 		detalles.removeIf(detalle -> detalle.getDetalleId().equals(id)); // Elimina el detalle con el ID especificado
 	}
 	

@@ -111,7 +111,7 @@ public class DetalleCarritoController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Carrito de compra encontrado"),
             @ApiResponse(responseCode = "404", description = "Carrito de compra no encontrado") })
     public ResponseEntity<List<DetalleCarrito>> getCarritoComprasById(
-            @PathVariable @Parameter(description = "ID del usuario logueado") String idUsuario) {
+            @PathVariable @Parameter(description = "ID del usuario logueado") Integer idUsuario) {
 
         List<DetalleCarrito> detalleCarrito = detalleCarritoService.findByIdUsuario(idUsuario);
         if (detalleCarrito != null) {
@@ -128,7 +128,7 @@ public class DetalleCarritoController {
             @ApiResponse(responseCode = "404", description = "Detalle Carrito no encontrado")
     })
     public ResponseEntity<Void> deleteDetalleCarritoPorProducto(@PathVariable @Parameter(description = "ID del Producto") int productoId,
-                                                                @PathVariable @Parameter(description = "ID del usuario logueado") String idUsuario) {
+                                                                @PathVariable @Parameter(description = "ID del usuario logueado") Integer idUsuario) {
         detalleCarritoService.deleteByProductoIdAndUsuarioId(productoId, idUsuario);
         return new ResponseEntity<>(HttpStatus.OK);
     }
