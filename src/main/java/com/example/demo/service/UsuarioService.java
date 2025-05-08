@@ -15,45 +15,15 @@ public class UsuarioService {
     @Autowired
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
-        initSampleData();
-    }
-
-    private void initSampleData() {
-
-        // Definimos los roles de usuario
-        RolUsuario rolAdmin = RolUsuario.Administrador;
-        RolUsuario rolCliente = RolUsuario.Cliente;
-        RolUsuario rolVendedor = RolUsuario.Vendedor;
-
-        // Creamos 9 instancias de Usuario
-        Usuario usuario1 = new Usuario("123456","Ana Sofia Henao Pérez", "ana@example.com", "3012345678", rolAdmin, "clave123");
-        Usuario usuario2 = new Usuario("234567","Carlos Gómez", "carlos@example.com", "3023456789", rolCliente, "pass456");
-        Usuario usuario3 = new Usuario("345678","Laura Torres", "laura@example.com", "3034567890", rolVendedor, "segura789");
-        Usuario usuario4 = new Usuario("456789","Diego Ramírez", "diego@example.com", "3045678901", rolAdmin, "adminPass");
-        Usuario usuario5 = new Usuario("000000","Sofía Herrera", "sofia@example.com", "3056789012", rolCliente, "sofia2024");
-        Usuario usuario6 = new Usuario("999999","Fernando Díaz Hurtado", "fernando@example.com", "3067890123", rolVendedor, "fernandoKey");
-        Usuario usuario7 = new Usuario("888888","Isabel Rojas", "isabel@example.com", "3078901234", rolAdmin, "rojasPass");
-        Usuario usuario8 = new Usuario("777777","Ricardo de Jesus Mendoza Smith", "ricardo@example.com", "3089012345", rolCliente, "ricardoSeg");
-        Usuario usuario9 = new Usuario("123","Cliente de Prueba", "prueba@example.com", "3089012377", rolCliente, "123");
-
-        // Guardamos los usuarios en la base de datos
-        save(usuario1);
-        save(usuario2);
-        save(usuario3);
-        save(usuario4);
-        save(usuario5);
-        save(usuario6);
-        save(usuario7);
-        save(usuario8);
-        save(usuario9);
 
     }
 
+    // Métodos CRUD
     public Usuario save(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
 
-    public Usuario findById(String id) {
+    public Usuario findById(Integer id) {
         return usuarioRepository.findById(id);
     }
 
@@ -65,19 +35,21 @@ public class UsuarioService {
         return usuarioRepository.update(usuario);
     }
 
-    public void deleteById(String id) {
+    public void deleteById(Integer id) {
         usuarioRepository.deleteById(id);
     }
 
+    /*
     public List<Usuario> buscarPorFiltros(String nombre, String email) {
         return usuarioRepository.buscarPorFiltros(nombre, email);
     }
 
     public Usuario findByAuthToken(String authToken) {
         return usuarioRepository.findByAuthToken(authToken);
-    }
+    } */
 
-    public Usuario login(String id, String clave)  {
+    // Método para autenticar un usuario
+    public Usuario login(Integer id, String clave)  {
         Usuario usuario = usuarioRepository.findById(id);
 
         if (usuario != null && usuario.getClave().equals(clave)) {

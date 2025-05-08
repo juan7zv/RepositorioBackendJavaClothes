@@ -37,12 +37,12 @@ public class PedidoService {
     }
 
     //obtener un pedido por ID
-    public Pedido findById(String id) {
+    public Pedido findById(Integer id) {
         return pedidoRepository.findById(id);
     }
 
     //eliminar un pedido
-    public void deleteById(String id) {
+    public void deleteById(Integer id) {
         pedidoRepository.deletedByIdPedido(id);
     }
 

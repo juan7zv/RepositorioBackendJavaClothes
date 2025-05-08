@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
 public class Notificacion {
-    private String idNotificacion;
+    private Integer idNotificacion;
     private String mensaje;
     private String fecha;
     private Usuario cliente;
@@ -11,7 +11,7 @@ public class Notificacion {
         
     }
 
-    public Notificacion(String idNotificacion, String mensaje, String fecha, Usuario cliente, Pedido pedido) {
+    public Notificacion(Integer idNotificacion, String mensaje, String fecha, Usuario cliente, Pedido pedido) {
         this.idNotificacion = idNotificacion;
         this.mensaje = mensaje;
         this.fecha = fecha;
@@ -19,11 +19,11 @@ public class Notificacion {
         this.pedido = pedido;
     }
 
-    public String getIdNotificacion() {
+    public Integer getIdNotificacion() {
         return idNotificacion;
     }
 
-    public void setIdNotificacion(String idNotificacion) {
+    public void setIdNotificacion(Integer idNotificacion) {
         this.idNotificacion = idNotificacion;
     }
 

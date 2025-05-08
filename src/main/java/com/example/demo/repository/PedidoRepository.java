@@ -20,7 +20,7 @@ public class PedidoRepository {
     }
 
     //Obtener un pedido por ID
-    public Pedido findById(String id) {
+    public Pedido findById(Integer id) {
         for (Pedido pedido : pedidos) {
             if (pedido.getPedidoId().equals(id)) {
                 return pedido;
@@ -36,7 +36,7 @@ public class PedidoRepository {
     }
 
     //eliminar un pedido (preguntar si se necesita)
-    public void deletedByIdPedido(String id) {
+    public void deletedByIdPedido(Integer id) {
         for (int i = 0; i < pedidos.size(); i++) {
             if (pedidos.get(i).getPedidoId().equals(id)) {
                 pedidos.remove(i);
@@ -60,7 +60,7 @@ public class PedidoRepository {
     public List<Pedido> buscarPedidos(String clienteId, EstadosPedido estado, LocalDate fecha) {
         List<Pedido> resultado = new ArrayList<>(); // Lista para almacenar los pedidos filtrados
         for (Pedido pedido : pedidos) {
-            boolean coincideCliente = (clienteId == null || pedido.getCliente().getIdUsuario().equals(clienteId));
+            boolean coincideCliente = (clienteId == null || pedido.getCliente().getUsua_id().equals(clienteId));
             boolean coincideEstado = (estado == null || pedido.getEstado().equals(estado));
             boolean coincideFecha = (fecha == null || pedido.getFecha().toString().equals(fecha));
             if (coincideCliente && coincideEstado && coincideFecha) {

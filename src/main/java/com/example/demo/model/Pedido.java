@@ -10,7 +10,7 @@ import com.example.demo.model.enums.EstadosPedido;
  */
 public class Pedido {
 
-    private String pedidoId;
+    private Integer pedidoId;
     private Factura factura;
     private Usuario cliente;
     private EstadosPedido estado;
@@ -22,7 +22,7 @@ public class Pedido {
 
     }
 
-    public Pedido(String pedidoId, Factura factura, Usuario cliente, EstadosPedido estado, LocalDate fecha,
+    public Pedido(Integer pedidoId, Factura factura, Usuario cliente, EstadosPedido estado, LocalDate fecha,
         String codigoCompra, ArrayList<DetallePedido> detallesVenta) {
         this.pedidoId = pedidoId;
         this.factura = factura;
@@ -41,11 +41,11 @@ public class Pedido {
         detallesVenta.remove(detalle);
     }
 
-    public String getPedidoId() {
+    public Integer getPedidoId() {
         return pedidoId;
     }
 
-    public void setPedidoId(String pedidoId) {
+    public void setPedidoId(Integer pedidoId) {
         this.pedidoId = pedidoId;
     }
 

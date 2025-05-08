@@ -24,12 +24,12 @@ public class DetalleCarritoRepository {
         return null;
     }
 
-    public void deleteByProductoIdAndUsuarioId(int productoId, String idUsuario) {
+    public void deleteByProductoIdAndUsuarioId(int productoId, Integer idUsuario) {
         for (int i = 0; i < baseDeDatos.size(); i++) {
             if (baseDeDatos.get(i).getProducto() != null
-                    && baseDeDatos.get(i).getProducto().getProductoId() == productoId
+                    && baseDeDatos.get(i).getProducto().getProd_id() == productoId
                     && baseDeDatos.get(i).getCarritoCompras() != null
-                    && baseDeDatos.get(i).getCarritoCompras().getUsuario().getIdUsuario().equals(idUsuario)) {
+                    && baseDeDatos.get(i).getCarritoCompras().getUsuario().getUsua_id().equals(idUsuario)) {
                 baseDeDatos.remove(i);
                 break;
             }
@@ -40,18 +40,18 @@ public class DetalleCarritoRepository {
         for (DetalleCarrito detalleCarrito : baseDeDatos) {
             if (detalleCarrito.getCarritoCompras() != null
                     && detalleCarrito.getCarritoCompras().getCarritoId() == idCarrito
-                    && detalleCarrito.getProducto().getProductoId().equals(idProducto)) {
+                    && detalleCarrito.getProducto().getProd_id().equals(idProducto)) {
                 return detalleCarrito;
             }
         }
         return null;
     }
 
-    public List<DetalleCarrito> findByIdUsuario(String idUsuario) {
+    public List<DetalleCarrito> findByIdUsuario(Integer idUsuario) {
         List<DetalleCarrito> detallesCarrito = new ArrayList<>();
         for (DetalleCarrito detalleCarrito : baseDeDatos) {
             if (detalleCarrito.getCarritoCompras() != null
-                    && detalleCarrito.getCarritoCompras().getUsuario().getIdUsuario().equals(idUsuario)) {
+                    && detalleCarrito.getCarritoCompras().getUsuario().getUsua_id().equals(idUsuario)) {
                 detallesCarrito.add(detalleCarrito);
 
             }

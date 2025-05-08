@@ -24,15 +24,15 @@ public class FavoritoService {
 	    }
 
 	    private void initSampleData() {
-			Usuario usuario1 = usuarioService.findById("123456");
+			Usuario usuario1 = usuarioService.findById(123456);
 			Favorito urbanPoloFemenino = new Favorito(1, usuario1, productoService.findById(100));
 			save(urbanPoloFemenino);
 
-			Usuario usuario2 = usuarioService.findById("234567");
+			Usuario usuario2 = usuarioService.findById(234567);
 			Favorito palazzoJean = new Favorito(2, usuario2, productoService.findById(100));
 			save(palazzoJean);
 
-			Usuario usuario3 = usuarioService.findById("345678");
+			Usuario usuario3 = usuarioService.findById(345678);
 	    	Favorito sportVibeRetro = new Favorito(3, usuario3, productoService.findById(100));
 			save(sportVibeRetro);
 
