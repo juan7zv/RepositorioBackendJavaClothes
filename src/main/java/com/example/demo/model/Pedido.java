@@ -3,16 +3,29 @@ package com.example.demo.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import com.example.demo.model.enums.EstadosPedido;
+import jakarta.persistence.*;
 
 /**
  *
  * @author Rossi
  */
-public class Pedido {
 
-    private Integer pedidoId;
+@Entity
+@Table(name = "pedido")
+public class Pedido {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer pedi_id;
+
+    @OneToOne
+    @JoinColumn(name = "fact_id", nullable = false)
     private Factura factura;
+
+    @OneToOne
+    @JoinColumn(name = "usua_id", nullable = false)
     private Usuario cliente;
+
+
     private EstadosPedido estado;
     private LocalDate fecha;
     private String codigoCompra;
@@ -24,7 +37,7 @@ public class Pedido {
 
     public Pedido(Integer pedidoId, Factura factura, Usuario cliente, EstadosPedido estado, LocalDate fecha,
         String codigoCompra, ArrayList<DetallePedido> detallesVenta) {
-        this.pedidoId = pedidoId;
+        this.pedi_id = pedidoId;
         this.factura = factura;
         this.cliente = cliente;
         this.estado = estado;
@@ -41,12 +54,12 @@ public class Pedido {
         detallesVenta.remove(detalle);
     }
 
-    public Integer getPedidoId() {
-        return pedidoId;
+    public Integer getPedi_id() {
+        return pedi_id;
     }
 
-    public void setPedidoId(Integer pedidoId) {
-        this.pedidoId = pedidoId;
+    public void setPedi_id(Integer pedi_id) {
+        this.pedi_id = pedi_id;
     }
 
     public Usuario getCliente() {
@@ -99,7 +112,7 @@ public class Pedido {
 
     @Override
     public String toString() {
-        return "Pedido [pedidoId=" + pedidoId + ", cliente=" + cliente + ", fecha=" + fecha + ", codigoCompra="
+        return "Pedido [pedidoId=" + pedi_id + ", cliente=" + cliente + ", fecha=" + fecha + ", codigoCompra="
                 + codigoCompra + ", detallesVenta=" + detallesVenta + "]";
     }
 
