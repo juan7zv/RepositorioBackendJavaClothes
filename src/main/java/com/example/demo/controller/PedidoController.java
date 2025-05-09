@@ -98,7 +98,7 @@ public class PedidoController {
             @RequestBody @Parameter(description = "Datos actualizados del pedido") Pedido pedido) {
         Pedido existingPedido = pedidoService.findById(id);
         if (existingPedido != null) {
-            pedido.setPedidoId(id);
+            pedido.setPedi_id(id);
             Pedido updatedPedido = pedidoService.update(pedido);
             return new ResponseEntity<>(updatedPedido, HttpStatus.OK);
         } else {

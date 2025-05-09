@@ -22,7 +22,7 @@ public class PedidoRepository {
     //Obtener un pedido por ID
     public Pedido findById(Integer id) {
         for (Pedido pedido : pedidos) {
-            if (pedido.getPedidoId().equals(id)) {
+            if (pedido.getPedi_id().equals(id)) {
                 return pedido;
             }
         }
@@ -38,7 +38,7 @@ public class PedidoRepository {
     //eliminar un pedido (preguntar si se necesita)
     public void deletedByIdPedido(Integer id) {
         for (int i = 0; i < pedidos.size(); i++) {
-            if (pedidos.get(i).getPedidoId().equals(id)) {
+            if (pedidos.get(i).getPedi_id().equals(id)) {
                 pedidos.remove(i);
                 return;
             }
@@ -48,7 +48,7 @@ public class PedidoRepository {
     //Actualizar un pedido
     public Pedido update(Pedido pedido) {
         for (int i = 0; i < pedidos.size(); i++) {
-            if (pedidos.get(i).getPedidoId().equals(pedido.getPedidoId())) {
+            if (pedidos.get(i).getPedi_id().equals(pedido.getPedi_id())) {
                 pedidos.set(i, pedido);
                 return pedido;
             }
