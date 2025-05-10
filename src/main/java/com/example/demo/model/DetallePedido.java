@@ -4,33 +4,51 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
 /**
  *
  * @author Rossi
  */
 
+@Entity
+@Table(name = "detalle_pedido")
 public class DetallePedido {
-    private String detalleId; //es necesario?
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //(auto-incremental)
+	@Column(name = "detalle_id", nullable = false)
+    private int detalleId;
+	
+	@Column(name = "cantidad", nullable = false)
     private int cantidad;
+	
+	@OneToOne // (foreing key)
+    @JoinColumn(name = "pedi_id", nullable = false)
     private Pedido pedido;
+	
+	@OneToOne // (foreing key)
+	@JoinColumn(name = "prod_id", nullable = false)
     private Producto producto; 
 
     public DetallePedido() {
        
     }
 
-    public DetallePedido(String detalleId, int cantidad, Pedido pedido, Producto producto) {
-        this.detalleId = detalleId;
-        this.cantidad = cantidad;
-        this.pedido = pedido;
-        this.producto = producto;
-    }
+    //getters and setters
 
-    public String getDetalleId() {
+    public int getDetalleId() {
         return detalleId;
     }
 
-    public void setDetalleId(String detalleId) {
+    public void setDetalleId(int detalleId) {
         this.detalleId = detalleId;
     }
 

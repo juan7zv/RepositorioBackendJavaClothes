@@ -43,7 +43,7 @@ public class PedidoService {
 
     //eliminar un pedido
     public void deleteById(Integer id) {
-        pedidoRepository.deletedByIdPedido(id);
+        pedidoRepository.delete(id);
     }
 
     //actualizar un pedido
@@ -52,7 +52,7 @@ public class PedidoService {
     }
 
     //buscar pedidos por filtros
-    public List<Pedido> buscarPedidos(String clienteId, EstadosPedido estado, LocalDate fecha) {
+    /*public List<Pedido> buscarPedidos(String clienteId, EstadosPedido estado, LocalDate fecha) {
         return pedidoRepository.buscarPedidos(clienteId, estado, fecha);
-    }
+    }*/
 }
