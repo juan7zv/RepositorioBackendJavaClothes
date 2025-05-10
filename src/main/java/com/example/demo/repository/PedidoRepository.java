@@ -7,67 +7,53 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.Pedido;
-import com.example.demo.model.enums.EstadosPedido;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 
 @Repository
 public class PedidoRepository {
-
-    private final List<Pedido> pedidos = new ArrayList<>();
-
-    //Obtener todos los pedidos
+	
+	@PersistenceContext
+	private EntityManager entityManager; // Inyecta el EntityManager para interactuar con la base de datos
+	
+	//Obtener todos los pedidos
     public List<Pedido> findAll() {
-        return new ArrayList<>(pedidos); // Devuelve una copia de la lista
+    	Query query = entityManager.createNativeQuery("SELECT * FROM Pedido", Pedido.class);
+        return query.getResultList();
     }
 
     //Obtener un pedido por ID
     public Pedido findById(Integer id) {
-        for (Pedido pedido : pedidos) {
-            if (pedido.getPedi_id().equals(id)) {
-                return pedido;
-            }
-        }
-        return null; // Si no se encuentra el pedido
-    }
+    	Query query = entityManager.createNativeQuery("SELECT * FROM Pedido WHERE pedi_id = :id", Pedido.class);
+    	query.setParameter("id", id);
+		Pedido pedido = (Pedido) query.getSingleResult();
+		return pedido;
+	}
 
     //guardar un pedido
     public Pedido save(Pedido pedido) {
-        pedidos.add(pedido);
-        return pedido;
+    	entityManager.persist(pedido);
+		return pedido;
     }
 
     //eliminar un pedido (preguntar si se necesita)
-    public void deletedByIdPedido(Integer id) {
-        for (int i = 0; i < pedidos.size(); i++) {
-            if (pedidos.get(i).getPedi_id().equals(id)) {
-                pedidos.remove(i);
-                return;
-            }
-        }
+    public boolean delete(Integer id) {
+    Query query = entityManager.createNativeQuery("DELETE * FROM Pedido WHERE pedi_id = :id");
+   query.setParameter("id", id); // Establece el parámetro de la consulta
+   int rowsDeleted = query.executeUpdate(); 
+   return rowsDeleted > 0; // Devuelve true si se eliminó al menos un pedido
     }
 
     //Actualizar un pedido
     public Pedido update(Pedido pedido) {
-        for (int i = 0; i < pedidos.size(); i++) {
-            if (pedidos.get(i).getPedi_id().equals(pedido.getPedi_id())) {
-                pedidos.set(i, pedido);
-                return pedido;
-            }
-        }
-        return null; // Si no se encuentra el pedido
+       	entityManager.merge(pedido);
+       	return pedido;
     }
 
     //filtrar por criterios
-    public List<Pedido> buscarPedidos(String clienteId, EstadosPedido estado, LocalDate fecha) {
-        List<Pedido> resultado = new ArrayList<>(); // Lista para almacenar los pedidos filtrados
-        for (Pedido pedido : pedidos) {
-            boolean coincideCliente = (clienteId == null || pedido.getCliente().getUsua_id().equals(clienteId));
-            boolean coincideEstado = (estado == null || pedido.getEstado().equals(estado));
-            boolean coincideFecha = (fecha == null || pedido.getFecha().toString().equals(fecha));
-            if (coincideCliente && coincideEstado && coincideFecha) {
-                resultado.add(pedido);
-            }
-        }
-        return resultado;
-    }
+   /* public List<Pedido> buscarPedidos(String clienteId, EstadosPedido estado, LocalDate fecha) {
 
-}
+    }*/
+ }

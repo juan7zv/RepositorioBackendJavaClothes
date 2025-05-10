@@ -15,16 +15,11 @@ import com.example.demo.repository.UsuarioRepository;
 @Service
 public class NotificacionService {
 
-    private NotificacionRepository notificacionRepository; // Inyectar el repositorio de notificaciones
-    private UsuarioRepository usuariorepository; //traer clientes de ejemplo para usar en initSampleData
-    private PedidoRepository pedidoRepository; //traer pedidos de ejemplo para usar en initSampleData
-
+    private NotificacionRepository notificacionRepository;
+    
     @Autowired
-    public NotificacionService(NotificacionRepository notificacionRepository, UsuarioRepository usuariorepository,
-                                PedidoRepository pedidoRepository) {
-        this.notificacionRepository = notificacionRepository; // Inicializar el repositorio
-        this.pedidoRepository = pedidoRepository;
-        this.usuariorepository = usuariorepository;
+    public NotificacionService(NotificacionRepository notificacionRepository) {
+    	this.notificacionRepository = notificacionRepository;
     }
 
 
@@ -49,7 +44,7 @@ public class NotificacionService {
     }
 
     //Buscar notificaciones por cliente
-    public List<Notificacion> findByCliente(String clienteId) {
+    public List<Notificacion> findByCliente(int clienteId) {
         return notificacionRepository.findByCliente(clienteId); // Llamar al método del repositorio
     }
 

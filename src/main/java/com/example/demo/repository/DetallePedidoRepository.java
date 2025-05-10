@@ -4,44 +4,44 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 import com.example.demo.model.DetallePedido;
+import com.example.demo.model.Notificacion;
 import com.example.demo.model.Pedido;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 
 @Repository
 public class DetallePedidoRepository {
-	private final List<DetallePedido> detalles = new ArrayList<>();
+	@PersistenceContext
+	EntityManager entityManager;
 	
 	//guardar detalles
 	public DetallePedido save(DetallePedido detalle) {
-		detalles.add(detalle);
-		return detalle;
+		entityManager.persist(detalle); 
+		return detalle; 	
 	}
 
 	
 	//obtener detalles por pedido
-	public List<DetallePedido> findByPedido(Pedido pedido) {
-		List<DetallePedido> resultado = new ArrayList<>();
-		for (DetallePedido detalle : detalles) {
-			if (detalle.getPedido().equals(pedido)) {
-				resultado.add(detalle);
-			}
-		}
-		return resultado; // Devuelve una lista con los detalles del pedido
+	public DetallePedido findByPedido(int idPedido) {
+		Query query = entityManager.createNativeQuery("SELECT * FROM DetallePedido WHERE pedi_id = :idPedido", DetallePedido.class);
+		query.setParameter("idPedido", idPedido); // Establece el parámetro de la consulta
+		DetallePedido detalle = (DetallePedido) query.getSingleResult(); // Obtiene el resultado único
+		return detalle; 
 	}
 	
 	//actualizar detalles de pedido
 	public DetallePedido update(DetallePedido detalle) {
-		for (int i = 0; i < detalles.size(); i++) {
-			if (detalles.get(i).getDetalleId().equals(detalle.getDetalleId())) {
-				detalles.set(i, detalle); // Reemplaza el detalle existente con el nuevo
-				return detalle;
-			}
-		}
-		return null;
+		entityManager.merge(detalle); 
+		return detalle; 
 	}
 
 	//eliminar detalles de pedido
 	public void deletedById(Integer id) {
-		detalles.removeIf(detalle -> detalle.getDetalleId().equals(id)); // Elimina el detalle con el ID especificado
+		Query query = entityManager.createNativeQuery("DELETE FROM DetallePedido WHERE pedi_id = :id");
+		query.setParameter("id", id); // Establece el parámetro de la consulta
+		query.executeUpdate(); // Ejecuta la consulta de eliminación
 	}
 	
 }

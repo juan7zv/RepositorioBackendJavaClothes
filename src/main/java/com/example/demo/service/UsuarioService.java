@@ -15,9 +15,9 @@ public class UsuarioService {
     @Autowired
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
-
     }
 
+ 
     // Métodos CRUD
     public Usuario save(Usuario usuario) {
         return usuarioRepository.save(usuario);

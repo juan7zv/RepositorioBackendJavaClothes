@@ -98,7 +98,7 @@ public class PedidoController {
             @RequestBody @Parameter(description = "Datos actualizados del pedido") Pedido pedido) {
         Pedido existingPedido = pedidoService.findById(id);
         if (existingPedido != null) {
-            pedido.setPedi_id(id);
+            pedido.setPedidoId(id);
             Pedido updatedPedido = pedidoService.update(pedido);
             return new ResponseEntity<>(updatedPedido, HttpStatus.OK);
         } else {
@@ -106,7 +106,7 @@ public class PedidoController {
         }
     }
 
-    @GetMapping("/buscar")
+    /*@GetMapping("/buscar")
     @Operation(summary = "Buscar pedidos por filtros", description = "Busca pedidos por Id del cliente al que pertenece, estado o fecha")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Pedidos encontrados"),
@@ -119,4 +119,6 @@ public class PedidoController {
         List<Pedido> pedidosFiltrados = pedidoService.buscarPedidos(idCliente, estado, fecha);
         return new ResponseEntity<>(pedidosFiltrados, HttpStatus.OK);
     }
+    
+    */
 }
