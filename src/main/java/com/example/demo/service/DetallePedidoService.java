@@ -35,7 +35,7 @@ public class DetallePedidoService {
 	
 	//obtener detalles por pedido
 	public DetallePedido findByPedido(Pedido pedido) {
-		return detallePedidoRepository.findByPedido(pedido.getPedi_id());
+		return detallePedidoRepository.findByPedido(pedido.getPedidoId());
 	}
 	
 }

@@ -1,9 +1,8 @@
 package com.example.demo.repository;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import com.example.demo.model.Producto;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -55,7 +54,6 @@ public class ProductoRepository {
                 query.setParameter("id", id);
                 query.executeUpdate();
     }
-
 
  /*   TODO  // Método para buscar productos por filtros
     public List<Producto> buscarPorFiltros(String nombre, Double precioMin, Double precioMax) {

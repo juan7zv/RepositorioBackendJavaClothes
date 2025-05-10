@@ -6,7 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 /**
@@ -19,17 +23,20 @@ import jakarta.persistence.Table;
 public class DetallePedido {
 	
 	@Id
-	@Column(nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //(auto-incremental)
+	@Column(name = "detalle_id", nullable = false)
     private int detalleId;
 	
-	@Column(nullable = false)
+	@Column(name = "cantidad", nullable = false)
     private int cantidad;
 	
-	@Column(nullable = false)
-    private int pedi_id;
+	@OneToOne // (foreing key)
+    @JoinColumn(name = "pedi_id", nullable = false)
+    private Pedido pedido;
 	
-	@Column(nullable = false)
-    private int prod_id; 
+	@OneToOne // (foreing key)
+	@JoinColumn(name = "prod_id", nullable = false)
+    private Producto producto; 
 
     public DetallePedido() {
        
@@ -53,19 +60,19 @@ public class DetallePedido {
         this.cantidad = cantidad;
     }
 
-    public int getIdPedido() {
-        return pedi_id;
+    public Pedido getPedido() {
+        return pedido;
     }
 
-    public void setIdPedido(int idPedido) {
-        this.pedi_id = idPedido;
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
-    public int getIdProducto() {
-        return prod_id;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setProducto(int productoId) {
-        this.pedi_id = productoId;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 }

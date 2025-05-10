@@ -1,42 +1,39 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*;
+import com.example.demo.model.Pedido;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "factura")
 public class Factura {
-    private int facturaId;
-    private double totalPagar;
-    private LocalDate fecha;
-    //private Pedido pedido;
-/*
-    public Factura(int facturaId, double totalPagar, LocalDate fecha, Pedido pedido) {
-        this.facturaId = facturaId;
-        this.totalPagar = totalPagar;
-        this.fecha = fecha;
-        //this.pedido = pedido;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer fact_id;
+
+    @OneToOne
+    @JoinColumn(name = "pedi_id", nullable = false)
+    private Pedido pedido;
+
+    @Column(nullable = false)
+    private LocalDate fecha_fact;
+
+    @Column(nullable = false)
+    private Double total_pagar;
+
+    // Constructor por defecto (necesario para JPA y Jackson)
+    public Factura() {
     }
 
-    public int getFacturaId() {
-        return facturaId;
+    // getters and setters
+
+
+    public Integer getFact_id() {
+        return fact_id;
     }
 
-    public void setFacturaId(int facturaId) {
-        this.facturaId = facturaId;
-    }
-
-    public double getTotalPagar() {
-        return totalPagar;
-    }
-
-    public void setTotalPagar(double totalPagar) {
-        this.totalPagar = totalPagar;
-    }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
+    public void setFact_id(Integer fact_id) {
+        this.fact_id = fact_id;
     }
 
     public Pedido getPedido() {
@@ -45,5 +42,31 @@ public class Factura {
 
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
-    }*/
+    }
+
+    public LocalDate getFecha_fact() {
+        return fecha_fact;
+    }
+
+    public void setFecha_fact(LocalDate fecha_fact) {
+        this.fecha_fact = fecha_fact;
+    }
+
+    public Double getTotal_pagar() {
+        return total_pagar;
+    }
+
+    public void setTotal_pagar(Double total_pagar) {
+        this.total_pagar = total_pagar;
+    }
+
+    @Override
+    public String toString() {
+        return "Factura{" +
+                "fact_id=" + fact_id +
+                ", pedido=" + pedido +
+                ", fecha_fact=" + fecha_fact +
+                ", total_pagar=" + total_pagar +
+                '}';
+    }
 }

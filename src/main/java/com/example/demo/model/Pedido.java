@@ -3,6 +3,7 @@ package com.example.demo.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import com.example.demo.model.enums.EstadosPedido;
+import jakarta.persistence.*;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,24 +18,28 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "pedido")
 public class Pedido {
+	
     @Id
-    @Column(nullable = false)
-    private Integer pedi_id;
-    
-    @Column(nullable = false)
-    private Integer usua_id;
-    
-    @Column(nullable = false)
-    private Integer fact_id;
-    
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //genera automaticamente el id (auto-incremental)
+    @Column(name = "pedi_id")
+    private Integer pediId;
+
+    @OneToOne //Cuando una entidad está asociada con exactamente una instancia de otra entidad (foreing key)
+    @JoinColumn(name = "fact_id", nullable = false)
+    private Factura factura;
+
+    @OneToOne
+    @JoinColumn(name = "usua_id", nullable = false)
+    private Usuario usuario;
+
+    @Column(name = "estado", nullable = false)
     private EstadosPedido estado;
     
-    @Column(nullable = false)
-    private LocalDate fecha_ped;
+    @Column(name = "fecha_ped", nullable = false)
+    private LocalDate fechaPedido;
     
-    @Column(nullable = false)
-    private String codigo_comp;
+    @Column(name = "codigo_comp", nullable = false)
+    private String codigoCompra;
     
     // private ArrayList<DetallePedido> detallesVenta;
 
@@ -44,19 +49,19 @@ public class Pedido {
  
     //getters and setters
     public Integer getPedidoId() {
-        return pedi_id;
+        return pediId;
     }
 
     public void setPedidoId(Integer pedi_id) {
-        this.pedi_id = pedi_id;
+        this.pediId = pedi_id;
     }
 
-    public int getIdCliente() {
-        return usua_id;
+    public Usuario getCliente() {
+        return usuario;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.usua_id = idCliente;
+    public void setCliente(Usuario user) {
+        this.usuario = user;
     }
 
     public EstadosPedido getEstado() {
@@ -68,80 +73,34 @@ public class Pedido {
     }
 
     public LocalDate getFecha() {
-        return fecha_ped;
+        return fechaPedido;
     }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha_ped = fecha;
+    public void setFecha(LocalDate fechaPedido) {
+        this.fechaPedido = fechaPedido;
     }
 
-    public int getIdFactura() {
-        return fact_id;
+    public Factura getFactura() {
+        return factura;
     }
 
-    public void setFactura(int idFactura) {
-        this.fact_id = idFactura;
+    public void setFactura(Factura factura) {
+        this.factura = factura;
     }
 
     public String getCodigoCompra() {
-        return codigo_comp;
+        return codigoCompra;
     }
 
     public void setCodigoCompra(String codigoCompra) {
-        this.codigo_comp = codigoCompra;
+        this.codigoCompra = codigoCompra;
     }
 
-	public Integer getPedi_id() {
-		return pedi_id;
-	}
-
-	public void setPedi_id(Integer pedi_id) {
-		this.pedi_id = pedi_id;
-	}
-
-	public Integer getUsua_id() {
-		return usua_id;
-	}
-
-	public void setUsua_id(Integer usua_id) {
-		this.usua_id = usua_id;
-	}
-
-	public Integer getFact_id() {
-		return fact_id;
-	}
-
-	public void setFact_id(Integer fact_id) {
-		this.fact_id = fact_id;
-	}
-
-	public EstadosPedido getEstadoPedido() {
-		return estado;
-	}
-
-	public void setEstadoPedido(EstadosPedido estado) {
-		this.estado = estado;
-	}
-
-	public LocalDate getFecha_ped() {
-		return fecha_ped;
-	}
-
-	public void setFecha_ped(LocalDate fecha_ped) {
-		this.fecha_ped = fecha_ped;
-	}
-
-	public String getCodigo_comp() {
-		return codigo_comp;
-	}
-
-	public void setCodigo_comp(String codigo_comp) {
-		this.codigo_comp = codigo_comp;
-	}
 	
     @Override
 	public String toString() {
-		return "Pedido{" + "pedi_id=" + pedi_id + ", usua_id=" + usua_id + ", fact_id=" + fact_id + ", estado=" + estado + ", fecha_ped=" + fecha_ped + ", codigo_comp=" + codigo_comp + '}';
+    	return "Pedido [pedi_id=" + pediId + ", factura=" + factura + ", usuario=" + usuario + ", estado=" + estado
+    							+ ", fechaPedido=" + fechaPedido + ", codigoCompra=" + codigoCompra + "]";
     }
 
 }

@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import com.example.demo.model.enums.RolUsuario;
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

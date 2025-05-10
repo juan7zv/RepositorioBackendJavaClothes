@@ -84,7 +84,7 @@ public class DetallePedidoController {
                 }
             }
             // 3. Actualizar el pedido con los nuevos detalles
-            pedido.setPedidoId(id);
+            pedido.setPedi_id(id);
             Pedido updatedPedido = pedidoService.update(pedido);
             return new ResponseEntity<>(updatedPedido, HttpStatus.OK);
         } else {

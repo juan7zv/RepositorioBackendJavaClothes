@@ -1,28 +1,38 @@
 package com.example.demo.model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "notificacion")
 public class Notificacion {
 	@Id
-	@Column(nullable = false)
-    private Integer noti_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //(auto-incremental)
+	@Column(name = "noti_id", nullable = false)
+    private Integer notiId;
 	
-	@Column(nullable = false)
-	private Integer pedi_id;
+	@OneToOne
+	@JoinColumn(name = "pedi_id", nullable = false) //
+	private Pedido pedido;
 	
-	@Column(nullable = false)
-	private Integer usua_id;
+	@ManyToOne //porque pueden haber múltiples notificaciones por user
+	@JoinColumn(name = "usua_id", nullable = false)
+	private Usuario usuario;
 	
-	@Column(nullable = false)
+	@Column(name = "mensaje", nullable = false)
     private String mensaje;
 	
-	@Column(nullable = false)
-    private String fecha;
+	@Column(name = "fecha", nullable = false)
+    private LocalDate fecha;
     
 	//constructor
     public Notificacion() {
@@ -31,12 +41,12 @@ public class Notificacion {
     
     //getters and setters
 
-    public Integer noti_id() {
-        return noti_id;
+    public Integer getNotiId() {
+        return notiId;
     }
 
-    public void setNoti_id(Integer noti_id) {
-        this.noti_id = noti_id;
+    public void setNotiId(Integer noti_id) {
+        this.notiId = noti_id;
     }
 
     public String getMensaje() {
@@ -47,34 +57,34 @@ public class Notificacion {
         this.mensaje = mensaje;
     }
 
-    public String getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
-    public int getusua_id() {
-        return usua_id;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUsua_id(int clienteId) {
-        this.usua_id = clienteId;
+    public void setUsuario(Usuario user) {
+        this.usuario = user;
     }
 
-    public int getIdPedido() {
-        return pedi_id;
+    public Pedido getPedido() {
+        return pedido;
     }
 
-    public void setPedido(int idPedido) {
-        this.pedi_id = idPedido;
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
     @Override
     public String toString() {
-		return "Notificacion [noti_id=" + noti_id + ", pedi_id=" + pedi_id + ", usua_id=" + usua_id + ", mensaje="
-				+ mensaje + ", fecha=" + fecha + "]";
+		return "Notificacion [noti_id=" + notiId + ", mensaje=" + mensaje + ", fecha=" + fecha + ", usuario=" + usuario
+				+ ", pedido=" + pedido + "]";
 	}
     
 }

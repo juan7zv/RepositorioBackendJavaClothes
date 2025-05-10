@@ -30,3 +30,4 @@ target/*
 src/main/resources/*.properties
 *.swp
 /target/
+.idea/
