@@ -106,7 +106,7 @@ public class PedidoController {
         }
     }
 
-    @GetMapping("/buscar")
+    /*@GetMapping("/buscar")
     @Operation(summary = "Buscar pedidos por filtros", description = "Busca pedidos por Id del cliente al que pertenece, estado o fecha")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Pedidos encontrados"),
@@ -119,4 +119,6 @@ public class PedidoController {
         List<Pedido> pedidosFiltrados = pedidoService.buscarPedidos(idCliente, estado, fecha);
         return new ResponseEntity<>(pedidosFiltrados, HttpStatus.OK);
     }
+    
+    */
 }

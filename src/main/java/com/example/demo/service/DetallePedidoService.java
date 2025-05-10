@@ -15,19 +15,12 @@ public class DetallePedidoService {
 	
 	@Autowired //Autowired es una anotación de Spring que permite inyectar dependencias
 	public DetallePedidoService(DetallePedidoRepository detallePedidoRepository) {
-		this.detallePedidoRepository = detallePedidoRepository; // Inicializar el repositorio
-		initSampleData(); // Inicializar datos de ejemplo
-	}
-	
-	// Método para inicializar datos de ejemplo
-	public void initSampleData() {
-		
+		this.detallePedidoRepository = detallePedidoRepository; 
 	}
 	
 	//guardar un detalle de pedido
 	public DetallePedido save(DetallePedido detallePedido) {
-		return detallePedidoRepository.save(detallePedido); // Llamar al método save del repositorio
-	}
+		return detallePedidoRepository.save(detallePedido);	}
 	
 	//eliminar un detalle de pedido
 	public void deleteById(Integer id) {
@@ -41,8 +34,8 @@ public class DetallePedidoService {
 	}
 	
 	//obtener detalles por pedido
-	public List<DetallePedido> findByPedido(Pedido pedido) {
-		return detallePedidoRepository.findByPedido(pedido); 
+	public DetallePedido findByPedido(Pedido pedido) {
+		return detallePedidoRepository.findByPedido(pedido.getPedi_id());
 	}
 	
 }

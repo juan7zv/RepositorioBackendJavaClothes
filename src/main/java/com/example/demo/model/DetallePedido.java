@@ -4,33 +4,44 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 /**
  *
  * @author Rossi
  */
 
+@Entity
+@Table(name = "detalle_pedido")
 public class DetallePedido {
-    private String detalleId; //es necesario?
+	
+	@Id
+	@Column(nullable = false)
+    private int detalleId;
+	
+	@Column(nullable = false)
     private int cantidad;
-    private Pedido pedido;
-    private Producto producto; 
+	
+	@Column(nullable = false)
+    private int pedi_id;
+	
+	@Column(nullable = false)
+    private int prod_id; 
 
     public DetallePedido() {
        
     }
 
-    public DetallePedido(String detalleId, int cantidad, Pedido pedido, Producto producto) {
-        this.detalleId = detalleId;
-        this.cantidad = cantidad;
-        this.pedido = pedido;
-        this.producto = producto;
-    }
+    //getters and setters
 
-    public String getDetalleId() {
+    public int getDetalleId() {
         return detalleId;
     }
 
-    public void setDetalleId(String detalleId) {
+    public void setDetalleId(int detalleId) {
         this.detalleId = detalleId;
     }
 
@@ -42,19 +53,19 @@ public class DetallePedido {
         this.cantidad = cantidad;
     }
 
-    public Pedido getPedido() {
-        return pedido;
+    public int getIdPedido() {
+        return pedi_id;
     }
 
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
+    public void setIdPedido(int idPedido) {
+        this.pedi_id = idPedido;
     }
 
-    public Producto getProducto() {
-        return producto;
+    public int getIdProducto() {
+        return prod_id;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public void setProducto(int productoId) {
+        this.pedi_id = productoId;
     }
 }

@@ -1,30 +1,42 @@
 package com.example.demo.model;
 
-public class Notificacion {
-    private Integer idNotificacion;
-    private String mensaje;
-    private String fecha;
-    private Usuario cliente;
-    private Pedido pedido; //pedido asociado a la notificación
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "notificacion")
+public class Notificacion {
+	@Id
+	@Column(nullable = false)
+    private Integer noti_id;
+	
+	@Column(nullable = false)
+	private Integer pedi_id;
+	
+	@Column(nullable = false)
+	private Integer usua_id;
+	
+	@Column(nullable = false)
+    private String mensaje;
+	
+	@Column(nullable = false)
+    private String fecha;
+    
+	//constructor
     public Notificacion() {
         
     }
+    
+    //getters and setters
 
-    public Notificacion(Integer idNotificacion, String mensaje, String fecha, Usuario cliente, Pedido pedido) {
-        this.idNotificacion = idNotificacion;
-        this.mensaje = mensaje;
-        this.fecha = fecha;
-        this.cliente = cliente;
-        this.pedido = pedido;
+    public Integer noti_id() {
+        return noti_id;
     }
 
-    public Integer getIdNotificacion() {
-        return idNotificacion;
-    }
-
-    public void setIdNotificacion(Integer idNotificacion) {
-        this.idNotificacion = idNotificacion;
+    public void setNoti_id(Integer noti_id) {
+        this.noti_id = noti_id;
     }
 
     public String getMensaje() {
@@ -43,26 +55,26 @@ public class Notificacion {
         this.fecha = fecha;
     }
 
-    public Usuario getCliente() {
-        return cliente;
+    public int getusua_id() {
+        return usua_id;
     }
 
-    public void setCliente(Usuario cliente) {
-        this.cliente = cliente;
+    public void setUsua_id(int clienteId) {
+        this.usua_id = clienteId;
     }
 
-    public Pedido getPedido() {
-        return pedido;
+    public int getIdPedido() {
+        return pedi_id;
     }
 
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
+    public void setPedido(int idPedido) {
+        this.pedi_id = idPedido;
     }
 
     @Override
     public String toString() {
-        return "Notificacion [idNotificacion=" + idNotificacion + ", mensaje=" + mensaje + ", fecha=" + fecha
-                + ", cliente=" + cliente + ", pedido=" + pedido + "]";
-    }
-
+		return "Notificacion [noti_id=" + noti_id + ", pedi_id=" + pedi_id + ", usua_id=" + usua_id + ", mensaje="
+				+ mensaje + ", fecha=" + fecha + "]";
+	}
+    
 }

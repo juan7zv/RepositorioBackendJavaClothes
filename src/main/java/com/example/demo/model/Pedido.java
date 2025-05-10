@@ -4,57 +4,59 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import com.example.demo.model.enums.EstadosPedido;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 /**
  *
  * @author Rossi
  */
+
+@Entity
+@Table(name = "pedido")
 public class Pedido {
-
-    private Integer pedidoId;
-    private Factura factura;
-    private Usuario cliente;
+    @Id
+    @Column(nullable = false)
+    private Integer pedi_id;
+    
+    @Column(nullable = false)
+    private Integer usua_id;
+    
+    @Column(nullable = false)
+    private Integer fact_id;
+    
+    @Column(nullable = false)
     private EstadosPedido estado;
-    private LocalDate fecha;
-    private String codigoCompra;
-    private ArrayList<DetallePedido> detallesVenta;
+    
+    @Column(nullable = false)
+    private LocalDate fecha_ped;
+    
+    @Column(nullable = false)
+    private String codigo_comp;
+    
+    // private ArrayList<DetallePedido> detallesVenta;
 
-    public Pedido() {
+    public Pedido() { // Constructor vacío
 
     }
-
-    public Pedido(Integer pedidoId, Factura factura, Usuario cliente, EstadosPedido estado, LocalDate fecha,
-        String codigoCompra, ArrayList<DetallePedido> detallesVenta) {
-        this.pedidoId = pedidoId;
-        this.factura = factura;
-        this.cliente = cliente;
-        this.estado = estado;
-        this.fecha = fecha;
-        this.codigoCompra = codigoCompra;
-        this.detallesVenta = detallesVenta;
-    }
-
-    public void agregarDetalle(DetallePedido detalle) {
-        detallesVenta.add(detalle);
-    }
-
-    public void eliminarDetalle(DetallePedido detalle) {
-        detallesVenta.remove(detalle);
-    }
-
+ 
+    //getters and setters
     public Integer getPedidoId() {
-        return pedidoId;
+        return pedi_id;
     }
 
-    public void setPedidoId(Integer pedidoId) {
-        this.pedidoId = pedidoId;
+    public void setPedidoId(Integer pedi_id) {
+        this.pedi_id = pedi_id;
     }
 
-    public Usuario getCliente() {
-        return cliente;
+    public int getIdCliente() {
+        return usua_id;
     }
 
-    public void setCliente(Usuario cliente) {
-        this.cliente = cliente;
+    public void setIdCliente(int idCliente) {
+        this.usua_id = idCliente;
     }
 
     public EstadosPedido getEstado() {
@@ -66,41 +68,80 @@ public class Pedido {
     }
 
     public LocalDate getFecha() {
-        return fecha;
+        return fecha_ped;
     }
 
     public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
+        this.fecha_ped = fecha;
     }
 
-    public ArrayList<DetallePedido> getDetallesVenta() {
-        return detallesVenta;
+    public int getIdFactura() {
+        return fact_id;
     }
 
-    public void setDetallesVenta(ArrayList<DetallePedido> detallesVenta) {
-        this.detallesVenta = detallesVenta;
-    }
-
-    public Factura getFactura() {
-        return factura;
-    }
-
-    public void setFactura(Factura factura) {
-        this.factura = factura;
+    public void setFactura(int idFactura) {
+        this.fact_id = idFactura;
     }
 
     public String getCodigoCompra() {
-        return codigoCompra;
+        return codigo_comp;
     }
 
     public void setCodigoCompra(String codigoCompra) {
-        this.codigoCompra = codigoCompra;
+        this.codigo_comp = codigoCompra;
     }
 
+	public Integer getPedi_id() {
+		return pedi_id;
+	}
+
+	public void setPedi_id(Integer pedi_id) {
+		this.pedi_id = pedi_id;
+	}
+
+	public Integer getUsua_id() {
+		return usua_id;
+	}
+
+	public void setUsua_id(Integer usua_id) {
+		this.usua_id = usua_id;
+	}
+
+	public Integer getFact_id() {
+		return fact_id;
+	}
+
+	public void setFact_id(Integer fact_id) {
+		this.fact_id = fact_id;
+	}
+
+	public EstadosPedido getEstadoPedido() {
+		return estado;
+	}
+
+	public void setEstadoPedido(EstadosPedido estado) {
+		this.estado = estado;
+	}
+
+	public LocalDate getFecha_ped() {
+		return fecha_ped;
+	}
+
+	public void setFecha_ped(LocalDate fecha_ped) {
+		this.fecha_ped = fecha_ped;
+	}
+
+	public String getCodigo_comp() {
+		return codigo_comp;
+	}
+
+	public void setCodigo_comp(String codigo_comp) {
+		this.codigo_comp = codigo_comp;
+	}
+	
     @Override
-    public String toString() {
-        return "Pedido [pedidoId=" + pedidoId + ", cliente=" + cliente + ", fecha=" + fecha + ", codigoCompra="
-                + codigoCompra + ", detallesVenta=" + detallesVenta + "]";
+	public String toString() {
+		return "Pedido{" + "pedi_id=" + pedi_id + ", usua_id=" + usua_id + ", fact_id=" + fact_id + ", estado=" + estado + ", fecha_ped=" + fecha_ped + ", codigo_comp=" + codigo_comp + '}';
     }
 
 }

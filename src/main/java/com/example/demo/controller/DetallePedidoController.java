@@ -54,18 +54,18 @@ public class DetallePedidoController {
         @ApiResponse(responseCode = "200", description = "Detalles encontrados"),
         @ApiResponse(responseCode = "404", description = "Pedido no encontrado")
     })
-    public ResponseEntity<List<DetallePedido>> getDetallesByPedidoId(@PathVariable @Parameter(description = "ID del pedido") Integer id) {
+    public ResponseEntity<DetallePedido> getDetallesByPedidoId(@PathVariable @Parameter(description = "ID del pedido") Integer id) {
         // 1. Buscar el pedido por ID
         Pedido pedido = pedidoService.findById(id);
         if (pedido == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // 2. Buscar los detalles por pedido
-        List<DetallePedido> detalles = detallePedidoService.findByPedido(pedido);
-        return new ResponseEntity<>(detalles, HttpStatus.OK);
+        DetallePedido detalle = detallePedidoService.findByPedido(pedido);
+        return new ResponseEntity<>(detalle, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+ /*   @PutMapping("/{id}")
     @Operation(summary = "Actualizar el detalle de un pedido", description = "Actualiza los detalles de un pedido existente.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Detalle del pedido actualizado con éxito"),
@@ -91,7 +91,7 @@ public class DetallePedidoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-    }
+    } */
 }
 
 //    @GetMapping

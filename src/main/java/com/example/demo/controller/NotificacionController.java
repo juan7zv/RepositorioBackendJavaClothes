@@ -95,7 +95,7 @@ public class NotificacionController {
                 @RequestBody @Parameter(description = "Datos actualizados de la notificación") Notificacion noti) {
             Notificacion existingNotificacion = notificacionService.findById(id);
             if (existingNotificacion != null) {
-                noti.setIdNotificacion(id);
+                noti.setNoti_id(id);
                 Notificacion updatedNotificacion = notificacionService.update(noti);
                 return new ResponseEntity<>(updatedNotificacion, HttpStatus.OK);
             } else {
