@@ -32,9 +32,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    // getters and setters
-
-
+    // getters and setter
     public Integer getUsua_id() {
         return usua_id;
     }
