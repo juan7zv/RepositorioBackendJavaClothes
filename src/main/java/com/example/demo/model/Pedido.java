@@ -25,7 +25,7 @@ public class Pedido {
     private Integer pediId;
 
     @OneToOne //Cuando una entidad está asociada con exactamente una instancia de otra entidad (foreing key)
-    @JoinColumn(name = "fact_id", nullable = false)
+    @JoinColumn(name = "fact_id", nullable = true)
     private Factura factura;
 
     @OneToOne
@@ -35,7 +35,7 @@ public class Pedido {
     @Column(name = "estado", nullable = false)
     private EstadosPedido estado;
     
-    @Column(name = "fecha_ped", nullable = false)
+    @Column(name = "fecha_ped", insertable = false, updatable = false) // La BD lo gestiona)
     private LocalDate fechaPedido;
     
     @Column(name = "codigo_comp", nullable = false)
