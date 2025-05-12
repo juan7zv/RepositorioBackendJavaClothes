@@ -1,12 +1,16 @@
 package com.example.demo.dto;
 
-public class UsuarioLogin {
-    private Integer idUsuario;
-    private String clave;
+import jakarta.validation.constraints.NotBlank;
 
-    public UsuarioLogin(Integer idUsuario, String clave) {
+public class UsuarioLogin {
+    @NotBlank  private Integer idUsuario;
+    @NotBlank  private String clave;
+    @NotBlank  private Integer rolUsuario;
+
+    public UsuarioLogin(Integer idUsuario, String clave, Integer rolUsuario) {
         this.idUsuario = idUsuario;
         this.clave = clave;
+        this.rolUsuario = rolUsuario;
     }
 
     public Integer getIdUsuario() {
@@ -24,4 +28,13 @@ public class UsuarioLogin {
     public void setClave(String clave) {
         this.clave = clave;
     }
+
+    public Integer getRolUsuario() {
+        return rolUsuario;
+    }
+
+    public void setRolUsuario(Integer rolUsuario) {
+        this.rolUsuario = rolUsuario;
+    }
+
 }

@@ -14,9 +14,9 @@ public class CarritoComprasService {
     public CarritoComprasService( CarritoComprasRepository carritoComprasRepository, UsuarioService usuarioService) {
         this.carritoComprasRepository = carritoComprasRepository;
         this.usuarioService = usuarioService;
-        initSampleData();
+        //initSampleData();
     }
-
+/*
     private void initSampleData() {
          CarritoCompras carroCliente1 = new CarritoCompras(111, usuarioService.findById(777777));
          CarritoCompras carroCliente2 = new CarritoCompras(222, usuarioService.findById(999999));
@@ -24,7 +24,7 @@ public class CarritoComprasService {
         save(carroCliente1);
         save(carroCliente2);
         save(carroCliente3);
-    }
+    } */
 
     public CarritoCompras save(CarritoCompras carritoCompras) {
         return carritoComprasRepository.save(carritoCompras);

@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.example.demo.model.Usuario;
 import jakarta.persistence.EntityManager;
@@ -22,34 +23,41 @@ public class UsuarioRepository {
         return usuario;
     }
 
+    @Transactional
     // READ BY ID
-    public Usuario findById(Integer id) {
-        Query query = entityManager.createNativeQuery("SELECT * FROM usuario WHERE usua_id = :id", Usuario.class);
+    public Optional<Usuario> findById(Integer id) {
+        Query query = entityManager.createNativeQuery("SELECT * FROM usuarios WHERE usua_id = :id", Usuario.class);
                 query.setParameter("id", id);
                 try {
-                    return (Usuario) query.getSingleResult();
+                    Usuario usuario = (Usuario) query.getSingleResult();
+                    return Optional.of(usuario);
                 } catch (Exception e) {
-                    return null;
+                    return  Optional.empty();
                 }
     }
 
     // READ ALL
     public List<Usuario> findAll() {
-        Query query = entityManager.createNativeQuery("SELECT * FROM usuario", Usuario.class);
+        Query query = entityManager.createNativeQuery("SELECT * FROM usuarios", Usuario.class);
         return query.getResultList();
     }
 
     // UPDATE
     @Transactional
-    public Usuario update(Usuario usuario) {
-        entityManager.merge(usuario);
-        return usuario;
+    public Optional<Usuario> update(Integer id, Usuario usuario) {
+        return Optional.ofNullable(entityManager.find(Usuario.class, id))
+                .map(existing -> {
+                    existing.setNombre(usuario.getNombre());
+                    existing.setClave(usuario.getClave());
+                    existing.setCorreo(usuario.getCorreo());
+                    return entityManager.merge(existing);
+                });
     }
 
     // DELETE
     @Transactional
     public void deleteById(Integer id) {
-        Query query = entityManager.createNativeQuery("DELETE FROM usuario WHERE usua_id = :id");
+        Query query = entityManager.createNativeQuery("DELETE FROM usuarios WHERE usua_id = :id");
                 query.setParameter("id", id);
                 query.executeUpdate();
     }
