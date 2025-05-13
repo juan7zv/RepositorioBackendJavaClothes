@@ -20,9 +20,9 @@ public class FavoritoService {
 	        this.favoritoRepository = favoritoRepository;
 	        this.productoService = productoService;
 	        this.usuarioService = usuarioService;
-	        initSampleData();
+	        //initSampleData();
 	    }
-
+/*
 	    private void initSampleData() {
 			Usuario usuario1 = usuarioService.findById(123456);
 			Favorito urbanPoloFemenino = new Favorito(1, usuario1, productoService.findById(100));
@@ -36,7 +36,7 @@ public class FavoritoService {
 	    	Favorito sportVibeRetro = new Favorito(3, usuario3, productoService.findById(100));
 			save(sportVibeRetro);
 
-	    }
+	    } */
 
 	    public Favorito save(Favorito favorito) {
 	        return favoritoRepository.save(favorito);
