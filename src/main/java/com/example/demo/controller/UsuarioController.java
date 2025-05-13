@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.example.demo.dto.UsuarioLogin;
 import com.example.demo.model.Usuario;
@@ -8,15 +9,14 @@ import com.example.demo.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,12 +29,37 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/api/usuarios")
 @Tag(name = "Usuarios", description = "API para la gestión de usuarios")
 public class UsuarioController {
+    private final PasswordEncoder passwordEncoder;
     private final UsuarioService usuarioService;
 
     @Autowired
-    public UsuarioController(UsuarioService usuarioService) {
+    public UsuarioController(PasswordEncoder passwordEncoder,UsuarioService usuarioService) {
+        this.passwordEncoder = passwordEncoder;
         this.usuarioService = usuarioService;
     }
+
+    // LOGIN
+    @PostMapping("/login")
+    @Operation(summary = "Loguear Usuario", description = "Valida las credenciales del usuario para el inicio de sesión.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario logueado con éxito"),
+            @ApiResponse(responseCode = "401", description = "Usuario o contraseña incorrectos")
+    })
+    public ResponseEntity<?> loginUsuario(@RequestBody @Parameter(description = "ID del usuario") UsuarioLogin usuarioLogin) {
+        Optional<Usuario> optionalUsuario = usuarioService.findById(usuarioLogin.getIdUsuario());
+
+        if (optionalUsuario.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        }
+        Usuario usuario = optionalUsuario.get();
+        // 2. Verificar la contraseña
+        if (!passwordEncoder.matches(usuarioLogin.getClave(), usuario.getClave())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+        }
+        // 3. Si todo es correcto, devolver una respuesta apropiada (considera usar DTO sin contraseña)
+        return ResponseEntity.ok(usuario);
+    }
+
 
     // CREATE
     @PostMapping
@@ -43,7 +68,8 @@ public class UsuarioController {
             @ApiResponse(responseCode = "201", description = "Usuario creado con éxito"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
-    public ResponseEntity<Usuario> createUsuario(@RequestBody @Parameter(description = "Datos del usuario a crear") Usuario usuario) {
+    public ResponseEntity<Usuario> createUsuario(@RequestBody @Parameter(description = "Datos del usuario a crear")
+                                                     Usuario usuario) {
         Usuario newUsuario = usuarioService.save(usuario);
         return new ResponseEntity<>(newUsuario, HttpStatus.CREATED);
     }
@@ -68,9 +94,9 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     public ResponseEntity<Usuario> getUsuarioById(@PathVariable @Parameter(description = "ID del usuario") Integer id) {
-        Usuario usuario = usuarioService.findById(id);
-        if (usuario != null) {
-            return new ResponseEntity<>(usuario, HttpStatus.OK);
+        Optional<Usuario> usuario = usuarioService.findById(id);
+        if (usuario.isPresent()) {
+            return new ResponseEntity<>(usuario.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -85,13 +111,13 @@ public class UsuarioController {
     })
     public ResponseEntity<Usuario> updateUsuario(@PathVariable @Parameter(description = "ID del usuario") Integer id,
                                                  @RequestBody @Parameter(description = "Datos actualizados del usuario") Usuario usuario) {
-        Usuario existingUsuario = usuarioService.findById(id);
-        if (existingUsuario != null) {
-            existingUsuario.setCorreo(usuario.getCorreo());
-            existingUsuario.setNombre(usuario.getNombre());
-            existingUsuario.setTelefono(usuario.getTelefono());
-            Usuario updatedUsuario = usuarioService.update(existingUsuario);
-            return new ResponseEntity<>(updatedUsuario, HttpStatus.OK);
+        Optional<Usuario> existingUsuario = usuarioService.findById(id);
+        if (existingUsuario.isPresent()) {
+            existingUsuario.get().setCorreo(usuario.getCorreo());
+            existingUsuario.get().setNombre(usuario.getNombre());
+            existingUsuario.get().setTelefono(usuario.getTelefono());
+            Optional<Usuario> updatedUsuario = usuarioService.update(id,existingUsuario.get());
+            return new ResponseEntity<>(updatedUsuario.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -105,9 +131,9 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     public ResponseEntity<Void> deleteUsuario(@PathVariable @Parameter(description = "ID del usuario") Integer id) {
-        Usuario existingUsuario = usuarioService.findById(id);
+        Optional<Usuario> existingUsuario = usuarioService.findById(id);
 
-        if (existingUsuario != null) {
+        if (existingUsuario.isPresent()) {
             usuarioService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
@@ -116,24 +142,7 @@ public class UsuarioController {
 
     }
 
-    // LOGIN
-    @PostMapping("/login")
-    @Operation(summary = "Loguear Usuario", description = "Valida las credenciales del usuario para el inicio de sesión.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuario logueado con éxito"),
-            @ApiResponse(responseCode = "401", description = "Usuario o contraseña incorrectos")
-    })
-    public ResponseEntity<Usuario> loginUsuario(@RequestBody @Parameter(description = "ID del usuario") UsuarioLogin usuarioLogin) {
-
-        Usuario userLogged = usuarioService.login(usuarioLogin.getIdUsuario(), usuarioLogin.getClave());
-        if (userLogged != null) {
-            return new ResponseEntity<>(userLogged,HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    /*
+      /*
     @GetMapping("/buscar")
     @Operation(summary = "Buscar usuarios por filtros", description = "Busca usuarios por nombre, email y edad.")
     @ApiResponses(value = {

@@ -27,6 +27,11 @@ replay_pid*
 *.DS_Store
 bin/*
 target/*
+
+# Excepción: Permitir application.properties
+!src/main/resources/application.properties
+
+# Ignorar otros .properties en resources
 src/main/resources/*.properties
 *.swp
 /target/

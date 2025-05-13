@@ -20,7 +20,9 @@ public class FavoritoService {
 	        this.favoritoRepository = favoritoRepository;
 	        this.productoService = productoService;
 	        this.usuarioService = usuarioService;
+
 	    }
+
 
 
 	    public Favorito save(Favorito favorito) {
