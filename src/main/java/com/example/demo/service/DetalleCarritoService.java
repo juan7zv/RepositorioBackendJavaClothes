@@ -17,21 +17,11 @@ public class DetalleCarritoService {
     @Autowired
     public DetalleCarritoService(DetalleCarritoRepository detalleCarritoRepository, ProductoService productoService) {
 		this.detalleCarritoRepository = detalleCarritoRepository;
-		initSampleData();
         this.productoService = productoService;
     }
 
-    private void initSampleData() {
-        DetalleCarrito detalleCarrito1 = new DetalleCarrito(1, 2, null, null);
-        DetalleCarrito detalleCarrito2 = new DetalleCarrito(2, 3, null, null);
-        DetalleCarrito detalleCarrito3 = new DetalleCarrito(3, 1, null, null);
-        save(detalleCarrito1);
-        save(detalleCarrito2);
-        save(detalleCarrito3);
-        
-    }
 
-    public DetalleCarrito saveProductoCompra(Integer idProducto, CarritoCompras carritoCompras) {
+    /*public DetalleCarrito saveProductoCompra(Integer idProducto, CarritoCompras carritoCompras) {
         DetalleCarrito detalleCarrito = detalleCarritoRepository.findByCarritoIdAndIdProducto(carritoCompras.getCarritoId(), idProducto);
         if(detalleCarrito != null) {
             detalleCarrito.setCantidad(detalleCarrito.getCantidad());
@@ -40,27 +30,27 @@ public class DetalleCarritoService {
             detalleCarrito = new DetalleCarrito(1, 1, carritoCompras, productoService.findById(idProducto));
             return detalleCarritoRepository.save(detalleCarrito);
         }
-    }
+    }*/
 
     public DetalleCarrito save(DetalleCarrito detalleCarrito) {
         return detalleCarritoRepository.save(detalleCarrito);
     }
 
-    public DetalleCarrito findById(int id) {
+   public DetalleCarrito findById(int id) {
         return detalleCarritoRepository.findById(id);
     }
-
+   /*
     public void deleteByProductoIdAndUsuarioId(int productoId, Integer idUsuario) {
         detalleCarritoRepository.deleteByProductoIdAndUsuarioId(productoId, idUsuario);
-    }
+    }*/
 
     public List<DetalleCarrito> findAll() {
         return detalleCarritoRepository.findAll();
     }
-
+    /*
     public List<DetalleCarrito> findByIdUsuario(Integer idUsuario) {
         return detalleCarritoRepository.findByIdUsuario(idUsuario);
-    }
+    }*/
 
     public DetalleCarrito update(DetalleCarrito detalleCarrito) {
         return detalleCarritoRepository.update(detalleCarrito);
@@ -69,8 +59,9 @@ public class DetalleCarritoService {
     public void deleteById(int id) {
     	detalleCarritoRepository.deleteById(id);
     }
-
+    
+/*
     public List<DetalleCarrito> buscarPorFiltros(int idCarrito, int idProducto) {
         return detalleCarritoRepository.buscarPorFiltros(idCarrito, idProducto);
-    }
+    }*/
 }

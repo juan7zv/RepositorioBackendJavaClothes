@@ -79,7 +79,7 @@ public class CarritoComprasController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-
+	/*
 	@PostMapping
 	@Operation(summary = "Crear un nuevo Carrito Compras", description = "Crea un nuevo Carrito Compras con los datos proporcionados.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Carrito Compras creado con éxito"),
@@ -87,7 +87,7 @@ public class CarritoComprasController {
 	public ResponseEntity<CarritoCompras> createCarritoCompras(
 			@RequestBody @Parameter(description = "Datos del Carrito Compras a crear") DetalleCompraCliente carritoCompras) {
 		CarritoCompras createdCarrito = carritoComprasService.save(carritoCompras.getCarritoCompras());
-		detalleCarritoService.saveProductoCompra(carritoCompras.getIdProducto(), createdCarrito);
+		detalleCarritoService.save(carritoCompras);
 		return new ResponseEntity<>(createdCarrito, HttpStatus.CREATED);
 	}
 
@@ -100,12 +100,12 @@ public class CarritoComprasController {
 			@RequestBody @Parameter(description = "Datos actualizados del Carrito Compras") DetalleCompraCliente carritoCompras) {
 		CarritoCompras existingCarritoCompras = carritoComprasService.findById(id);
 		if (existingCarritoCompras != null) {
-			detalleCarritoService.saveProductoCompra(carritoCompras.getIdProducto(), existingCarritoCompras);
+			detalleCarritoService.save(carritoCompras);
 			return new ResponseEntity<>(existingCarritoCompras, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-	}
+	}*/
 
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Eliminar un Carrito Compras", description = "Elimina un Carrito Compras basado en su ID.")
@@ -122,7 +122,7 @@ public class CarritoComprasController {
 		}
 	}
 
-	@GetMapping("/buscar")
+	/*@GetMapping("/buscar")
 	@Operation(summary = "Buscar productos por filtros", description = "Busca Carrito Compras por id del carro o el id del usuario.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Carrito Compras encontrados"),
 			@ApiResponse(responseCode = "400", description = "Parámetros inválidos") })
@@ -134,5 +134,5 @@ public class CarritoComprasController {
 			return new ResponseEntity<>(carritoCompras, HttpStatus.OK);
 		}
 
-	}
+	}*/
 }

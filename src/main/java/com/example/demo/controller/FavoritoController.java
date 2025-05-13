@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 import java.util.List;
 
+import com.example.demo.model.Factura;
 import com.example.demo.model.Favorito;
 import com.example.demo.service.FavoritoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,19 +104,19 @@ public class FavoritoController {
         }
     }
 
-    @GetMapping("/buscar")
+    /* @GetMapping("/buscar")
     @Operation(summary = "Buscar Favoritos por filtros", description = "Busca Favoritos por su id , ususario o producto.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Favoritos encontrados"),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
     })
-    public ResponseEntity<List<Favorito>> buscarFavoritos(
-       	 @RequestParam(value = "idFavorito", required = false, defaultValue = "0") int idFavorito,
-			@RequestParam(value = "usuario", required = false) String usuario,
-			@RequestParam(value = "producto", required = false) String producto) {
-        List<Favorito> favoritos = favoritoService.buscarPorFiltros(idFavorito, usuario, producto);
-        return new ResponseEntity<>(favoritos, HttpStatus.OK);
-    }
+   
 
-
+	public ResponseEntity<List<Favorito>> buscarFavoritos(
+			@RequestParam(required = false) @Parameter(description = "ID del Favorito") Integer id,
+			@RequestParam(required = false) @Parameter(description = "ID del Usuario") Integer usuarioId,
+			@RequestParam(required = false) @Parameter(description = "ID del Producto") Integer productoId) {
+		List<Favorito> favoritos = favoritoService.buscarFavoritos(id, usuarioId, productoId);
+		return new ResponseEntity<>(favoritos, HttpStatus.OK);
+}*/
 }

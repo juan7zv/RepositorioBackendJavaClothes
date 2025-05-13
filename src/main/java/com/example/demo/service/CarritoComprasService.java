@@ -14,17 +14,8 @@ public class CarritoComprasService {
     public CarritoComprasService( CarritoComprasRepository carritoComprasRepository, UsuarioService usuarioService) {
         this.carritoComprasRepository = carritoComprasRepository;
         this.usuarioService = usuarioService;
-        initSampleData();
     }
 
-    private void initSampleData() {
-         CarritoCompras carroCliente1 = new CarritoCompras(111, usuarioService.findById(777777));
-         CarritoCompras carroCliente2 = new CarritoCompras(222, usuarioService.findById(999999));
-         CarritoCompras carroCliente3 = new CarritoCompras(333, usuarioService.findById(123456));
-        save(carroCliente1);
-        save(carroCliente2);
-        save(carroCliente3);
-    }
 
     public CarritoCompras save(CarritoCompras carritoCompras) {
         return carritoComprasRepository.save(carritoCompras);
@@ -49,8 +40,6 @@ public class CarritoComprasService {
     public void deleteById(Integer id) {
          carritoComprasRepository.deleteById(id);
     }
-    public List<CarritoCompras> buscarPorFiltros(Integer carritoId, String usuario) {
-		return  carritoComprasRepository.buscarPorFiltros(carritoId, usuario);
-	}
+  
   
 }
