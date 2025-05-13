@@ -1,14 +1,28 @@
 package com.example.demo.model;
 
-public class Favorito {
-	    private int favoritoId;
-	    private Usuario usuario; 
-	    private Producto producto; 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
-	    public Favorito(int favoritoId, Usuario usuario, Producto producto) {
-	        this.favoritoId = favoritoId;
-	        this.usuario = usuario;
-	        this.producto = producto;
+@Entity
+@Table(name = "favorito")
+public class Favorito {
+	    @Id
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private int favoritoId;
+	    @OneToOne
+	    @JoinColumn(name = "Usua_id", nullable = false)
+	    private Usuario usuario; 
+	    @OneToOne
+	    @JoinColumn(name = "prod_id", nullable = false)
+	    private Producto producto; 
+	    
+	    public Favorito() {
+	       
 	    }
 
 		public int getFavoritoId() {

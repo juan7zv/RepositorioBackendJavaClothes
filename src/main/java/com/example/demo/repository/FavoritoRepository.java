@@ -3,52 +3,52 @@ package com.example.demo.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.model.Factura;
 import com.example.demo.model.Favorito;
-
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class FavoritoRepository {
-    private final List<Favorito> baseDeDatos = new ArrayList<>();
-
+	@PersistenceContext
+    private EntityManager entityManager;
+	@Transactional
     public Favorito save(Favorito favorito) {
-        baseDeDatos.add(favorito);
+		entityManager.persist(favorito);
         return favorito;
     }
 
     public Favorito findById(int id) {
-        for (Favorito favorito : baseDeDatos) {
-            if (favorito.getFavoritoId() == id) {
-                return favorito;
-            }
+        Query query = entityManager.createNativeQuery("SELECT * FROM favorito WHERE favo_id = :id", Favorito.class);
+        query.setParameter("id", id);
+        try {
+            return (Favorito) query.getSingleResult();
+        } catch (Exception e) {
+            return null;
         }
-        return null;
     }
 
     public List<Favorito> findAll() {
-        return new ArrayList<>(baseDeDatos);
+    	 Query query = entityManager.createNativeQuery("SELECT * FROM favorito", Favorito.class);
+         return query.getResultList();
     }
 
-    public void deleteById(int id) {
-        for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getFavoritoId() == id) {
-                baseDeDatos.remove(i);
-                return;
-            }
-        }
+    public void deleteById(Integer id) {
+    	 Query query = entityManager.createNativeQuery("DELETE FROM favorito WHERE favo_id = :id");
+         query.setParameter("id", id);
+         query.executeUpdate();
     }
+    @Transactional
 
     public Favorito update(Favorito favorito) {
-        for (int i = 0; i < baseDeDatos.size(); i++) {
-           if (baseDeDatos.get(i).getFavoritoId() == favorito.getFavoritoId()) {
-				baseDeDatos.set(i, favorito);
-				return favorito;
-            }
-        }
-        return null;
+    	  entityManager.merge(favorito);
+          return favorito;
     }
 
-    public List<Favorito> buscarPorFiltros(int idFavorito, String usuario, String producto) {
+    /*public List<Favorito> buscarPorFiltros(int idFavorito, String usuario, String producto) {
         List<Favorito> resultado = new ArrayList<>();
         for (Favorito favorito : baseDeDatos) {
             boolean coincideidFavorito = (idFavorito == 0 || favorito.getFavoritoId() == idFavorito);
@@ -59,5 +59,5 @@ public class FavoritoRepository {
             }
         }
         return resultado;
-    }
+    }*/
 }

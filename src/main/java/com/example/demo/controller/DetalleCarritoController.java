@@ -92,7 +92,7 @@ public class DetalleCarritoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+/*
     @GetMapping("/buscar")
     @Operation(summary = "Buscar productos por filtros", description = "Busca Detalle Carrito por id o por cantidad.")
     @ApiResponses(value = {
@@ -104,8 +104,8 @@ public class DetalleCarritoController {
 			@RequestParam(required = false) @Parameter(description = "Cantidad del Detalle Carrito") Integer cantidad) {
         List<DetalleCarrito> detalleCarrito = detalleCarritoService.buscarPorFiltros(id, cantidad);
         return new ResponseEntity<>(detalleCarrito, HttpStatus.OK);
-    }
-
+    }*/
+/*
     @GetMapping("/usuario/{idUsuario}")
     @Operation(summary = "Obtener detalle de carrito de compra por USUARIO ", description = "Devuelve un carrito de compra específico basado en el id del carrito y el usuario logueado.")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Carrito de compra encontrado"),
@@ -119,8 +119,8 @@ public class DetalleCarritoController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
-
+    }*/
+    /*
     @DeleteMapping("/producto/{productoId}/usuario/{idUsuario}")
     @Operation(summary = "Eliminar un Detalle Carrito", description = "Elimina un Detalle Carrito basado en Producto Id.")
     @ApiResponses(value = {
@@ -131,5 +131,5 @@ public class DetalleCarritoController {
                                                                 @PathVariable @Parameter(description = "ID del usuario logueado") Integer idUsuario) {
         detalleCarritoService.deleteByProductoIdAndUsuarioId(productoId, idUsuario);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
+    }*/
 }

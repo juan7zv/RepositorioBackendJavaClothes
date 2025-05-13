@@ -1,19 +1,20 @@
 package com.example.demo.model;
 
-import java.util.List;
+import jakarta.persistence.*;
+import java.time.LocalDate;
 
+@Entity
+@Table(name = "carritoCompras")
 public class CarritoCompras {
-
-    // ATRIBUTOS
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer carritoId;
+	@OneToOne
+	@JoinColumn(name = "Usua_id", nullable = false)
     private Usuario usuario;
 
-
-    // CONSTRUCTOR
-    // No se usa pasa por parametro la lista de detalle, porque solo se usa cuando consulte el carrito, para guardar y actualizar el carrito no se usan estas listas
-    public CarritoCompras(Integer carritoId, Usuario usuario) {
-        this.carritoId = carritoId;
-        this.usuario = usuario;
+    public CarritoCompras() {
+     
     }
 
     public Integer getCarritoId() {

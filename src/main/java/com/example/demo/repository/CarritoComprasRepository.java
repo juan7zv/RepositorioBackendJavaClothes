@@ -1,63 +1,68 @@
 
 package com.example.demo.repository;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.example.demo.model.CarritoCompras;
+import com.example.demo.model.Factura;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 @Repository
 public class CarritoComprasRepository {
-     private final List<CarritoCompras> baseDeDatos = new ArrayList<>();
-
+   @PersistenceContext
+   private EntityManager entityManager;
+   @Transactional
     public CarritoCompras save(CarritoCompras carritoCompras) {
-        baseDeDatos.add(carritoCompras);
-        return carritoCompras;
+	   entityManager.persist(carritoCompras);
+		return carritoCompras;
+      
     }
 
     public CarritoCompras findById(Integer id) {
-        for ( CarritoCompras carritoCompras : baseDeDatos) {
-            if (carritoCompras.getCarritoId().equals(id)) {
-                return carritoCompras;
-            }
-        }
-        return null;
+    	   Query query = entityManager.createNativeQuery("SELECT * FROM CarritoCompras WHERE carrito_id = :id", CarritoCompras.class);
+           query.setParameter("id", id);
+           try {
+               return (CarritoCompras) query.getSingleResult();
+           } catch (Exception e) {
+               return null;
+           }
     }
 
     public CarritoCompras findByIdAndUsuario(Integer id, Integer usuarioId) {
-        for ( CarritoCompras carritoCompras : baseDeDatos) {
-            if (carritoCompras.getCarritoId().equals(id)
-                    && carritoCompras.getUsuario().getUsua_id().equals(usuarioId)) {
-                return carritoCompras;
-            }
+        try {
+            Query query = entityManager.createNativeQuery(
+                "SELECT * FROM carritoCompras WHERE carrito_id = :id AND usua_id = :usuarioId", 
+                CarritoCompras.class
+            );
+            query.setParameter("id", id);
+            query.setParameter("usuarioId", usuarioId);
+
+            return (CarritoCompras) query.getSingleResult();
+        } catch (Exception e) {
+            return null;
         }
-        return null;
     }
 
     public List<CarritoCompras> findAll() {
-        return new ArrayList<>(baseDeDatos);
+    	  Query query = entityManager.createNativeQuery("SELECT * FROM CarritoCompras", CarritoCompras.class);
+          return query.getResultList();
     }
-
+    @Transactional
     public void deleteById(Integer id) {
-        for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getCarritoId().equals(id)) {
-                baseDeDatos.remove(i);
-                return;
-            }
-        }
+    	Query query = entityManager.createNativeQuery("DELETE FROM favorito WHERE favo_id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+    @Transactional
+    public CarritoCompras update(CarritoCompras carritoCompras) {
+    	 entityManager.merge(carritoCompras);
+         return carritoCompras;
     }
 
-    public CarritoCompras update(CarritoCompras CarritoCompras) {
-        for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getCarritoId().equals(CarritoCompras.getCarritoId())) {
-                baseDeDatos.set(i, CarritoCompras);
-                return CarritoCompras;
-            }
-        }
-        return null;
-    }
-
-    public List<CarritoCompras> buscarPorFiltros(Integer carritoId, String usuario) {
+   /* public List<CarritoCompras> buscarPorFiltros(Integer carritoId, String usuario) {
         List<CarritoCompras> resultado = new ArrayList<>();
         for (CarritoCompras carritoCompras : baseDeDatos) {
         				boolean coincide = true;
@@ -75,6 +80,6 @@ public class CarritoComprasRepository {
            
         }
         return resultado;
-    }
+    }*/
     
 }

@@ -1,29 +1,38 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.DetalleCarrito;
+import com.example.demo.model.Factura;
+import com.example.demo.model.Favorito;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class DetalleCarritoRepository {
-    private final List<DetalleCarrito> baseDeDatos = new ArrayList<>();
+	 @PersistenceContext
+   private EntityManager entityManager;
 
     public DetalleCarrito save(DetalleCarrito detalleCarrito) {
-        baseDeDatos.add(detalleCarrito);
-        return detalleCarrito;
+    	  entityManager.persist(detalleCarrito);
+          return detalleCarrito;
     }
 
     public DetalleCarrito findById(int id) {
-        for (DetalleCarrito detalleCarrito : baseDeDatos) {
-            if (detalleCarrito.getDetalleCarritoId() == id) {
-                return detalleCarrito;
-            }
-        }
-        return null;
+    	  Query query = entityManager.createNativeQuery("SELECT * FROM DetalleCarrito WHERE detcarrito_id = :id", DetalleCarrito.class);
+          query.setParameter("id", id);
+          try {
+              return (DetalleCarrito) query.getSingleResult();
+          } catch (Exception e) {
+              return null;
+          }
     }
 
+    /*
     public void deleteByProductoIdAndUsuarioId(int productoId, Integer idUsuario) {
         for (int i = 0; i < baseDeDatos.size(); i++) {
             if (baseDeDatos.get(i).getProducto() != null
@@ -34,7 +43,7 @@ public class DetalleCarritoRepository {
                 break;
             }
         }
-    }
+    } 
 
     public DetalleCarrito findByCarritoIdAndIdProducto(int idCarrito, Integer idProducto) {
         for (DetalleCarrito detalleCarrito : baseDeDatos) {
@@ -57,32 +66,25 @@ public class DetalleCarritoRepository {
             }
         }
         return detallesCarrito;
-    }
+    }*/
 
 
     public List<DetalleCarrito> findAll() {
-        return new ArrayList<>(baseDeDatos);
+    	Query query = entityManager.createNativeQuery("SELECT * FROM DetalleCarrito", DetalleCarrito.class);
+        return query.getResultList();
     }
 
     public void deleteById(int id) {
-        for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getDetalleCarritoId() == id) {
-                baseDeDatos.remove(i);
-                break;
-            }
-        }
+    	Query query = entityManager.createNativeQuery("DELETE FROM DetalleCarrito WHERE detcarrito_id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
 
     public DetalleCarrito update(DetalleCarrito detalleCarrito) {
-        for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getDetalleCarritoId() == detalleCarrito.getDetalleCarritoId()) {
-                baseDeDatos.set(i, detalleCarrito);
-                return detalleCarrito;
-            }
-        }
-        return null;
+    	 entityManager.merge(detalleCarrito);
+         return detalleCarrito;
     }
-
+/*
     public List<DetalleCarrito> buscarPorFiltros(int idDetalleCarrito, int cantidad) {
         List<DetalleCarrito> resultado = new ArrayList<>();
         for (DetalleCarrito detalleCarrito : baseDeDatos) {
@@ -107,5 +109,5 @@ public class DetalleCarritoRepository {
         }
         // Si se encuentra al menos un resultado, se devuelve la lista de resultados
         return resultado;
-    }
+    }*/
 }
