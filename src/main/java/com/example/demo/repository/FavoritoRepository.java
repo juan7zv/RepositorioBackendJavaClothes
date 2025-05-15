@@ -1,0 +1,63 @@
+package com.example.demo.repository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.demo.model.Factura;
+import com.example.demo.model.Favorito;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class FavoritoRepository {
+	@PersistenceContext
+    private EntityManager entityManager;
+	@Transactional
+    public Favorito save(Favorito favorito) {
+		entityManager.persist(favorito);
+        return favorito;
+    }
+
+    public Favorito findById(int id) {
+        Query query = entityManager.createNativeQuery("SELECT * FROM favorito WHERE favo_id = :id", Favorito.class);
+        query.setParameter("id", id);
+        try {
+            return (Favorito) query.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public List<Favorito> findAll() {
+    	 Query query = entityManager.createNativeQuery("SELECT * FROM favorito", Favorito.class);
+         return query.getResultList();
+    }
+
+    public void deleteById(Integer id) {
+    	 Query query = entityManager.createNativeQuery("DELETE FROM favorito WHERE favo_id = :id");
+         query.setParameter("id", id);
+         query.executeUpdate();
+    }
+    @Transactional
+
+    public Favorito update(Favorito favorito) {
+    	  entityManager.merge(favorito);
+          return favorito;
+    }
+
+    /*public List<Favorito> buscarPorFiltros(int idFavorito, String usuario, String producto) {
+        List<Favorito> resultado = new ArrayList<>();
+        for (Favorito favorito : baseDeDatos) {
+            boolean coincideidFavorito = (idFavorito == 0 || favorito.getFavoritoId() == idFavorito);
+            boolean coincideUsuario = (usuario == null || favorito.getUsuario().getNombre().contains(usuario));
+            boolean coincideProducto = (producto == null || favorito.getProducto().getNombre().contains(producto));
+            if (coincideidFavorito && coincideUsuario && coincideProducto) {
+                resultado.add(favorito);
+            }
+        }
+        return resultado;
+    }*/
+}

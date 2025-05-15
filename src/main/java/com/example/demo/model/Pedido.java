@@ -2,51 +2,66 @@ package com.example.demo.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.UUID;
+import com.example.demo.model.enums.EstadosPedido;
+import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  *
  * @author Rossi
  */
+
+@Entity
+@Table(name = "pedido")
 public class Pedido {
-    private int pedidoId;
-    private Factura factura; 
-    private Usuario cliente;
+	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //genera automaticamente el id (auto-incremental)
+    @Column(name = "pedi_id")
+    private Integer pediId;
+
+    @OneToOne //Cuando una entidad está asociada con exactamente una instancia de otra entidad (foreing key)
+    @JoinColumn(name = "fact_id", nullable = true)
+    private Factura factura;
+
+    @OneToOne
+    @JoinColumn(name = "usua_id", nullable = false)
+    private Usuario usuario;
+
+    @Column(name = "estado", nullable = false)
     private EstadosPedido estado;
-    private LocalDate fecha;
-    private String codigoCompra;
-    private ArrayList<DetallePedido> detallesVenta;
-
-    public Pedido() {
-        this.pedidoId = UUID.randomUUID();
-        this.codigoCompra = UUID.randomUUID().toString();
-    }
     
-    public Pedido(Factura factura, Usuario cliente, EstadosPedido estado, LocalDate fecha, ArrayList<DetallePedido> detallesVenta) {
-        this.pedidoId = UUID.randomUUID();
-        this.factura = factura;
-        this.cliente = cliente;
-        this.estado = estado;
-        this.fecha = fecha;
-        this.codigoCompra = UUID.randomUUID().toString();
-        this.detallesVenta = detallesVenta;
+    @Column(name = "fecha_ped", insertable = false, updatable = false) // La BD lo gestiona)
+    private LocalDate fechaPedido;
+    
+    @Column(name = "codigo_comp", nullable = false)
+    private String codigoCompra;
+    
+    // private ArrayList<DetallePedido> detallesVenta;
+
+    public Pedido() { // Constructor vacío
+
+    }
+ 
+    //getters and setters
+    public Integer getPedidoId() {
+        return pediId;
     }
 
-
-    public int getPedidoId() {
-        return pedidoId;
-    }
-
-    public void setPedidoId(int pedidoId) {
-        this.pedidoId = pedidoId;
+    public void setPedidoId(Integer pedi_id) {
+        this.pediId = pedi_id;
     }
 
     public Usuario getCliente() {
-        return cliente;
+        return usuario;
     }
 
-    public void setCliente(Usuario cliente) {
-        this.cliente = cliente;
+    public void setCliente(Usuario user) {
+        this.usuario = user;
     }
 
     public EstadosPedido getEstado() {
@@ -58,19 +73,11 @@ public class Pedido {
     }
 
     public LocalDate getFecha() {
-        return fecha;
+        return fechaPedido;
     }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public ArrayList<DetallePedido> getDetallesVenta() {
-        return detallesVenta;
-    }
-
-    public void setDetallesVenta(ArrayList<DetallePedido> detallesVenta) {
-        this.detallesVenta = detallesVenta;
+    public void setFecha(LocalDate fechaPedido) {
+        this.fechaPedido = fechaPedido;
     }
 
     public Factura getFactura() {
@@ -88,4 +95,12 @@ public class Pedido {
     public void setCodigoCompra(String codigoCompra) {
         this.codigoCompra = codigoCompra;
     }
+
+	
+    @Override
+	public String toString() {
+    	return "Pedido [pedi_id=" + pediId + ", factura=" + factura + ", usuario=" + usuario + ", estado=" + estado
+    							+ ", fechaPedido=" + fechaPedido + ", codigoCompra=" + codigoCompra + "]";
+    }
+
 }

@@ -1,54 +1,69 @@
 package com.example.demo.repository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.example.demo.model.Usuario;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UsuarioRepository {
-    private final List<Usuario> baseDeDatos = new ArrayList<>();
-    private final List<String> authTokens = new ArrayList<>();
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    // CREATE
+    @Transactional
     public Usuario save(Usuario usuario) {
-        baseDeDatos.add(usuario);
-        authTokens.add(usuario.getId());
+        entityManager.persist(usuario);
         return usuario;
     }
 
-    public Usuario findById(String id) {
-        for (Usuario usuario : baseDeDatos) {
-            if (usuario.getId().equals(id)) {
-                return usuario;
-            }
-        }
-        return null;
+    @Transactional
+    // READ BY ID
+    public Optional<Usuario> findById(Integer id) {
+        Query query = entityManager.createNativeQuery("SELECT * FROM usuarios WHERE usua_id = :id", Usuario.class);
+                query.setParameter("id", id);
+                try {
+                    Usuario usuario = (Usuario) query.getSingleResult();
+                    return Optional.of(usuario);
+                } catch (Exception e) {
+                    return  Optional.empty();
+                }
     }
 
+    // READ ALL
     public List<Usuario> findAll() {
-        return new ArrayList<>(baseDeDatos);
+        Query query = entityManager.createNativeQuery("SELECT * FROM usuarios", Usuario.class);
+        return query.getResultList();
     }
 
-    public void deleteById(String id) {
-        for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getId().equals(id)) {
-                baseDeDatos.remove(i);
-                return;
-            }
-        }
+    // UPDATE
+    @Transactional
+    public Optional<Usuario> update(Integer id, Usuario usuario) {
+        return Optional.ofNullable(entityManager.find(Usuario.class, id))
+                .map(existing -> {
+                    existing.setNombre(usuario.getNombre());
+                    existing.setClave(usuario.getClave());
+                    existing.setCorreo(usuario.getCorreo());
+                    return entityManager.merge(existing);
+                });
     }
 
-    public Usuario update(Usuario usuario) {
-        for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getId().equals(usuario.getId())) {
-                baseDeDatos.set(i, usuario);
-                return usuario;
-            }
-        }
-        return null;
+    // DELETE
+    @Transactional
+    public void deleteById(Integer id) {
+        Query query = entityManager.createNativeQuery("DELETE FROM usuarios WHERE usua_id = :id");
+                query.setParameter("id", id);
+                query.executeUpdate();
     }
 
+
+    /*
     public List<Usuario> buscarPorFiltros(String nombre, String email) {
         List<Usuario> resultado = new ArrayList<>();
         for (Usuario usuario : baseDeDatos) {
@@ -65,12 +80,12 @@ public class UsuarioRepository {
         for (String token : authTokens) {
             if (token.equals(authToken)) {
             	for (Usuario usuario : baseDeDatos) {
-                    if (usuario.getId().equals(token)) {
+                    if (usuario.getIdUsuario().equals(token)) {
                         return usuario;
                     }
                 }
             }
         }
         return null;
-    }
+    } */
 }

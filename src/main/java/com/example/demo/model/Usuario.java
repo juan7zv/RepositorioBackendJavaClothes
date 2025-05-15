@@ -1,31 +1,97 @@
 package com.example.demo.model;
 
-import java.util.UUID;
+import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Entity
+@Table(name = "usuarios")
 public class Usuario {
-    private String id;
+
+    @Id
+    @Column(nullable = false)
+    private Integer usua_id;
+
+    @Column(nullable = false)
+    private Integer rol_rol_id;
+
+    @Column(nullable = false)
     private String nombre;
-    private String email;
-    private int edad;
 
+    @Column(nullable = false)
+    private String correo;
+
+    @Column(nullable = false)
+    // cuando se serializa el objeto, no se incluye la clave por seguridad 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String clave;
+
+    @Column(nullable = false)
+    private String telefono;
+
+    // Constructor
     public Usuario() {
-        this.id = UUID.randomUUID().toString();
     }
 
-    public Usuario(String nombre, String email, int edad) {
-        this.id = UUID.randomUUID().toString();
+    // getters and setter
+    public Integer getUsua_id() {
+        return usua_id;
+    }
+
+    public void setUsua_id(Integer usua_id) {
+        this.usua_id = usua_id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
         this.nombre = nombre;
-        this.email = email;
-        this.edad = edad;
     }
 
-    // Getters y Setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public int getEdad() { return edad; }
-    public void setEdad(int edad) { this.edad = edad; }
+    public Integer getRol_rol_id() {
+        return rol_rol_id;
+    }
+
+    public void setRol_rol_id(Integer rol_rol_id) {
+        this.rol_rol_id = rol_rol_id;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "usua_id=" + usua_id +
+                ", rol_rol_id=" + rol_rol_id +
+                ", nombre='" + nombre + '\'' +
+                ", correo='" + correo + '\'' +
+                ", clave='" + clave + '\'' +
+                ", telefono='" + telefono + '\'' +
+                '}';
+    }
 }
+    
+    

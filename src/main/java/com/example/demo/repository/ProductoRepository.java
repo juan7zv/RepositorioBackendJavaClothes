@@ -1,52 +1,61 @@
 package com.example.demo.repository;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import com.example.demo.model.Producto;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductoRepository {
-    private final List<Producto> baseDeDatos = new ArrayList<>();
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    // CREATE
+    @Transactional
     public Producto save(Producto producto) {
-        baseDeDatos.add(producto);
+        entityManager.persist(producto);
         return producto;
     }
 
-    public Producto findById(String id) {
-        for (Producto producto : baseDeDatos) {
-            if (producto.getId().equals(id)) {
-                return producto;
-            }
-        }
-        return null;
+    // READ BY ID
+    public Producto findById(Integer id) {
+        Query query = entityManager.createNativeQuery(
+            "SELECT * FROM producto WHERE prod_id = :id", Producto.class);
+                query.setParameter("id", id);
+                try {
+                    return (Producto) query.getSingleResult();
+                } catch (Exception e) {
+                    return null;
+                }
     }
 
+    // READ ALL
     public List<Producto> findAll() {
-        return new ArrayList<>(baseDeDatos);
+        Query query = entityManager.createNativeQuery("SELECT * FROM producto", Producto.class);
+        return query.getResultList();
     }
 
-    public void deleteById(String id) {
-        for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getId().equals(id)) {
-                baseDeDatos.remove(i);
-                return;
-            }
-        }
-    }
-
+    // UPDATE
+    @Transactional
     public Producto update(Producto producto) {
-        for (int i = 0; i < baseDeDatos.size(); i++) {
-            if (baseDeDatos.get(i).getId().equals(producto.getId())) {
-                baseDeDatos.set(i, producto);
-                return producto;
-            }
-        }
-        return null;
+       entityManager.merge(producto);
+         return producto;
     }
 
+    // DELETE
+    @Transactional
+    public void deleteById(Integer id) {
+        Query query = entityManager.createNativeQuery("DELETE FROM producto WHERE prod_id = :id");
+                query.setParameter("id", id);
+                query.executeUpdate();
+    }
+
+ /*   TODO  // Método para buscar productos por filtros
     public List<Producto> buscarPorFiltros(String nombre, Double precioMin, Double precioMax) {
         List<Producto> resultado = new ArrayList<>();
         for (Producto producto : baseDeDatos) {
@@ -58,5 +67,6 @@ public class ProductoRepository {
             }
         }
         return resultado;
-    }
+    } */
+
 }

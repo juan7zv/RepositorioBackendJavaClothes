@@ -14,23 +14,14 @@ public class ProductoService {
     @Autowired
     public ProductoService(ProductoRepository productoRepository) {
         this.productoRepository = productoRepository;
-        initSampleData();
     }
 
-    private void initSampleData() {
-        Producto laptop = new Producto("Laptop Dell", 1200.50, 10);
-        Producto mouse = new Producto("Mouse Logitech", 25.99, 50);
-        Producto teclado = new Producto("Teclado Mecánico", 89.90, 30);
-        save(laptop);
-        save(mouse);
-        save(teclado);
-    }
-
+    // Métodos CRUD
     public Producto save(Producto producto) {
         return productoRepository.save(producto);
     }
 
-    public Producto findById(String id) {
+    public Producto findById(Integer id) {
         return productoRepository.findById(id);
     }
 
@@ -42,11 +33,11 @@ public class ProductoService {
         return productoRepository.update(producto);
     }
 
-    public void deleteById(String id) {
+    public void deleteById(Integer id) {
         productoRepository.deleteById(id);
     }
 
-    public List<Producto> buscarPorFiltros(String nombre, Double precioMin, Double precioMax) {
+   /* public List<Producto> buscarPorFiltros(String nombre, Double precioMin, Double precioMax) {
         return productoRepository.buscarPorFiltros(nombre, precioMin, precioMax);
-    }
+    } */
 }
