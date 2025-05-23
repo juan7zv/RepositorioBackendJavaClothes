@@ -16,8 +16,8 @@ public class CarritoComprasService {
         this.usuarioService = usuarioService;
 
     }
-
-
+    // CRUD methods
+    // Create
     public CarritoCompras save(CarritoCompras carritoCompras) {
         return carritoComprasRepository.save(carritoCompras);
     }
@@ -29,6 +29,13 @@ public class CarritoComprasService {
     public CarritoCompras findByIdAndUsuario(Integer id, Integer usuarioId) {
         return carritoComprasRepository.findByIdAndUsuario(id, usuarioId);
     }
+
+    public CarritoCompras findByUsuarioId(Integer usuarioId) {
+        return carritoComprasRepository.findByUsuarioId(usuarioId);
+    }
+
+
+
 
     public List<CarritoCompras> findAll() {
         return carritoComprasRepository.findAll();
