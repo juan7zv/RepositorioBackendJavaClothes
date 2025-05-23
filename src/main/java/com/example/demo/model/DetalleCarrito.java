@@ -1,20 +1,22 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
 
 @Entity
-@Table(name = "detallle_carrito")
+@Table(name = "detalle_carrito")
 public class DetalleCarrito {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int detalleCarritoId;
+	private int detalle_carrito_id;
+
 	@Column(nullable = false)
 	private int cantidad;
-	@OneToOne
+
+	@ManyToOne
 	@JoinColumn(name = "carritoCompras_id", nullable = false)
 	private CarritoCompras carritoCompras;
-	@OneToOne
+
+	@ManyToOne
 	@JoinColumn(name = "prod_id", nullable = false)
 	private Producto producto;
 
@@ -22,12 +24,12 @@ public class DetalleCarrito {
 
 	}
 
-	public int getDetalleCarritoId() {
-		return detalleCarritoId;
+	public int getDetalle_carrito_id() {
+		return detalle_carrito_id;
 	}
 
-	public void setDetalleCarritoId(int detalleCarritoId) {
-		this.detalleCarritoId = detalleCarritoId;
+	public void setDetalle_carrito_id(int detalleCarritoId) {
+		this.detalle_carrito_id = detalleCarritoId;
 	}
 
 	public int getCantidad() {

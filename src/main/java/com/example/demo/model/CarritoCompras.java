@@ -1,22 +1,24 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
 
 @Entity
-@Table(name = "carritoCompras")
+@Table(name = "carrito_compras")
 public class CarritoCompras {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    // Atributos
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer carritoId;
-	@OneToOne
-	@JoinColumn(name = "Usua_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "Usua_id", nullable = false)
     private Usuario usuario;
 
+    // Constructor
     public CarritoCompras() {
-     
+
     }
 
+    // Getters and Setters
     public Integer getCarritoId() {
         return carritoId;
     }
@@ -33,10 +35,9 @@ public class CarritoCompras {
         this.usuario = usuario;
     }
 
+    // Metodo para mostrar el carrito de compras
     @Override
     public String toString() {
         return "CarritoCompras{" + "carritoId=" + carritoId + ", usuario=" + usuario + '}';
     }
-    
-    
 }

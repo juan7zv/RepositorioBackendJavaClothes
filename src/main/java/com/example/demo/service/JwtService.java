@@ -61,14 +61,14 @@ public class JwtService {
 	        return null;
 	    }
 
-	    public String getIdFromToken(String token) {
+	    public Integer getIdFromToken(String token) {
 	        try {
 	            Claims claims = Jwts.parserBuilder()
 	                    .setSigningKey(jwtSecret)
 	                    .build()
 	                    .parseClaimsJws(token)
 	                    .getBody();
-	            return claims.getSubject();
+	           return Integer.valueOf(claims.getSubject());
 	        } catch (Exception e) {
 	            return null;
 	        }

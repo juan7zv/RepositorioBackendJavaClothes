@@ -1,14 +1,13 @@
 package com.example.demo.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.example.demo.model.Usuario;
-import com.example.demo.model.enums.RolUsuario;
 import com.example.demo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -16,31 +15,35 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsuarioService(PasswordEncoder passwordEncoder,UsuarioRepository usuarioRepository) {
+    public UsuarioService(PasswordEncoder passwordEncoder, UsuarioRepository usuarioRepository) {
         this.passwordEncoder = passwordEncoder;
         this.usuarioRepository = usuarioRepository;
     }
 
- 
     // Métodos CRUD
+    // Crear un nuevo usuario
     public Usuario save(Usuario usuario) {
         usuario.setClave(passwordEncoder.encode(usuario.getClave()));
         return usuarioRepository.save(usuario);
     }
 
+    // Encontrar un usuario por su id
     public Optional<Usuario> findById(Integer id) {
         return usuarioRepository.findById(id);
     }
 
+    // Listar todos los usuarios
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
 
-    public Optional<Usuario> update(Integer id,Usuario usuario) {
+    // Actualizar un usuario
+    public Optional<Usuario> update(Integer id, Usuario usuario) {
         usuario.setClave(passwordEncoder.encode(usuario.getClave()));
         return usuarioRepository.update(id, usuario);
     }
 
+    // Eliminar un usuario por su id
     public void deleteById(Integer id) {
         usuarioRepository.deleteById(id);
     }
@@ -48,25 +51,6 @@ public class UsuarioService {
     /*
     public List<Usuario> buscarPorFiltros(String nombre, String email) {
         return usuarioRepository.buscarPorFiltros(nombre, email);
-    }
-
-    public Usuario findByAuthToken(String authToken) {
-        return usuarioRepository.findByAuthToken(authToken);
     } */
 
-    /*
-    // Método para autenticar un usuario
-    public Optional<Usuario> login(Integer id, String clave)  {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-
-        if (usuario != null && usuario.getClave().equals(clave)) {
-            // Lógica de inicio de sesión exitosa
-            System.out.println("Inicio de sesión exitoso para el usuario: " + usuario.getNombre());
-            return usuario;
-        } else {
-            // Lógica de inicio de sesión fallido
-            System.out.println("Inicio de sesión fallido. Usuario o contraseña incorrectos.");
-            return null;
-        }
-    } */
 }
