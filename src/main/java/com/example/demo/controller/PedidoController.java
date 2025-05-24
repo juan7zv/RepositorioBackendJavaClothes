@@ -1,27 +1,23 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Pedido;
+import com.example.demo.model.*;
 import com.example.demo.model.enums.EstadosPedido;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
-import com.example.demo.service.PedidoService;
+import com.example.demo.service.*;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController // Indica que esta clase es un controlador REST
 @RequestMapping("/api/pedidos")
@@ -29,20 +25,75 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class PedidoController {
 
     private final PedidoService pedidoService;
+    private final JwtService jwtService;
+    private final UsuarioService usuarioService;
+    private final CarritoComprasService carritoComprasService;
+    private final DetalleCarritoService detalleCarritoService;
+    private final DetallePedidoService detallePedidoService;
 
     @Autowired
-    public PedidoController(PedidoService pedidoService) {
+    public PedidoController(PedidoService pedidoService,
+                            JwtService jwtService,
+                            UsuarioService usuarioService,
+                            CarritoComprasService carritoComprasService,
+                            DetalleCarritoService detalleCarritoService,
+                            DetallePedidoService detallePedidoService) {
         this.pedidoService = pedidoService;
+        this.jwtService = jwtService;
+        this.usuarioService = usuarioService;
+        this.carritoComprasService = carritoComprasService;
+        this.detalleCarritoService = detalleCarritoService;
+        this.detallePedidoService = detallePedidoService;
     }
 
+
     @PostMapping
-    @Operation(summary = "Guardar un pedido", description = "Crea un nuevo pedido con los datos proporcionados.")
+    @Operation(summary = "Guardar un pedido",
+            description = "Crea un nuevo pedido con los datos proporcionados.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Pedido creado con éxito"),
         @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
-    public ResponseEntity<Pedido> createPedido(@RequestBody @Parameter(description = "Datos del pedido a crear") Pedido pedido) {
-        Pedido newPedido = pedidoService.save(pedido);
+    public ResponseEntity<?> createPedido(
+            @RequestHeader(value = "Authorization", required = false)
+            @Parameter(description = "Token de autorización JWT",
+                    in = ParameterIn.HEADER, name = "Authorization",
+                    example = "Bearer <token>") String authHeader)  {
+
+        // Validación del token
+        String token = jwtService.extractToken(authHeader);
+        if (token == null || !jwtService.validateJwtToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                    "Token JWT inválido o ausente.");
+        }
+
+        Integer usuarioId = jwtService.getIdFromToken(token);
+        Optional<Usuario> optionalUsuario = usuarioService.findById(usuarioId);
+        if (!optionalUsuario.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Usuario no encontrado.");
+        }
+        // Buscar carrito existente
+        Optional<CarritoCompras> carritoExistente =
+                carritoComprasService.findByUsuarioId(usuarioId);
+
+        List<DetalleCarrito> listaProductos =
+                detalleCarritoService.findByCarritoId(carritoExistente.get().getCarritoId());
+        Pedido nuevoPedido = new Pedido();
+        nuevoPedido.setCliente(optionalUsuario.get());
+        nuevoPedido.setEstado(EstadosPedido.Realizado);
+        nuevoPedido.setFecha(LocalDate.now());
+        nuevoPedido.setCodigoCompra("COD-" + LocalDate.now() + "-" + usuarioId);
+        Pedido newPedido = pedidoService.save(nuevoPedido);
+
+        for (DetalleCarrito detalle : listaProductos) {
+            DetallePedido detallePedido = new DetallePedido();
+            detallePedido.setProducto(detalle.getProducto());
+            detallePedido.setCantidad(detalle.getCantidad());
+            detallePedido.setPedido(newPedido);
+            detallePedidoService.save(detallePedido);
+             }
+
         return new ResponseEntity<>(newPedido, HttpStatus.CREATED);
     }
 

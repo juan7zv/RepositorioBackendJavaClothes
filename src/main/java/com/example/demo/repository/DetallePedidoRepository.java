@@ -2,6 +2,8 @@ package com.example.demo.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 import com.example.demo.model.DetallePedido;
 import com.example.demo.model.Notificacion;
@@ -17,6 +19,7 @@ public class DetallePedidoRepository {
 	EntityManager entityManager;
 	
 	//guardar detalles
+	@Transactional
 	public DetallePedido save(DetallePedido detalle) {
 		entityManager.persist(detalle); 
 		return detalle; 	
@@ -32,6 +35,7 @@ public class DetallePedidoRepository {
 	}
 	
 	//actualizar detalles de pedido
+	@Transactional
 	public DetallePedido update(DetallePedido detalle) {
 		entityManager.merge(detalle); 
 		return detalle; 

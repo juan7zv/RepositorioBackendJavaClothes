@@ -42,7 +42,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Usuario logueado con éxito"),
             @ApiResponse(responseCode = "401", description = "Usuario o contraseña incorrectos")})
     public ResponseEntity<?> loginUsuario(@RequestBody @Parameter(description = "Credenciales de Acceso")
-                                              UsuarioLogin usuarioLogin) {
+                                          UsuarioLogin usuarioLogin) {
         Optional<Usuario> optionalUsuario = usuarioService.findById(usuarioLogin.getIdUsuario()); // el opcional es para evitar que la respuesta genere un null pointer exception
         if (optionalUsuario.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
@@ -63,9 +63,13 @@ public class UsuarioController {
             description = "Crea un nuevo usuario con los datos proporcionados.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Usuario creado con éxito"),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos")})
-    public ResponseEntity<Usuario> createUsuario(
+            @ApiResponse(responseCode = "409", description = "El usuario ya existe")})
+    public ResponseEntity<?> createUsuario(
             @RequestBody @Parameter(description = "Datos del usuario a crear") Usuario usuario) {
+        Optional<Usuario> existingUser = usuarioService.findById(usuario.getUsua_id());
+        if (existingUser.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("El usuario ya existe");
+        }
         Usuario newUsuario = usuarioService.save(usuario);
         return new ResponseEntity<>(newUsuario, HttpStatus.CREATED);
     }

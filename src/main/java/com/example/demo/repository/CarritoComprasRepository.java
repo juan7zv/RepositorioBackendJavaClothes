@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CarritoComprasRepository {
@@ -39,16 +40,19 @@ public class CarritoComprasRepository {
         }
     }
 
-    // Buscar carrito de compras por ID de usuario
-    public CarritoCompras findByUsuarioId(Integer usuarioId) {
+   // Buscar carrito de compras por ID de usuario
+    public Optional<CarritoCompras> findByUsuarioId(Integer usuarioId) {
         Query query = entityManager.createNativeQuery("SELECT * FROM carrito_compras " +
                 "WHERE usua_id = :usuarioId", CarritoCompras.class);
         query.setParameter("usuarioId", usuarioId);
+
+        CarritoCompras result = null;
         try {
-            return (CarritoCompras) query.getSingleResult();
+            result = (CarritoCompras) query.getSingleResult();
         } catch (Exception e) {
-            return null;
+            // Si no se encuentra resultado, se maneja silenciosamente
         }
+        return Optional.ofNullable(result);
     }
 
     // Crear un nuevo carrito de compras, cada carrito debe ir asociado a un cliente.

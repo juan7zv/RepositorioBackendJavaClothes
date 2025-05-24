@@ -89,7 +89,7 @@ public class CarritoComprasController {
         }
     }
 
-    // cuarto Endpoint post carritoCompras
+    // cuarto Endpoint crear un nuevo carritoCompras
     @PostMapping
     @Operation(summary = "Crear un nuevo Carrito Compras",
             description = "Crea un nuevo Carrito Compras con los datos proporcionados.")
@@ -98,12 +98,11 @@ public class CarritoComprasController {
             @ApiResponse(responseCode = "400", description = "Datos inválidos")})
 
     public ResponseEntity<?> createCarritoCompras(
-            @RequestBody
-            @Parameter(description = "Datos del Carrito Compras a crear") CarritoCompras carritoCompras,
             @RequestHeader(value = "Authorization", required = false)
             @Parameter(description = "Token de autorización JWT",
                     in = ParameterIn.HEADER, name = "Authorization",
                     example = "Bearer <token>") String authHeader) {
+        // Validación del token
         String token = jwtService.extractToken(authHeader);
         if (token == null || !jwtService.validateJwtToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
@@ -111,36 +110,28 @@ public class CarritoComprasController {
         }
 
         Integer usuarioId = jwtService.getIdFromToken(token);
-
-        if (usuarioId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    "No se pudo extraer el ID del usuario del token.");
-        }
-
-        Optional<Usuario> optionalUsuario = usuarioService.findAll().stream()
-                .filter(u -> u.getUsua_id().equals(usuarioId))
-                .findFirst();
-
+        Optional<Usuario> optionalUsuario = usuarioService.findById(usuarioId);
         if (!optionalUsuario.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    "Usuario asociado al token no encontrado.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Usuario no encontrado.");
         }
         Usuario usuario = optionalUsuario.get();
-        // Verificar si el usuario ya tiene un carrito de compras
-        List<CarritoCompras> carritosUsuario = carritoComprasService.findAll();
-        boolean yaTieneCarrito = carritosUsuario.stream()
-                .anyMatch(c -> c.getUsuario() != null && c.getUsuario().getUsua_id().equals(usuario.getUsua_id()));
-        if (yaTieneCarrito) {
-            CarritoCompras carritoExistente = carritosUsuario.stream()
-                    .filter(c -> c.getUsuario() != null && c.getUsuario().getUsua_id().equals(usuario.getUsua_id()))
-                    .findFirst().orElse(null);
-            return ResponseEntity.ok(carritoExistente);
-        }
-        carritoCompras.setUsuario(carritoCompras.getUsuario() != null ? carritoCompras.getUsuario() : new Usuario());
-        carritoCompras.getUsuario().setUsua_id(usuario.getUsua_id());
-        CarritoCompras createdCarrito = carritoComprasService.save(carritoCompras);
 
-        return new ResponseEntity<>(createdCarrito, HttpStatus.CREATED);
+        // Buscar carrito existente
+        Optional<CarritoCompras> carritoExistente =
+                carritoComprasService.findByUsuarioId(usuarioId);
+
+        if (carritoExistente.isPresent()) {
+            return ResponseEntity.ok(carritoExistente.get());
+        }
+
+        // Crear nuevo carrito
+        CarritoCompras carritoCompras = new CarritoCompras();
+        carritoCompras.setUsuario(usuario);
+        CarritoCompras nuevoCarrito = carritoComprasService.save(carritoCompras);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoCarrito);
+
     }
 
  /*

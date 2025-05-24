@@ -1,5 +1,6 @@
 package com.example.demo.service;
 import java.util.List;
+import java.util.Optional;
 
 import com.example.demo.model.CarritoCompras;
 import com.example.demo.repository.CarritoComprasRepository;
@@ -30,7 +31,7 @@ public class CarritoComprasService {
         return carritoComprasRepository.findByIdAndUsuario(id, usuarioId);
     }
 
-    public CarritoCompras findByUsuarioId(Integer usuarioId) {
+    public Optional<CarritoCompras> findByUsuarioId(Integer usuarioId) {
         return carritoComprasRepository.findByUsuarioId(usuarioId);
     }
 

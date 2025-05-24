@@ -2,16 +2,8 @@ package com.example.demo.model;
 
 import java.util.UUID;
 
+import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 
 /**
  *
@@ -30,11 +22,11 @@ public class DetallePedido {
 	@Column(name = "cantidad", nullable = false)
     private int cantidad;
 	
-	@OneToOne // (foreing key)
+	@ManyToOne // (foreing key)
     @JoinColumn(name = "pedi_id", nullable = false)
     private Pedido pedido;
 	
-	@OneToOne // (foreing key)
+	@ManyToOne // (foreing key)
 	@JoinColumn(name = "prod_id", nullable = false)
     private Producto producto; 
 

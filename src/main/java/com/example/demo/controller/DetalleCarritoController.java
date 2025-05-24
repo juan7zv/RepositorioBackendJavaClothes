@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Controlador para gestionar los detalles del carrito de compras.
@@ -53,11 +54,11 @@ public class DetalleCarritoController {
     public ResponseEntity<List<?>> getDetalleCarritoByUsuarioId(
             @Parameter(description = "ID del usuario para obtener los detalles del carrito")
             @PathVariable int usuarioId) {
-        CarritoCompras carrito = carritoComprasService.findByUsuarioId(usuarioId);
+        Optional<CarritoCompras> carrito = carritoComprasService.findByUsuarioId(usuarioId);
         if (carrito == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(java.util.Collections.emptyList());
         }
-        List<DetalleCarrito> detalleCarrito = detalleCarritoService.findByCarritoId(carrito.getCarritoId());
+        List<DetalleCarrito> detalleCarrito = detalleCarritoService.findByCarritoId(carrito.get().getCarritoId());
         return new ResponseEntity<>(detalleCarrito, HttpStatus.OK);
     }
 
@@ -87,13 +88,13 @@ public class DetalleCarritoController {
         }
 
         // Buscar el carrito de compras asociado al usuario
-        CarritoCompras carrito = carritoComprasService.findByUsuarioId(usuarioId);
+        Optional<CarritoCompras> carrito = carritoComprasService.findByUsuarioId(usuarioId);
         if (carrito == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El cliente no tiene un carrito de compras asociado.");
         }
 
         // Validar si el producto ya está en el carrito
-        if (detalleCarritoService.existsByCarritoIdAndProductoId(carrito.getCarritoId(), detalleCarrito.getProducto().getProd_id())) {
+        if (detalleCarritoService.existsByCarritoIdAndProductoId(carrito.get().getCarritoId(), detalleCarrito.getProducto().getProd_id())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El producto ya fue agregado al carrito y no se puede volver a agregar.");
         }
 
@@ -107,7 +108,7 @@ public class DetalleCarritoController {
         }
 
         // Asociar el carrito encontrado al detalle
-        detalleCarrito.setCarritoCompras(carrito);
+        detalleCarrito.setCarritoCompras(carrito.get());
 
         DetalleCarrito newDetalleCarrito = detalleCarritoService.save(detalleCarrito);
         return new ResponseEntity<>(newDetalleCarrito, HttpStatus.CREATED);
