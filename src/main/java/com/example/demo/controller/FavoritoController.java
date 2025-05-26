@@ -51,6 +51,24 @@ public class FavoritoController {
         }
     }
 
+    @GetMapping("/cliente/{idCliente}") 
+    @Operation(summary = "Obtener Favoritos por ID de Cliente", description = "Devuelve todos los favoritos asociados a un cliente específico")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Favoritos encontrados"),
+            @ApiResponse(responseCode = "404", description = "No se encontraron favoritos para este cliente")
+    })
+    public ResponseEntity<List<Favorito>> getFavoritosByClienteId(
+            @PathVariable @Parameter(description = "ID del Cliente") int idCliente) {
+
+        List<Favorito> favoritos = favoritoService.findByCliente(idCliente);
+
+        if (!favoritos.isEmpty()) { // Verifica si la lista no está vacía
+            return new ResponseEntity<>(favoritos, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping
     @Operation(summary = "Crear un nuevo Favorito", description = "Crea un nuevo Favorito con los datos proporcionados.")
     @ApiResponses(value = {

@@ -21,19 +21,29 @@ public class FavoritoRepository {
         return favorito;
     }
 
-    public Favorito findById(int id) {
-        Query query = entityManager.createNativeQuery("SELECT * FROM favorito WHERE favo_id = :id", Favorito.class);
-        query.setParameter("id", id);
+    public Favorito findById(int idFav) {
+        Query query = entityManager.createNativeQuery("SELECT * FROM favorito WHERE favorito_id = :idFav", Favorito.class);
+        query.setParameter("idFav", idFav);
         try {
-            return (Favorito) query.getSingleResult();
+            return (Favorito) query.getSingleResult(); //
         } catch (Exception e) {
             return null;
         }
     }
 
+    public List<Favorito> findByCliente(Integer idUser) {
+        try {
+            Query query = entityManager.createNativeQuery("SELECT * FROM favorito WHERE usua_id = :idUser", Favorito.class);
+            query.setParameter("idUser", idUser);
+            return query.getResultList();
+        } catch (Exception e) {
+            return new ArrayList<>(); // Retorna una lista vacía si no se encuentra el cliente
+        }
+    }
+
     public List<Favorito> findAll() {
-    	 Query query = entityManager.createNativeQuery("SELECT * FROM favorito", Favorito.class);
-         return query.getResultList();
+        Query query = entityManager.createNativeQuery("SELECT * FROM favorito", Favorito.class);
+        return query.getResultList();
     }
 
     public void deleteById(Integer id) {
