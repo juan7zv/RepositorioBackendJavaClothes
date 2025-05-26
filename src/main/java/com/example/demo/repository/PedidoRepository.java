@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.Pedido;
@@ -33,6 +34,7 @@ public class PedidoRepository {
 	}
 
     //guardar un pedido
+    @Transactional
     public Pedido save(Pedido pedido) {
     	entityManager.persist(pedido);
 		return pedido;

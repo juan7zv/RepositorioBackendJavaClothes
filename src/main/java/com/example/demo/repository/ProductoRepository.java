@@ -15,14 +15,14 @@ public class ProductoRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    // CREATE
+    // crear un nuevo producto
     @Transactional
     public Producto save(Producto producto) {
         entityManager.persist(producto);
         return producto;
     }
 
-    // READ BY ID
+    // consultar un producto por su id
     public Producto findById(Integer id) {
         Query query = entityManager.createNativeQuery(
             "SELECT * FROM producto WHERE prod_id = :id", Producto.class);
@@ -34,20 +34,20 @@ public class ProductoRepository {
                 }
     }
 
-    // READ ALL
+    // Listar todos los productos
     public List<Producto> findAll() {
         Query query = entityManager.createNativeQuery("SELECT * FROM producto", Producto.class);
         return query.getResultList();
     }
 
-    // UPDATE
+    // Actualizar un producto por su id
     @Transactional
     public Producto update(Producto producto) {
        entityManager.merge(producto);
          return producto;
     }
 
-    // DELETE
+    // Eliminar un producto por su id
     @Transactional
     public void deleteById(Integer id) {
         Query query = entityManager.createNativeQuery("DELETE FROM producto WHERE prod_id = :id");
@@ -55,18 +55,17 @@ public class ProductoRepository {
                 query.executeUpdate();
     }
 
- /*   TODO  // Método para buscar productos por filtros
-    public List<Producto> buscarPorFiltros(String nombre, Double precioMin, Double precioMax) {
-        List<Producto> resultado = new ArrayList<>();
-        for (Producto producto : baseDeDatos) {
-            boolean coincideNombre = (nombre == null || producto.getNombre().contains(nombre));
-            boolean coincidePrecioMin = (precioMin == null || producto.getPrecio() >= precioMin);
-            boolean coincidePrecioMax = (precioMax == null || producto.getPrecio() <= precioMax);
-            if (coincideNombre && coincidePrecioMin && coincidePrecioMax) {
-                resultado.add(producto);
-            }
+    // Obtener el Stock de un producto por su id
+    public int obtenerStockProducto(int idProducto) {
+        Query query = entityManager.createNativeQuery("SELECT stock FROM producto WHERE prod_id = :idProducto");
+        query.setParameter("idProducto", idProducto);
+        try {
+            return (int) query.getSingleResult();
+        } catch (Exception e) {
+            return 0;
         }
-        return resultado;
-    } */
+    }
+
+
 
 }

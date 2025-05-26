@@ -28,20 +28,20 @@ public class Pedido {
     @JoinColumn(name = "fact_id", nullable = true)
     private Factura factura;
 
-    @OneToOne
+    @ManyToOne // (foreing key)
     @JoinColumn(name = "usua_id", nullable = false)
     private Usuario usuario;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false)
     private EstadosPedido estado;
-    
-    @Column(name = "fecha_ped", insertable = false, updatable = false) // La BD lo gestiona)
+
+    @Column(name = "fecha_ped", nullable = false)
     private LocalDate fechaPedido;
     
     @Column(name = "codigo_comp", nullable = false)
     private String codigoCompra;
-    
-    // private ArrayList<DetallePedido> detallesVenta;
+
 
     public Pedido() { // Constructor vacío
 

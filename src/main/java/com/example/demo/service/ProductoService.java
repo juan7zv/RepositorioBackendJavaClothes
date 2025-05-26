@@ -37,6 +37,10 @@ public class ProductoService {
         productoRepository.deleteById(id);
     }
 
+    public int obtenerStockProducto(int idProducto) {
+        return productoRepository.findById(idProducto).getStock();
+    }
+
    /* public List<Producto> buscarPorFiltros(String nombre, Double precioMin, Double precioMax) {
         return productoRepository.buscarPorFiltros(nombre, precioMin, precioMax);
     } */
