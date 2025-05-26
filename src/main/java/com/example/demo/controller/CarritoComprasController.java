@@ -53,25 +53,7 @@ public class CarritoComprasController {
         return new ResponseEntity<>(carritos, HttpStatus.OK);
     }
 
-    // segundo Endpoint get carritoCompras por id y usuario
-    @GetMapping("/{idCarrito}/{idUsuario}")
-    @Operation(summary = "Obtener carrito de compra por ID",
-            description = "Devuelve un carrito de compra específico basado en el id del carrito y el usuario logueado.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Carrito de compra encontrado"),
-            @ApiResponse(responseCode = "404", description = "Carrito de compra no encontrado")})
-    public ResponseEntity<CarritoCompras> getCarritoComprasById(
-            @PathVariable @Parameter(description = "ID del carrito de compras") Integer idCarrito,
-            @PathVariable @Parameter(description = "ID del usuario logueado") Integer idUsuario) {
-        CarritoCompras carritoCompras = carritoComprasService.findByIdAndUsuario(idCarrito, idUsuario);
-        if (carritoCompras != null) {
-            return new ResponseEntity<>(carritoCompras, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    // tercer Endpoint get carritoCompras por id de carritoCompras
+    // Consultar carrito de comprar por ide de carrito
     @GetMapping("/{id}")
     @Operation(summary = "Obtener carrito de compra por ID",
             description = "Devuelve un carrito de compra específico basado en su ID.")
@@ -166,17 +148,4 @@ public class CarritoComprasController {
         }
     }
 
-	/*@GetMapping("/buscar")
-	@Operation(summary = "Buscar productos por filtros", description = "Busca Carrito Compras por id del carro o el id del usuario.")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Carrito Compras encontrados"),
-			@ApiResponse(responseCode = "400", description = "Parámetros inválidos") })
-	public ResponseEntity<List<CarritoCompras>> buscarCarritoCompras(
-			@RequestParam(required = false) @Parameter(description = "ID del carrito de compras") Integer carritoId,
-			@RequestParam(required = false) @Parameter(description = "ID del usuario") String usuario) {
-		{
-			List<CarritoCompras> carritoCompras = carritoComprasService.buscarPorFiltros(carritoId, usuario);
-			return new ResponseEntity<>(carritoCompras, HttpStatus.OK);
-		}
-
-	}*/
 }

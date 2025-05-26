@@ -3,6 +3,7 @@ package com.example.demo.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import com.example.demo.model.enums.EstadosPedido;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import jakarta.persistence.Column;
@@ -36,6 +37,7 @@ public class Pedido {
     @Column(name = "estado", nullable = false)
     private EstadosPedido estado;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "fecha_ped", nullable = false)
     private LocalDate fechaPedido;
     
