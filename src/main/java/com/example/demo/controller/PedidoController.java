@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -83,7 +84,7 @@ public class PedidoController {
         nuevoPedido.setCliente(optionalUsuario.get());
         nuevoPedido.setEstado(EstadosPedido.Realizado);
         nuevoPedido.setFecha(LocalDate.now());
-        nuevoPedido.setCodigoCompra("COD-" + LocalDate.now() + "-" + usuarioId);
+        nuevoPedido.setCodigoCompra("COD-" + LocalDateTime.now() + "-" + usuarioId);
         Pedido newPedido = pedidoService.save(nuevoPedido);
 
         for (DetalleCarrito detalle : listaProductos) {
