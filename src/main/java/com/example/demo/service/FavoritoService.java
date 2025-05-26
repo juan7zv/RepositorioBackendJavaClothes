@@ -20,10 +20,7 @@ public class FavoritoService {
 	        this.favoritoRepository = favoritoRepository;
 	        this.productoService = productoService;
 	        this.usuarioService = usuarioService;
-
 	    }
-
-
 
 	    public Favorito save(Favorito favorito) {
 	        return favoritoRepository.save(favorito);
@@ -31,6 +28,10 @@ public class FavoritoService {
 
 	    public Favorito findById(int id) {
 	        return favoritoRepository.findById(id);
+	    }
+
+		public List<Favorito> findByCliente(Integer idUser) {
+			return favoritoRepository.findByCliente(idUser);
 	    }
 
 	    public List<Favorito> findAll() {
