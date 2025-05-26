@@ -15,10 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController // Indica que esta clase es un controlador REST
-@RequestMapping("/javaClothes/pedidos")
+@RequestMapping("/api/detallePedido")
 @Tag(name = "Detalles de pedido", description = "API para la gestión de detalles de pedidos")
 
 public class DetallePedidoController {
@@ -56,7 +57,7 @@ public class DetallePedidoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // 2. Buscar los detalles por pedido
-        DetallePedido detallePedido = detallePedidoService.findByPedido(pedido.get());
+        List<DetallePedido> detallePedido = detallePedidoService.findByPedido(pedido.get());
         if (detallePedido == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -77,21 +78,23 @@ public class DetallePedidoController {
         return new ResponseEntity<>(newDetallePedido, HttpStatus.CREATED);
     }
 
+    // Endpoint para obtener detalles de un pedido por el id de pedido
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener detalles del pedido", description = "Devuelve todos los detalles asociados a un pedido específico por ID.")
+    @Operation(summary = "Obtener detalles del pedido",
+            description = "Devuelve todos los detalles asociados a un pedido específico por ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Detalles encontrados"),
             @ApiResponse(responseCode = "404", description = "Pedido no encontrado")
     })
-    public ResponseEntity<DetallePedido> getDetallesByPedidoId(@PathVariable @Parameter(description = "ID del pedido") Integer id) {
+    public ResponseEntity<List<DetallePedido>> getDetallesByPedidoId(@PathVariable @Parameter(description = "ID del pedido") Integer id) {
         // 1. Buscar el pedido por ID
         Pedido pedido = pedidoService.findById(id);
         if (pedido == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // 2. Buscar los detalles por pedido
-        DetallePedido detalle = detallePedidoService.findByPedido(pedido);
-        return new ResponseEntity<>(detalle, HttpStatus.OK);
+        List<DetallePedido> detalle = detallePedidoService.findByPedido(pedido);
+        return new ResponseEntity<List<DetallePedido>>(detalle, HttpStatus.OK);
     }
 
  /*   @PutMapping("/{id}")

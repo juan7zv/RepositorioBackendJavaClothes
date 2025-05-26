@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class PedidoRepository {
@@ -16,12 +17,17 @@ public class PedidoRepository {
     private EntityManager entityManager; // Inyecta el EntityManager para interactuar con la base de datos
 
     // buscar pedido por id de usuario
-    public Pedido findByUsuarioId(Integer usuarioId) {
-        Query query = entityManager.createNativeQuery("SELECT * FROM Pedido WHERE usua_id = :usuarioId", Pedido.class);
-        query.setParameter("usuarioId", usuarioId);
-        Pedido pedido = (Pedido) query.getSingleResult();
-        return pedido;
+    public Optional<Pedido> findByUsuarioId(Integer id) {
+        try {
+            Query query = entityManager.createNativeQuery("SELECT * FROM Pedido WHERE usua_id = :id", Pedido.class);
+            query.setParameter("id", id);
+            Pedido pedido = (Pedido) query.getSingleResult();
+            return Optional.of(pedido);
+        } catch (Exception e) {
+            return Optional.empty(); // Retorna un Optional vacío si no se encuentra el pedido
+        }
     }
+
     //Obtener todos los pedidos
     public List<Pedido> findAll() {
         Query query = entityManager.createNativeQuery("SELECT * FROM Pedido", Pedido.class);
