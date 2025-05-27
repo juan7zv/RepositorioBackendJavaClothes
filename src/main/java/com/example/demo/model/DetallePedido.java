@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.util.UUID;
 
 import jakarta.persistence.*;
@@ -24,6 +25,7 @@ public class DetallePedido {
 	
 	@ManyToOne // (foreing key)
     @JoinColumn(name = "pedi_id", nullable = false)
+    @JsonBackReference
     private Pedido pedido;
 	
 	@ManyToOne // (foreing key)

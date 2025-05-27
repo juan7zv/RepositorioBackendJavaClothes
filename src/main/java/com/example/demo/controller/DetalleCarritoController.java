@@ -56,7 +56,7 @@ public class DetalleCarritoController {
                 @Parameter(description = "ID del usuario para obtener los detalles del carrito")
                 @PathVariable int usuarioId) {
             Optional<CarritoCompras> carrito = carritoComprasService.findByUsuarioId(usuarioId);
-            if (carrito == null) {
+            if (!carrito.isPresent()) { // un optional nunca es null, se usa isPresent()
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(java.util.Collections.emptyList());
             }
             List<DetalleCarrito> detalleCarrito = detalleCarritoService.findByCarritoId(carrito.get().getCarritoId());

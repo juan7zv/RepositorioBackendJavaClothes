@@ -16,6 +16,17 @@ public class PedidoRepository {
     @PersistenceContext
     private EntityManager entityManager; // Inyecta el EntityManager para interactuar con la base de datos
 
+    // buscar todos los pedidos por id de usuario
+    public List<Pedido> findAllByUsuarioId(Integer id) {
+        try {
+            Query query = entityManager.createNativeQuery("SELECT * FROM Pedido WHERE usua_id = :id", Pedido.class);
+            query.setParameter("id", id);
+            return query.getResultList();
+        } catch (Exception e) {
+            return List.of(); // Retorna una lista vacía si no se encuentran pedidos
+        }
+    }
+
     // buscar pedido por id de usuario
     public Optional<Pedido> findByUsuarioId(Integer id) {
         try {
@@ -36,10 +47,13 @@ public class PedidoRepository {
 
     //Obtener un pedido por ID
     public Pedido findById(Integer id) {
-        Query query = entityManager.createNativeQuery("SELECT * FROM Pedido WHERE pedi_id = :id", Pedido.class);
-        query.setParameter("id", id);
-        Pedido pedido = (Pedido) query.getSingleResult();
-        return pedido;
+        try {
+            Query query = entityManager.createNativeQuery("SELECT * FROM Pedido WHERE pedi_id = :id", Pedido.class);
+            query.setParameter("id", id);
+            return (Pedido) query.getSingleResult();
+        } catch (Exception e) {
+            return null; // Retorna null si no se encuentra el pedido
+        }
     }
 
     //guardar un pedido
