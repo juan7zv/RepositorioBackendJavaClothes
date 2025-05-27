@@ -21,6 +21,11 @@ public class PedidoService {
 
     }
 
+    // encontrar todos los pedidos por id de usuario
+    public List<Pedido> findAllByUsuarioId(Integer usuarioId) {
+        return pedidoRepository.findAllByUsuarioId(usuarioId);
+    }
+
     // encontrar un pedido por id de usuario
     public Optional<Pedido> findByUsuarioId(Integer usuarioId) {
         return pedidoRepository.findByUsuarioId(usuarioId); // Llamar al método del repositorio
@@ -39,7 +44,11 @@ public class PedidoService {
 
     //obtener un pedido por ID
     public Pedido findById(Integer id) {
-        return pedidoRepository.findById(id);
+        if (id == null) {
+            return null;
+        }
+        Pedido pedido = pedidoRepository.findById(id);
+        return pedido; // Puede ser null si no se encuentra
     }
 
     //eliminar un pedido

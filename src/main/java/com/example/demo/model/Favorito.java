@@ -1,12 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "favorito")
@@ -14,10 +8,12 @@ public class Favorito {
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private int favoritoId;
-	    @OneToOne
+
+	    @ManyToOne
 	    @JoinColumn(name = "Usua_id", nullable = false)
-	    private Usuario usuario; 
-	    @OneToOne
+	    private Usuario usuario;
+
+	    @ManyToOne
 	    @JoinColumn(name = "prod_id", nullable = false)
 	    private Producto producto; 
 	    

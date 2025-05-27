@@ -51,31 +51,37 @@ public class FavoritoController {
         }
     }
 
-    @GetMapping("/cliente/{idCliente}") 
-    @Operation(summary = "Obtener Favoritos por ID de Cliente", description = "Devuelve todos los favoritos asociados a un cliente específico")
+    // endopoint para obtener favoritos por ID de cliente
+    @GetMapping("/cliente/{idCliente}")
+    @Operation(summary = "Obtener Favoritos por ID de Cliente",
+            description = "Devuelve todos los favoritos asociados a un cliente específico")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Favoritos encontrados"),
-            @ApiResponse(responseCode = "404", description = "No se encontraron favoritos para este cliente")
+            @ApiResponse(responseCode = "200", description = "Favoritos encontrados (Puede estar vacía)" ),
     })
     public ResponseEntity<List<Favorito>> getFavoritosByClienteId(
-            @PathVariable @Parameter(description = "ID del Cliente") int idCliente) {
-
+            @Parameter(description = "ID del Cliente")
+            @PathVariable int idCliente) {
         List<Favorito> favoritos = favoritoService.findByCliente(idCliente);
+        return new ResponseEntity<>(favoritos, HttpStatus.OK);
 
-        if (!favoritos.isEmpty()) { // Verifica si la lista no está vacía
-            return new ResponseEntity<>(favoritos, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
     }
 
+    // endopoint para crear un nuevo favorito
     @PostMapping
     @Operation(summary = "Crear un nuevo Favorito", description = "Crea un nuevo Favorito con los datos proporcionados.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Favorito creado con éxito"),
+            @ApiResponse(responseCode = "409", description = "El producto ya está en favoritos"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
-    public ResponseEntity<Favorito> createFavorito(@RequestBody @Parameter(description = "Datos del Favorito a crear") Favorito favorito) {
+    public ResponseEntity<?> createFavorito(
+            @Parameter(description = "Datos del Favorito a crear")
+            @RequestBody Favorito favorito) {
+        // Verificar si ya existe ese producto en favoritos de ese cliente
+        if(favoritoService.findByProductoAndUsuario(
+                favorito.getProducto().getProd_id(), favorito.getUsuario().getUsua_id()).isPresent()) {
+            return new ResponseEntity<>("El producto ya está en favoritos", HttpStatus.CONFLICT);
+        }
         Favorito newFavorito = favoritoService.save(favorito);
         return new ResponseEntity<>(newFavorito, HttpStatus.CREATED);
     }

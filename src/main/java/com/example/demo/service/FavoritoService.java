@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.example.demo.model.Favorito;
 import com.example.demo.model.Usuario;
@@ -25,6 +26,10 @@ public class FavoritoService {
 	    public Favorito save(Favorito favorito) {
 	        return favoritoRepository.save(favorito);
 	    }
+
+		public Optional<Favorito> findByProductoAndUsuario(int idProducto, int idUsuario) {
+			return Optional.ofNullable(favoritoRepository.findByProductoAndUsuario(idProducto, idUsuario));
+	}
 
 	    public Favorito findById(int id) {
 	        return favoritoRepository.findById(id);
