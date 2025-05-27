@@ -1,30 +1,36 @@
 package com.example.demo.service;
 
-import java.time.LocalDate;
-import java.util.List;
+import com.example.demo.model.Pedido;
+import com.example.demo.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.demo.model.Pedido;
-import com.example.demo.model.enums.EstadosPedido;
-import com.example.demo.repository.PedidoRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PedidoService {
 
     private final PedidoRepository pedidoRepository; // Inyectar el repositorio de pedidos
+    private final UsuarioService usuarioService;
 
     @Autowired //Autowired es una anotación de Spring que permite inyectar dependencias
-    public PedidoService(PedidoRepository pedidoRepository) {
+    public PedidoService(PedidoRepository pedidoRepository, UsuarioService usuarioService) {
         this.pedidoRepository = pedidoRepository; // Inicializar el repositorio
-        initSampleData(); // Inicializar datos de ejemplo
+        this.usuarioService = usuarioService;
+
     }
 
-    // Método para inicializar datos de ejemplo
-    private void initSampleData() {
-		//Pedido pedido1 = new Pedido("hhh", "hcshcsh", "Disponible", LocalDate fecha, ArrayList<DetallePedido> detallesVenta);
-		
-		//save(pedido1);
+    // encontrar todos los pedidos por id de usuario
+    public List<Pedido> findAllByUsuarioId(Integer usuarioId) {
+        return pedidoRepository.findAllByUsuarioId(usuarioId);
     }
+
+    // encontrar un pedido por id de usuario
+    public Optional<Pedido> findByUsuarioId(Integer usuarioId) {
+        return pedidoRepository.findByUsuarioId(usuarioId); // Llamar al método del repositorio
+    }
+
 
     //guardar un pedido
     public Pedido save(Pedido pedido) {
@@ -38,7 +44,11 @@ public class PedidoService {
 
     //obtener un pedido por ID
     public Pedido findById(Integer id) {
-        return pedidoRepository.findById(id);
+        if (id == null) {
+            return null;
+        }
+        Pedido pedido = pedidoRepository.findById(id);
+        return pedido; // Puede ser null si no se encuentra
     }
 
     //eliminar un pedido
@@ -51,8 +61,4 @@ public class PedidoService {
         return pedidoRepository.update(pedido);
     }
 
-    //buscar pedidos por filtros
-    /*public List<Pedido> buscarPedidos(String clienteId, EstadosPedido estado, LocalDate fecha) {
-        return pedidoRepository.buscarPedidos(clienteId, estado, fecha);
-    }*/
 }

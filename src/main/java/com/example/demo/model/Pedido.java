@@ -2,7 +2,10 @@ package com.example.demo.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import com.example.demo.model.enums.EstadosPedido;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import jakarta.persistence.Column;
@@ -28,20 +31,24 @@ public class Pedido {
     @JoinColumn(name = "fact_id", nullable = true)
     private Factura factura;
 
-    @OneToOne
+    @ManyToOne // (foreing key)
     @JoinColumn(name = "usua_id", nullable = false)
     private Usuario usuario;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false)
     private EstadosPedido estado;
-    
-    @Column(name = "fecha_ped", insertable = false, updatable = false) // La BD lo gestiona)
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "fecha_ped", nullable = false)
     private LocalDate fechaPedido;
     
     @Column(name = "codigo_comp", nullable = false)
     private String codigoCompra;
-    
-    // private ArrayList<DetallePedido> detallesVenta;
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<DetallePedido> detalles = new ArrayList<>();
 
     public Pedido() { // Constructor vacío
 
@@ -96,7 +103,15 @@ public class Pedido {
         this.codigoCompra = codigoCompra;
     }
 
-	
+    public List<DetallePedido> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetallePedido> detalles) {
+        this.detalles = detalles;
+    }
+
+
     @Override
 	public String toString() {
     	return "Pedido [pedi_id=" + pediId + ", factura=" + factura + ", usuario=" + usuario + ", estado=" + estado

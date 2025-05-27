@@ -36,9 +36,13 @@ public class UsuarioController {
 
     // LOGIN
     @PostMapping("/login")
-    @Operation(summary = "Loguear Usuario", description = "Valida las credenciales del usuario para el inicio de sesión.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Usuario logueado con éxito"), @ApiResponse(responseCode = "401", description = "Usuario o contraseña incorrectos")})
-    public ResponseEntity<?> loginUsuario(@RequestBody @Parameter(description = "Credenciales de Acceso") UsuarioLogin usuarioLogin) {
+    @Operation(summary = "Loguear Usuario",
+            description = "Valida las credenciales del usuario para el inicio de sesión.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario logueado con éxito"),
+            @ApiResponse(responseCode = "401", description = "Usuario o contraseña incorrectos")})
+    public ResponseEntity<?> loginUsuario(@RequestBody @Parameter(description = "Credenciales de Acceso")
+                                          UsuarioLogin usuarioLogin) {
         Optional<Usuario> optionalUsuario = usuarioService.findById(usuarioLogin.getIdUsuario()); // el opcional es para evitar que la respuesta genere un null pointer exception
         if (optionalUsuario.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
@@ -55,9 +59,17 @@ public class UsuarioController {
 
     // CREATE
     @PostMapping
-    @Operation(summary = "Crear un nuevo usuario", description = "Crea un nuevo usuario con los datos proporcionados.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Usuario creado con éxito"), @ApiResponse(responseCode = "400", description = "Datos inválidos")})
-    public ResponseEntity<Usuario> createUsuario(@RequestBody @Parameter(description = "Datos del usuario a crear") Usuario usuario) {
+    @Operation(summary = "Crear un nuevo usuario",
+            description = "Crea un nuevo usuario con los datos proporcionados.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Usuario creado con éxito"),
+            @ApiResponse(responseCode = "409", description = "El usuario ya existe")})
+    public ResponseEntity<?> createUsuario(
+            @RequestBody @Parameter(description = "Datos del usuario a crear") Usuario usuario) {
+        Optional<Usuario> existingUser = usuarioService.findById(usuario.getUsua_id());
+        if (existingUser.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("El usuario ya existe");
+        }
         Usuario newUsuario = usuarioService.save(usuario);
         return new ResponseEntity<>(newUsuario, HttpStatus.CREATED);
     }
@@ -78,9 +90,13 @@ public class UsuarioController {
 
     // READ (By ID)
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener usuario por ID", description = "Devuelve un usuario específico basado en su ID.")
-    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Usuario encontrado"), @ApiResponse(responseCode = "404", description = "Usuario no encontrado")})
-    public ResponseEntity<?> getUsuarioById(@PathVariable @Parameter(description = "ID del usuario") Integer id, @RequestHeader(value = "Authorization", required = false) @Parameter(description = "Token de autorización JWT", in = ParameterIn.HEADER, name = "Authorization", example = "Bearer <token>") String authHeader) {
+    @Operation(summary = "Obtener usuario por ID",
+            description = "Devuelve un usuario específico basado en su ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario encontrado"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")})
+    public ResponseEntity<?> getUsuarioById(@PathVariable @Parameter(description = "ID del usuario") Integer id,
+                                            @RequestHeader(value = "Authorization", required = false) @Parameter(description = "Token de autorización JWT", in = ParameterIn.HEADER, name = "Authorization", example = "Bearer <token>") String authHeader) {
         String token = this.jwtService.extractToken(authHeader);
         if (token == null || !this.jwtService.validateJwtToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token inválido");

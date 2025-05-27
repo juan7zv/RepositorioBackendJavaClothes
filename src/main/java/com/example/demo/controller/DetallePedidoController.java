@@ -1,68 +1,133 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.DetallePedidoCliente;
 import com.example.demo.model.DetallePedido;
 import com.example.demo.model.Pedido;
 import com.example.demo.service.DetallePedidoService;
+import com.example.demo.service.JwtService;
 import com.example.demo.service.PedidoService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.ArrayList;
 
 @RestController // Indica que esta clase es un controlador REST
-@RequestMapping("/javaClothes/pedidos")
+@RequestMapping("/api/detallePedido")
 @Tag(name = "Detalles de pedido", description = "API para la gestión de detalles de pedidos")
+
 public class DetallePedidoController {
 
+    private final JwtService jwtService;
     private final DetallePedidoService detallePedidoService;
     private final PedidoService pedidoService;
-    
+
     @Autowired
-    public DetallePedidoController(DetallePedidoService detallePedidoService, PedidoService pedidoService) {
+    public DetallePedidoController(
+            JwtService jwtService,
+            DetallePedidoService detallePedidoService,
+            PedidoService pedidoService) {
+
+        this.jwtService = jwtService;
         this.detallePedidoService = detallePedidoService;
         this.pedidoService = pedidoService;
     }
 
+    // obtener los detalles de pedidos por usuario
+    @GetMapping("/usuario/{usuarioId}")
+    @Operation(summary = "Obtener detalles de pedidos por usuario",
+            description = "Devuelve una lista de detalles de pedidos asociados a un usuario específico.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Detalles de pedidos encontrados"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado o sin pedidos"),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
+    public ResponseEntity<?> getDetallesPedidoByUsuarioId(
+            @Parameter(description = "ID del usuario")
+            @PathVariable Integer usuarioId) {
+        try {
+            // 1. Buscar todos los pedidos del usuario
+            List<Pedido> pedidosUsuario = pedidoService.findAllByUsuarioId(usuarioId);
+            if (pedidosUsuario.isEmpty()) {
+                return new ResponseEntity<>("No se encontraron pedidos para este usuario", HttpStatus.NOT_FOUND);
+            }
+
+            // 2. Obtener todos los detalles de todos los pedidos
+            List<DetallePedidoCliente> todosLosDetalles = new ArrayList<>();
+            for (Pedido pedido : pedidosUsuario) {
+                List<DetallePedido> detallesPedido = detallePedidoService.findByPedido(pedido);
+                if (detallesPedido != null && !detallesPedido.isEmpty()) {
+                    for (DetallePedido detalle : detallesPedido) {
+                        DetallePedidoCliente detalleCliente = new DetallePedidoCliente();
+                        detalleCliente.setDetalleId(detalle.getDetalleId());
+                        detalleCliente.setProductoNombre(detalle.getProducto().getNombre());
+                        detalleCliente.setCantidad(detalle.getCantidad());
+                        detalleCliente.setPedidoId(pedido.getPedidoId());
+                        detalleCliente.setFechaPedido(pedido.getFecha().toString());
+                        detalleCliente.setPrecioUnitario(detalle.getProducto().getPrecio());
+                        todosLosDetalles.add(detalleCliente);
+                    }
+                }
+            }
+
+            if (todosLosDetalles.isEmpty()) {
+                return new ResponseEntity<>("No se encontraron detalles de pedidos para este usuario", HttpStatus.NOT_FOUND);
+            }
+
+            return new ResponseEntity<>(todosLosDetalles, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al procesar la solicitud: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    // Crear un nuevo detalle de pedido
     @PostMapping
     @Operation(summary = "Guardar el detalle de un pedido", description = "Crea un detalle de pedido con los datos proporcionados.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Detalle de pedido creado con éxito"),
-        @ApiResponse(responseCode = "400", description = "Datos inválidos")
+            @ApiResponse(responseCode = "201", description = "Detalle de pedido creado con éxito"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
-    public ResponseEntity<DetallePedido> createDetallePedido(@RequestBody @Parameter(description = "Datos del detalle de pedido a crear") DetallePedido detallePedido) {
+    public ResponseEntity<DetallePedido> createDetallePedido(
+            @RequestBody @Parameter(description = "Datos del detalle de pedido a crear") DetallePedido detallePedido) {
         DetallePedido newDetallePedido = detallePedidoService.save(detallePedido);
         return new ResponseEntity<>(newDetallePedido, HttpStatus.CREATED);
     }
 
+    // Endpoint para obtener detalles de un pedido por el id de pedido
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener detalles del pedido", description = "Devuelve todos los detalles asociados a un pedido específico por ID.")
+    @Operation(summary = "Obtener detalles del pedido",
+            description = "Devuelve todos los detalles asociados a un pedido específico por ID.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Detalles encontrados"),
-        @ApiResponse(responseCode = "404", description = "Pedido no encontrado")
+            @ApiResponse(responseCode = "200", description = "Detalles encontrados"),
+            @ApiResponse(responseCode = "404", description = "Pedido no encontrado")
     })
-    public ResponseEntity<DetallePedido> getDetallesByPedidoId(@PathVariable @Parameter(description = "ID del pedido") Integer id) {
-        // 1. Buscar el pedido por ID
-        Pedido pedido = pedidoService.findById(id);
-        if (pedido == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> getDetallesByPedidoId(@PathVariable @Parameter(description = "ID del pedido") Integer id) {
+        try {
+            // 1. Buscar el pedido por ID
+            Pedido pedido = pedidoService.findById(id);
+            if (pedido == null) {
+                return new ResponseEntity<>("No se encontró el pedido con ID: " + id, HttpStatus.NOT_FOUND);
+            }
+
+            // 2. Buscar los detalles por pedido
+            List<DetallePedido> detalles = detallePedidoService.findByPedido(pedido);
+            if (detalles == null || detalles.isEmpty()) {
+                return new ResponseEntity<>("No se encontraron detalles para el pedido con ID: " + id, HttpStatus.NOT_FOUND);
+            }
+
+            return new ResponseEntity<>(detalles, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al procesar la solicitud: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        // 2. Buscar los detalles por pedido
-        DetallePedido detalle = detallePedidoService.findByPedido(pedido);
-        return new ResponseEntity<>(detalle, HttpStatus.OK);
     }
 
  /*   @PutMapping("/{id}")
@@ -119,19 +184,4 @@ public class DetallePedidoController {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //        }
 //    }
-
-//    @GetMapping("/buscar")
-//    @Operation(summary = "Buscar pedidos por filtros", description = "Busca pedidos por Id del cliente al que pertenece, estado o fecha")
-//    @ApiResponses(value = {
-//        @ApiResponse(responseCode = "200", description = "Pedidos encontrados"),
-//        @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
-//    })
-//    public ResponseEntity<List<Pedido>> buscarPedido(
-//            @RequestParam(required = false) @Parameter(description = "Id de cliente (a quien pertenece el pedido)") String idCliente,
-//            @RequestParam(required = false) @Parameter(description = "Estado (Relizado, disponible, No_Reclamado, Facturado)") EstadosPedido estado,
-//            @RequestParam(required = false) @Parameter(description = "Fecha") LocalDate fecha) {
-//        List<Pedido> pedidosFiltrados = pedidoService.buscarPedidos(idCliente, estado, fecha);
-//        return new ResponseEntity<>(pedidosFiltrados, HttpStatus.OK);
-//    }
-//}
 

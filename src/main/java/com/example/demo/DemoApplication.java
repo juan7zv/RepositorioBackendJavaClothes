@@ -8,9 +8,20 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DemoApplication {
 
 	public static void main(String[] args) {
-		Dotenv dotenv = Dotenv.load();
-		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
+		// Configura Dotenv para que ignore si el archivo .env no se encuentra
+		Dotenv dotenv = Dotenv.configure()
+				.ignoreIfMissing()
+				.load();
+
+		// Establece las propiedades solo si no existen como variables de entorno
+		dotenv.entries().forEach(entry -> {
+			if (System.getProperty(entry.getKey()) == null &&
+					System.getenv(entry.getKey()) == null) {
+				System.setProperty(entry.getKey(), entry.getValue());
+			}
+		});
+
+		// Inicia la aplicación Spring Boot
 		SpringApplication.run(DemoApplication.class, args);
 	}
-
 }
